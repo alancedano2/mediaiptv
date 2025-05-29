@@ -45,6 +45,15 @@ const player = new Clappr.Player({
   height: '400px',
 });
 
+function convertTo12Hour(time24) {
+  // time24 = "HH:mm"
+  let [h, m] = time24.split(':').map(Number);
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12;
+  if (h === 0) h = 12;
+  return `${h}:${m.toString().padStart(2, '0')} ${ampm}`;
+}
+
 function getCurrentProgram(channel) {
   const now = new Date();
   const current = now.getHours() * 60 + now.getMinutes();
@@ -76,12 +85,17 @@ function toggleProgramDropdown(li, channel, arrow) {
   dropdown.className = 'program-dropdown';
 
   channel.programs.forEach(p => {
-    const liveSpan = (nowProg && nowProg.title === p.title)
+    const isLive = nowProg && nowProg.title === p.title;
+    const liveSpan = isLive
       ? '<span class="live-label">EN VIVO</span>'
       : '';
     const pElem = document.createElement('p');
-    pElem.innerHTML = `${p.start} - ${p.end} — ${p.title} ${liveSpan}`;
+    pElem.innerHTML = `${convertTo12Hour(p.start)} - ${convertTo12Hour(p.end)} — ${p.title} ${liveSpan}`;
     dropdown.appendChild(pElem);
+
+    if (isLive) {
+      pElem.classList.add('live-program');
+    }
   });
 
   li.appendChild(dropdown);
@@ -98,19 +112,31 @@ function loadChannels() {
     const logo = document.createElement('img');
     logo.src = channel.logo;
     logo.alt = `${channel.name} logo`;
+    logo.style.width = '40px';  // para que los logos tengan tamaño uniforme
+    logo.style.height = 'auto';
+    logo.style.marginRight = '10px';
 
     const nameSpan = document.createElement('span');
     nameSpan.textContent = channel.name;
+    nameSpan.style.flexGrow = '1';
 
     const arrow = document.createElement('span');
     arrow.className = 'arrow';
     arrow.textContent = '▼';
+    arrow.style.cursor = 'pointer';
+
+    mainDiv.style.display = 'flex';
+    mainDiv.style.alignItems = 'center';
 
     mainDiv.appendChild(logo);
     mainDiv.appendChild(nameSpan);
     mainDiv.appendChild(arrow);
 
     li.appendChild(mainDiv);
+
+    li.style.cursor = 'pointer';
+    li.style.padding = '8px 10px';
+    li.style.borderBottom = '1px solid #ccc';
 
     li.addEventListener('click', () => {
       player.load(channel.stream);
