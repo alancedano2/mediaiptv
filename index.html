@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KQ-105 TV + eWo TV</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+</head>
+<body>
+  <header>
+    <div class="logo">📺 IPTV Zone</div>
+    <nav>
+      <ul>
+        <li><a href="#">Inicio</a></li>
+        <li><a href="#">Programación</a></li>
+        <li><a href="#">Canales</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="player-section">
+      <div id="player"></div>
+      <div class="channel-list">
+        <h3>Canales</h3>
+        <ul id="channels"></ul>
+      </div>
+    </div>
+    <div class="program-box" id="program-box" style="display: none;"></div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
