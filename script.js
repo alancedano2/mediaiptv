@@ -27,7 +27,7 @@ const channels = [
   },
   {
     name: 'KQ105 Radio',
-    logo: 'https://pbs.twimg.com/profile_images/1644625373731700224/DSV-tXk9_400x400.jpg',
+    logo: 'https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png?resize=640%2C184',
     stream: 'https://televicentro.streamguys1.com/wkaqfm/playlist.m3u8?listeningSessionID=67acd14beee8d430_9104582_MwEfK6da_MjA1LjIzNC4yMTIuMTQw_0000000Wtno&downloadSessionID=0&key=01c804a8663a4d6f85af625fe28c982aba4db423010cf5b57d1e62338ad0b8d5&aw_0_1st.playerId=kq105&source=kq105.com&us_privacy=1YNY&clientType=web&callLetters=WKAQ-FM&devicename=web-desktop&stationid=1846&dist=kq105.com&subscription_type=free&aw_0_1st.version=1.0_html5&aw_0_1st.playerid=kq105_floating_player',
     programs: [
       { start: '00:00', end: '06:00', title: 'Radio Chillout' },
