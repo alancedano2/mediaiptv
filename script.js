@@ -28,7 +28,7 @@ const channels = [
   {
     name: 'KQ105 Radio',
     logo: 'https://pbs.twimg.com/profile_images/1644625373731700224/DSV-tXk9_400x400.jpg',
-    stream: 'https://live20.bozztv.com/akamaissh101/ssh101/kq105radio/chunks.m3u8',
+    stream: 'https://televicentro.streamguys1.com/wkaqfm/playlist.m3u8?listeningSessionID=67acd14beee8d430_9104582_MwEfK6da_MjA1LjIzNC4yMTIuMTQw_0000000Wtno&downloadSessionID=0&key=01c804a8663a4d6f85af625fe28c982aba4db423010cf5b57d1e62338ad0b8d5&aw_0_1st.playerId=kq105&source=kq105.com&us_privacy=1YNY&clientType=web&callLetters=WKAQ-FM&devicename=web-desktop&stationid=1846&dist=kq105.com&subscription_type=free&aw_0_1st.version=1.0_html5&aw_0_1st.playerid=kq105_floating_player',
     programs: [
       { start: '00:00', end: '06:00', title: 'Radio Chillout' },
       { start: '06:00', end: '12:00', title: 'KQ Radio Mañanas' },
