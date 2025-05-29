@@ -13,9 +13,10 @@ header {
   align-items: center;
 }
 
-header .logo {
-  font-size: 1.5em;
-  font-weight: bold;
+header .logo img {
+  height: 40px;
+  width: auto;
+  display: block;
 }
 
 nav ul {
@@ -82,12 +83,14 @@ main {
 }
 
 .channel-main img {
-  width: 40px;
-  height: 40px;
+  width: 60px;       /* Más grande para mejor visibilidad */
+  height: 40px;      /* Mantener proporción */
   margin-right: 12px;
   border-radius: 6px;
   object-fit: contain;
-  background: white;
+  background: transparent;  /* Nada de fondo blanco */
+  image-rendering: -webkit-optimize-contrast; /* Mejor nitidez en Chrome */
+  image-rendering: crisp-edges; /* Mejor nitidez en Firefox */
 }
 
 .channel-main span {
