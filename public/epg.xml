@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tv>
+  <channel id="kq105radio">
+    <display-name>KQ-105 Radio</display-name>
+    <icon src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png?resize=640%2C184" />
+  </channel>
+  <channel id="kq105tv">
+    <display-name>KQ-105 TV</display-name>
+    <icon src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png?resize=640%2C184" />
+  </channel>
+  <channel id="ewotv">
+    <display-name>eWo TV</display-name>
+    <icon src="https://ewopr-puce.vercel.app/logo.png" />
+  </channel>
+  <programme channel="kq105radio" start="20250528000000 -0400" stop="20250528060000 -0400">
+    <title>Carlos Gabriel</title>
+    <desc>Acompaña las madrugadas de KQ-105 con buena música y un tono relajado para los noctámbulos y madrugadores.</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250528060000 -0400" stop="20250528100000 -0400">
+    <title>Hector Ortiz</title>
+    <desc>Energiza las mañanas con música y entretenimiento, ayudando a los oyentes a comenzar su día con buen ánimo.</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250528100000 -0400" stop="20250528150000 -0400">
+    <title>Alex Diaz</title>
+    <desc>Con más de dos décadas en la radio, ofrece una selección variada de éxitos musicales y comentarios frescos en su turno matutino.</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250528150000 -0400" stop="20250528180000 -0400">
+    <title>La Tendencia De Molusco</title>
+  </programme>
+  <programme channel="kq105radio" start="20250528180000 -0400" stop="20250528190000 -0400">
+    <title>Pedro Villegas</title>
+    <desc>Locutor experimentado que mantiene a la audiencia conectada con buena música y energía en la tarde-noche de KQ-105.</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250528190000 -0400" stop="20250530000000 -0400">
+    <title>Edwin Negrón</title>
+    <desc>Cierra la jornada con buena música y un ambiente relajado, ideal para terminar el día con la mejor compañía en la radio.</desc>
+  </programme>
+  <programme channel="kq105tv" start="20250528000000 -0400" stop="20250528060000 -0400">
+    <title>Videos Musicales Powered by KQ105</title>
+  </programme>
+  <programme channel="kq105tv" start="20250528060000 -0400" stop="20250528100000 -0400">
+    <title>KQ Al Aire con Héctor Ortiz</title>
+  </programme>
+  <programme channel="kq105tv" start="20250528100000 -0400" stop="20250528150000 -0400">
+    <title>KQOnline con Alex Diaz</title>
+  </programme>
+  <programme channel="kq105tv" start="20250528150000 -0400" stop="20250528180000 -0400">
+    <title>La Tendencia de Molusco con Ali, Pamela y Robert</title>
+  </programme>
+  <programme channel="kq105tv" start="20250528180000 -0400" stop="20250528190000 -0400">
+    <title>KQ Al Aire con Pedro Villegas</title>
+  </programme>
+  <programme channel="kq105tv" start="20250528190000 -0400" stop="20250530000000 -0400">
+    <title>Videos Musicales Powered by KQ105</title>
+  </programme>
+  <programme channel="ewotv" start="20250528000000 -0400" stop="20250528080000 -0400">
+    <title>SIGN OFF</title>
+  </programme>
+  <programme channel="ewotv" start="20250528080000 -0400" stop="20250528093000 -0400">
+    <title>eWo La Verdad Absoluta</title>
+  </programme>
+  <programme channel="ewotv" start="20250528093000 -0400" stop="20250528100000 -0400">
+    <title>Cuenta Regresiva para eWo El Update</title>
+  </programme>
+  <programme channel="ewotv" start="20250528100000 -0400" stop="20250528110000 -0400">
+    <title>eWo El Update</title>
+  </programme>
+  <programme channel="ewotv" start="20250528110000 -0400" stop="20250528150000 -0400">
+    <title>eWo ThrowBack</title>
+  </programme>
+  <programme channel="ewotv" start="20250528150000 -0400" stop="20250528153000 -0400">
+    <title>eWo El Perfil</title>
+  </programme>
+  <programme channel="ewotv" start="20250528153000 -0400" stop="20250528173000 -0400">
+    <title>eWo 24/7 Retro</title>
+  </programme>
+  <programme channel="ewotv" start="20250528173000 -0400" stop="20250530000000 -0400">
+    <title>SIGN OFF</title>
+  </programme>
+  <programme channel="kq105radio" start="20250529000000 -0400" stop="20250529060000 -0400">
+    <title>Carlos Gabriel</title>
+    <desc>Acompaña las madrugadas de KQ-105 con buena música y un tono relajado para los noctámbulos y madrugadores.</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250529060000 -0400" stop="20250529100000 -0400">
+    <title>Hector Ortiz</title>
+    <desc>Energiza las mañanas con música y entretenimiento, ayudando a los oyentes a comenzar su día con buen ánimo.</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250529100000 -0400" stop="20250529150000 -0400">
+    <title>Alex Diaz</title>
+    <desc>Con más de dos décadas en la radio, ofrece una selección variada de éxitos musicales y comentarios frescos en su turno matutino.</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250529150000 -0400" stop="20250529180000 -0400">
+    <title>La Tendencia De Molusco</title>
+  </programme>
+  <programme channel="kq105radio" start="20250529180000 -0400" stop="20250529190000 -0400">
+    <title>Pedro Villegas</title>
+    <desc>Locutor experimentado que mantiene a la audiencia conectada con buena música y energía en la tarde-noche de KQ-105.</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250529190000 -0400" stop="20250531000000 -0400">
+    <title>Edwin Negrón</title>
+    <desc>Cierra la jornada con buena música y un ambiente relajado, ideal para terminar el día con la mejor compañía en la radio.</desc>
+  </programme>
+  <programme channel="kq105tv" start="20250529000000 -0400" stop="20250529060000 -0400">
+    <title>Videos Musicales Powered by KQ105</title>
+  </programme>
+  <programme channel="kq105tv" start="20250529060000 -0400" stop="20250529100000 -0400">
+    <title>KQ Al Aire con Héctor Ortiz</title>
+  </programme>
+  <programme channel="kq105tv" start="20250529100000 -0400" stop="20250529150000 -0400">
+    <title>KQOnline con Alex Diaz</title>
+  </programme>
+  <programme channel="kq105tv" start="20250529150000 -0400" stop="20250529180000 -0400">
+    <title>La Tendencia de Molusco con Ali, Pamela y Robert</title>
+  </programme>
+  <programme channel="kq105tv" start="20250529180000 -0400" stop="20250529190000 -0400">
+    <title>KQ Al Aire con Pedro Villegas</title>
+  </programme>
+  <programme channel="kq105tv" start="20250529190000 -0400" stop="20250531000000 -0400">
+    <title>Videos Musicales Powered by KQ105</title>
+  </programme>
+  <programme channel="ewotv" start="20250529000000 -0400" stop="20250529080000 -0400">
+    <title>SIGN OFF</title>
+  </programme>
+  <programme channel="ewotv" start="20250529080000 -0400" stop="20250529093000 -0400">
+    <title>eWo La Verdad Absoluta</title>
+  </programme>
+  <programme channel="ewotv" start="20250529093000 -0400" stop="20250529100000 -0400">
+    <title>Cuenta Regresiva para eWo El Update</title>
+  </programme>
+  <programme channel="ewotv" start="20250529100000 -0400" stop="20250529110000 -0400">
+    <title>eWo El Update</title>
+  </programme>
+  <programme channel="ewotv" start="20250529110000 -0400" stop="20250529150000 -0400">
+    <title>eWo ThrowBack</title>
+  </programme>
+  <programme channel="ewotv" start="20250529150000 -0400" stop="20250529153000 -0400">
+    <title>eWo El Perfil</title>
+  </programme>
+  <programme channel="ewotv" start="20250529153000 -0400" stop="20250529173000 -0400">
+    <title>eWo 24/7 Retro</title>
+  </programme>
+  <programme channel="ewotv" start="20250529173000 -0400" stop="20250531000000 -0400">
+    <title>SIGN OFF</title>
+  </programme>
+  <programme channel="kq105radio" start="20250530000000 -0400" stop="20250530060000 -0400">
+    <title>Carlos Gabriel</title>
+    <desc>Acompaña las madrugadas de KQ-105 con buena música y un tono relajado para los noctámbulos y madrugadores.</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250530060000 -0400" stop="20250530100000 -0400">
+    <title>Hector Ortiz</title>
+    <desc>Energiza las mañanas con música y entretenimiento, ayudando a los oyentes a comenzar su día con buen ánimo.</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250530100000 -0400" stop="20250530150000 -0400">
+    <title>Alex Diaz</title>
+    <desc>Con más de dos décadas en la radio, ofrece una selección variada de éxitos musicales y comentarios frescos en su turno matutino.</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250530150000 -0400" stop="20250530180000 -0400">
+    <title>La Tendencia De Molusco</title>
+  </programme>
+  <programme channel="kq105radio" start="20250530180000 -0400" stop="20250530190000 -0400">
+    <title>Pedro Villegas</title>
+    <desc>Locutor experimentado que mantiene a la audiencia conectada con buena música y energía en la tarde-noche de KQ-105.</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250530190000 -0400" stop="20250601000000 -0400">
+    <title>Edwin Negrón</title>
+    <desc>Cierra la jornada con buena música y un ambiente relajado, ideal para terminar el día con la mejor compañía en la radio.</desc>
+  </programme>
+  <programme channel="kq105tv" start="20250530000000 -0400" stop="20250530060000 -0400">
+    <title>Videos Musicales Powered by KQ105</title>
+  </programme>
+  <programme channel="kq105tv" start="20250530060000 -0400" stop="20250530100000 -0400">
+    <title>KQ Al Aire con Héctor Ortiz</title>
+  </programme>
+  <programme channel="kq105tv" start="20250530100000 -0400" stop="20250530150000 -0400">
+    <title>KQOnline con Alex Diaz</title>
+  </programme>
+  <programme channel="kq105tv" start="20250530150000 -0400" stop="20250530180000 -0400">
+    <title>La Tendencia de Molusco con Ali, Pamela y Robert</title>
+  </programme>
+  <programme channel="kq105tv" start="20250530180000 -0400" stop="20250530190000 -0400">
+    <title>KQ Al Aire con Pedro Villegas</title>
+  </programme>
+  <programme channel="kq105tv" start="20250530190000 -0400" stop="20250601000000 -0400">
+    <title>Videos Musicales Powered by KQ105</title>
+  </programme>
+  <programme channel="ewotv" start="20250530000000 -0400" stop="20250530080000 -0400">
+    <title>SIGN OFF</title>
+  </programme>
+  <programme channel="ewotv" start="20250530080000 -0400" stop="20250530093000 -0400">
+    <title>eWo La Verdad Absoluta</title>
+  </programme>
+  <programme channel="ewotv" start="20250530093000 -0400" stop="20250530100000 -0400">
+    <title>Cuenta Regresiva para eWo El Update</title>
+  </programme>
+  <programme channel="ewotv" start="20250530100000 -0400" stop="20250530110000 -0400">
+    <title>eWo El Update</title>
+  </programme>
+  <programme channel="ewotv" start="20250530110000 -0400" stop="20250530150000 -0400">
+    <title>eWo ThrowBack</title>
+  </programme>
+  <programme channel="ewotv" start="20250530150000 -0400" stop="20250530153000 -0400">
+    <title>eWo El Perfil</title>
+  </programme>
+  <programme channel="ewotv" start="20250530153000 -0400" stop="20250530173000 -0400">
+    <title>eWo 24/7 Retro</title>
+  </programme>
+  <programme channel="ewotv" start="20250530173000 -0400" stop="20250601000000 -0400">
+    <title>SIGN OFF</title>
+  </programme>
+  <programme channel="kq105radio" start="20250531000000 -0400" stop="20250531190000 -0400">
+    <title>KQ-105</title>
+    <desc>KQ-105</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250531190000 -0400" stop="20250531210000 -0400">
+    <title>Top 20 Countdown</title>
+    <desc>Top 20 Countdown de KQ-105: El programa que te trae las 20 canciones más populares de la semana, con los éxitos más calientes y entrevistas exclusivas, todo con el estilo único de KQ-105.</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250531210000 -0400" stop="20250602000000 -0400">
+    <title>KQ-105</title>
+    <desc>KQ-105</desc>
+  </programme>
+  <programme channel="kq105tv" start="20250531000000 -0400" stop="20250531180000 -0400">
+    <title>Videos Musicales powered by KQ 105</title>
+  </programme>
+  <programme channel="kq105tv" start="20250531190000 -0400" stop="20250531210000 -0400">
+    <title>Top 20 Countdown con Manolo Castro y Dessire Lowry</title>
+  </programme>
+  <programme channel="kq105tv" start="20250531210000 -0400" stop="20250602000000 -0400">
+    <title>Videos Musicales powered by KQ 105</title>
+  </programme>
+  <programme channel="ewotv" start="20250531000000 -0400" stop="20250531080000 -0400">
+    <title>SIGN OFF</title>
+  </programme>
+  <programme channel="ewotv" start="20250531080000 -0400" stop="20250531093000 -0400">
+    <title>eWo La Verdad Absoluta</title>
+  </programme>
+  <programme channel="ewotv" start="20250531093000 -0400" stop="20250531100000 -0400">
+    <title>Cuenta Regresiva para eWo El Update</title>
+  </programme>
+  <programme channel="ewotv" start="20250531100000 -0400" stop="20250531110000 -0400">
+    <title>eWo El Update</title>
+  </programme>
+  <programme channel="ewotv" start="20250531110000 -0400" stop="20250531150000 -0400">
+    <title>eWo ThrowBack</title>
+  </programme>
+  <programme channel="ewotv" start="20250531150000 -0400" stop="20250531153000 -0400">
+    <title>eWo El Perfil</title>
+  </programme>
+  <programme channel="ewotv" start="20250531153000 -0400" stop="20250531173000 -0400">
+    <title>eWo 24/7 Retro</title>
+  </programme>
+  <programme channel="ewotv" start="20250531173000 -0400" stop="20250602000000 -0400">
+    <title>SIGN OFF</title>
+  </programme>
+  <programme channel="kq105radio" start="20250601000000 -0400" stop="20250601190000 -0400">
+    <title>KQ-105</title>
+    <desc>KQ-105</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250601190000 -0400" stop="20250601210000 -0400">
+    <title>Top 20 Countdown</title>
+    <desc>Top 20 Countdown de KQ-105: El programa que te trae las 20 canciones más populares de la semana, con los éxitos más calientes y entrevistas exclusivas, todo con el estilo único de KQ-105.</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250601210000 -0400" stop="20250603000000 -0400">
+    <title>KQ-105</title>
+    <desc>KQ-105</desc>
+  </programme>
+  <programme channel="kq105tv" start="20250601000000 -0400" stop="20250601180000 -0400">
+    <title>Videos Musicales powered by KQ 105</title>
+  </programme>
+  <programme channel="kq105tv" start="20250601190000 -0400" stop="20250601210000 -0400">
+    <title>Top 20 Countdown con Manolo Castro y Dessire Lowry</title>
+  </programme>
+  <programme channel="kq105tv" start="20250601210000 -0400" stop="20250603000000 -0400">
+    <title>Videos Musicales powered by KQ 105</title>
+  </programme>
+  <programme channel="ewotv" start="20250601000000 -0400" stop="20250601080000 -0400">
+    <title>SIGN OFF</title>
+  </programme>
+  <programme channel="ewotv" start="20250601080000 -0400" stop="20250601093000 -0400">
+    <title>eWo La Verdad Absoluta</title>
+  </programme>
+  <programme channel="ewotv" start="20250601093000 -0400" stop="20250601100000 -0400">
+    <title>Cuenta Regresiva para eWo El Update</title>
+  </programme>
+  <programme channel="ewotv" start="20250601100000 -0400" stop="20250601110000 -0400">
+    <title>eWo El Update</title>
+  </programme>
+  <programme channel="ewotv" start="20250601110000 -0400" stop="20250601150000 -0400">
+    <title>eWo ThrowBack</title>
+  </programme>
+  <programme channel="ewotv" start="20250601150000 -0400" stop="20250601153000 -0400">
+    <title>eWo El Perfil</title>
+  </programme>
+  <programme channel="ewotv" start="20250601153000 -0400" stop="20250601173000 -0400">
+    <title>eWo 24/7 Retro</title>
+  </programme>
+  <programme channel="ewotv" start="20250601173000 -0400" stop="20250603000000 -0400">
+    <title>SIGN OFF</title>
+  </programme>
+  <programme channel="kq105radio" start="20250602000000 -0400" stop="20250602060000 -0400">
+    <title>Carlos Gabriel</title>
+    <desc>Acompaña las madrugadas de KQ-105 con buena música y un tono relajado para los noctámbulos y madrugadores.</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250602060000 -0400" stop="20250602100000 -0400">
+    <title>Hector Ortiz</title>
+    <desc>Energiza las mañanas con música y entretenimiento, ayudando a los oyentes a comenzar su día con buen ánimo.</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250602100000 -0400" stop="20250602150000 -0400">
+    <title>Alex Diaz</title>
+    <desc>Con más de dos décadas en la radio, ofrece una selección variada de éxitos musicales y comentarios frescos en su turno matutino.</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250602150000 -0400" stop="20250602180000 -0400">
+    <title>La Tendencia De Molusco</title>
+  </programme>
+  <programme channel="kq105radio" start="20250602180000 -0400" stop="20250602190000 -0400">
+    <title>Pedro Villegas</title>
+    <desc>Locutor experimentado que mantiene a la audiencia conectada con buena música y energía en la tarde-noche de KQ-105.</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250602190000 -0400" stop="20250604000000 -0400">
+    <title>Edwin Negrón</title>
+    <desc>Cierra la jornada con buena música y un ambiente relajado, ideal para terminar el día con la mejor compañía en la radio.</desc>
+  </programme>
+  <programme channel="kq105tv" start="20250602000000 -0400" stop="20250602060000 -0400">
+    <title>Videos Musicales Powered by KQ105</title>
+  </programme>
+  <programme channel="kq105tv" start="20250602060000 -0400" stop="20250602100000 -0400">
+    <title>KQ Al Aire con Héctor Ortiz</title>
+  </programme>
+  <programme channel="kq105tv" start="20250602100000 -0400" stop="20250602150000 -0400">
+    <title>KQOnline con Alex Diaz</title>
+  </programme>
+  <programme channel="kq105tv" start="20250602150000 -0400" stop="20250602180000 -0400">
+    <title>La Tendencia de Molusco con Ali, Pamela y Robert</title>
+  </programme>
+  <programme channel="kq105tv" start="20250602180000 -0400" stop="20250602190000 -0400">
+    <title>KQ Al Aire con Pedro Villegas</title>
+  </programme>
+  <programme channel="kq105tv" start="20250602190000 -0400" stop="20250604000000 -0400">
+    <title>Videos Musicales Powered by KQ105</title>
+  </programme>
+  <programme channel="ewotv" start="20250602000000 -0400" stop="20250602080000 -0400">
+    <title>SIGN OFF</title>
+  </programme>
+  <programme channel="ewotv" start="20250602080000 -0400" stop="20250602093000 -0400">
+    <title>eWo La Verdad Absoluta</title>
+  </programme>
+  <programme channel="ewotv" start="20250602093000 -0400" stop="20250602100000 -0400">
+    <title>Cuenta Regresiva para eWo El Update</title>
+  </programme>
+  <programme channel="ewotv" start="20250602100000 -0400" stop="20250602110000 -0400">
+    <title>eWo El Update</title>
+  </programme>
+  <programme channel="ewotv" start="20250602110000 -0400" stop="20250602150000 -0400">
+    <title>eWo ThrowBack</title>
+  </programme>
+  <programme channel="ewotv" start="20250602150000 -0400" stop="20250602153000 -0400">
+    <title>eWo El Perfil</title>
+  </programme>
+  <programme channel="ewotv" start="20250602153000 -0400" stop="20250602173000 -0400">
+    <title>eWo 24/7 Retro</title>
+  </programme>
+  <programme channel="ewotv" start="20250602173000 -0400" stop="20250604000000 -0400">
+    <title>SIGN OFF</title>
+  </programme>
+  <programme channel="kq105radio" start="20250603000000 -0400" stop="20250603060000 -0400">
+    <title>Carlos Gabriel</title>
+    <desc>Acompaña las madrugadas de KQ-105 con buena música y un tono relajado para los noctámbulos y madrugadores.</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250603060000 -0400" stop="20250603100000 -0400">
+    <title>Hector Ortiz</title>
+    <desc>Energiza las mañanas con música y entretenimiento, ayudando a los oyentes a comenzar su día con buen ánimo.</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250603100000 -0400" stop="20250603150000 -0400">
+    <title>Alex Diaz</title>
+    <desc>Con más de dos décadas en la radio, ofrece una selección variada de éxitos musicales y comentarios frescos en su turno matutino.</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250603150000 -0400" stop="20250603180000 -0400">
+    <title>La Tendencia De Molusco</title>
+  </programme>
+  <programme channel="kq105radio" start="20250603180000 -0400" stop="20250603190000 -0400">
+    <title>Pedro Villegas</title>
+    <desc>Locutor experimentado que mantiene a la audiencia conectada con buena música y energía en la tarde-noche de KQ-105.</desc>
+  </programme>
+  <programme channel="kq105radio" start="20250603190000 -0400" stop="20250605000000 -0400">
+    <title>Edwin Negrón</title>
+    <desc>Cierra la jornada con buena música y un ambiente relajado, ideal para terminar el día con la mejor compañía en la radio.</desc>
+  </programme>
+  <programme channel="kq105tv" start="20250603000000 -0400" stop="20250603060000 -0400">
+    <title>Videos Musicales Powered by KQ105</title>
+  </programme>
+  <programme channel="kq105tv" start="20250603060000 -0400" stop="20250603100000 -0400">
+    <title>KQ Al Aire con Héctor Ortiz</title>
+  </programme>
+  <programme channel="kq105tv" start="20250603100000 -0400" stop="20250603150000 -0400">
+    <title>KQOnline con Alex Diaz</title>
+  </programme>
+  <programme channel="kq105tv" start="20250603150000 -0400" stop="20250603180000 -0400">
+    <title>La Tendencia de Molusco con Ali, Pamela y Robert</title>
+  </programme>
+  <programme channel="kq105tv" start="20250603180000 -0400" stop="20250603190000 -0400">
+    <title>KQ Al Aire con Pedro Villegas</title>
+  </programme>
+  <programme channel="kq105tv" start="20250603190000 -0400" stop="20250605000000 -0400">
+    <title>Videos Musicales Powered by KQ105</title>
+  </programme>
+  <programme channel="ewotv" start="20250603000000 -0400" stop="20250603080000 -0400">
+    <title>SIGN OFF</title>
+  </programme>
+  <programme channel="ewotv" start="20250603080000 -0400" stop="20250603093000 -0400">
+    <title>eWo La Verdad Absoluta</title>
+  </programme>
+  <programme channel="ewotv" start="20250603093000 -0400" stop="20250603100000 -0400">
+    <title>Cuenta Regresiva para eWo El Update</title>
+  </programme>
+  <programme channel="ewotv" start="20250603100000 -0400" stop="20250603110000 -0400">
+    <title>eWo El Update</title>
+  </programme>
+  <programme channel="ewotv" start="20250603110000 -0400" stop="20250603150000 -0400">
+    <title>eWo ThrowBack</title>
+  </programme>
+  <programme channel="ewotv" start="20250603150000 -0400" stop="20250603153000 -0400">
+    <title>eWo El Perfil</title>
+  </programme>
+  <programme channel="ewotv" start="20250603153000 -0400" stop="20250603173000 -0400">
+    <title>eWo 24/7 Retro</title>
+  </programme>
+  <programme channel="ewotv" start="20250603173000 -0400" stop="20250605000000 -0400">
+    <title>SIGN OFF</title>
+  </programme>
+</tv>
