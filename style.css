@@ -1,0 +1,88 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom, #002c5f, #0071bc);
+  color: white;
+}
+
+header {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header .logo {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.player-section {
+  display: flex;
+  gap: 20px;
+}
+
+#player {
+  flex: 2;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.channel-list {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 10px;
+}
+
+.channel-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.channel-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.channel-list img {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.program-box {
+  margin-top: 20px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 15px;
+}
+.live-label {
+  background: red;
+  color: white;
+  padding: 2px 6px;
+  font-size: 0.7em;
+  border-radius: 4px;
+  margin-left: 10px;
+}
