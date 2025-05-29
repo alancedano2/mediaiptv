@@ -28,123 +28,130 @@ const channels = [
   {
     name: 'KQ105 Radio',
     logo: 'https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png?resize=640%2C184',
-    stream: 'https://televicentro.streamguys1.com/wkaqfm/playlist.m3u8?listeningSessionID=67acd14beee8d430_9104582_MwEfK6da_MjA1LjIzNC4yMTIuMTQw_0000000Wtno&downloadSessionID=0&key=01c804a8663a4d6f85af625fe28c982aba4db423010cf5b57d1e62338ad0b8d5&aw_0_1st.playerId=kq105&source=kq105.com&us_privacy=1YNY&clientType=web&callLetters=WKAQ-FM&devicename=web-desktop&stationid=1846&dist=kq105.com&subscription_type=free&aw_0_1st.version=1.0_html5&aw_0_1st.playerid=kq105_floating_player',
+    stream: 'https://stream.gia.tv/giatv/giatv-kq105radio/kq105radio/playlist.m3u8',
     programs: [
-      { start: '00:00', end: '06:00', title: 'Radio Chillout' },
-      { start: '06:00', end: '12:00', title: 'KQ Radio Mañanas' },
-      { start: '12:00', end: '18:00', title: 'KQ Radio Tardes' },
-      { start: '18:00', end: '23:59', title: 'Noche con KQ Radio' }
+      { start: '00:00', end: '23:59', title: 'Radio en Vivo' }
     ]
   }
 ];
 
-const player = new Clappr.Player({
-  source: channels[0].stream,
-  parentId: '#player',
-  width: '100%',
-  height: '400px',
-});
+const channelsContainer = document.getElementById('channels');
+const playerContainer = document.getElementById('player');
 
-function convertTo12Hour(time24) {
-  // time24 = "HH:mm"
-  let [h, m] = time24.split(':').map(Number);
-  const ampm = h >= 12 ? 'PM' : 'AM';
-  h = h % 12;
-  if (h === 0) h = 12;
-  return `${h}:${m.toString().padStart(2, '0')} ${ampm}`;
+let currentPlayer = null;
+let currentOpenIndex = null;
+
+function timeToMinutes(timeStr) {
+  const [h, m] = timeStr.split(':').map(Number);
+  return h * 60 + m;
 }
 
-function getCurrentProgram(channel) {
-  const now = new Date();
-  const current = now.getHours() * 60 + now.getMinutes();
-  return channel.programs.find(p => {
-    const [sh, sm] = p.start.split(':').map(Number);
-    const [eh, em] = p.end.split(':').map(Number);
-    const startM = sh * 60 + sm;
-    const endM = eh * 60 + em;
-    return current >= startM && current < endM;
+function nowInMinutes() {
+  const d = new Date();
+  return d.getHours() * 60 + d.getMinutes();
+}
+
+function getCurrentProgram(programs) {
+  const now = nowInMinutes();
+  return programs.find(p => {
+    const start = timeToMinutes(p.start);
+    const end = timeToMinutes(p.end);
+    // Manejo para programas que cruzan la medianoche
+    if (end < start) {
+      return now >= start || now < end;
+    }
+    return now >= start && now < end;
   });
 }
 
-function toggleProgramDropdown(li, channel, arrow) {
-  const existingDropdown = li.querySelector('.program-dropdown');
-  if (existingDropdown) {
-    existingDropdown.remove();
-    arrow.classList.remove('open');
-    return;
+function createProgramList(programs) {
+  const ul = document.createElement('div');
+  ul.classList.add('program-dropdown');
+
+  programs.forEach(p => {
+    const pEl = document.createElement('p');
+    pEl.textContent = `${p.start} - ${p.end} : ${p.title}`;
+
+    // Si está en vivo
+    const current = getCurrentProgram(programs);
+    if (p.title === current.title) {
+      const liveSpan = document.createElement('span');
+      liveSpan.classList.add('live-label');
+      liveSpan.textContent = 'EN VIVO';
+      pEl.appendChild(liveSpan);
+    }
+    ul.appendChild(pEl);
+  });
+  return ul;
+}
+
+function initPlayer(streamUrl) {
+  if(currentPlayer){
+    currentPlayer.destroy();
   }
+  currentPlayer = new Clappr.Player({
+    source: streamUrl,
+    parentId: '#player',
+    width: '100%',
+    height: '100%',
+    autoPlay: true,
+    mute: false,
+    mediacontrol: {seekbar: "#00ff00"}
+  });
+}
 
-  // Cierra otras programaciones abiertas
-  document.querySelectorAll('.program-dropdown').forEach(d => d.remove());
-  document.querySelectorAll('.arrow.open').forEach(a => a.classList.remove('open'));
+channels.forEach((channel, index) => {
+  const li = document.createElement('li');
+  li.classList.add('channel-card');
 
-  arrow.classList.add('open');
+  // Header con logo y nombre
+  const header = document.createElement('div');
+  header.classList.add('channel-header');
 
-  const nowProg = getCurrentProgram(channel);
-  const dropdown = document.createElement('div');
-  dropdown.className = 'program-dropdown';
+  const logo = document.createElement('img');
+  logo.src = channel.logo;
+  logo.alt = `${channel.name} logo`;
+  logo.classList.add('channel-logo');
 
-  channel.programs.forEach(p => {
-    const isLive = nowProg && nowProg.title === p.title;
-    const liveSpan = isLive
-      ? '<span class="live-label">EN VIVO</span>'
-      : '';
-    const pElem = document.createElement('p');
-    pElem.innerHTML = `${convertTo12Hour(p.start)} - ${convertTo12Hour(p.end)} — ${p.title} ${liveSpan}`;
-    dropdown.appendChild(pElem);
+  const name = document.createElement('span');
+  name.textContent = channel.name;
+  name.classList.add('channel-name');
 
-    if (isLive) {
-      pElem.classList.add('live-program');
+  header.appendChild(logo);
+  header.appendChild(name);
+
+  // Botón reproducir
+  const btn = document.createElement('button');
+  btn.textContent = 'Reproducir';
+  btn.classList.add('play-btn');
+
+  btn.addEventListener('click', () => {
+    // Cambiar stream del player
+    initPlayer(channel.stream);
+
+    // Mostrar/ocultar programación
+    if(currentOpenIndex === index){
+      currentOpenIndex = null;
+      if(li.querySelector('.program-dropdown')){
+        li.removeChild(li.querySelector('.program-dropdown'));
+      }
+    } else {
+      // Cerrar antes el otro si hay
+      if(currentOpenIndex !== null) {
+        const prevLi = channelsContainer.children[currentOpenIndex];
+        if(prevLi.querySelector('.program-dropdown')) {
+          prevLi.removeChild(prevLi.querySelector('.program-dropdown'));
+        }
+      }
+      currentOpenIndex = index;
+
+      // Añadir lista de programas con animación
+      const progList = createProgramList(channel.programs);
+      li.appendChild(progList);
     }
   });
 
-  li.appendChild(dropdown);
-}
-
-function loadChannels() {
-  const list = document.getElementById('channels');
-  channels.forEach((channel, idx) => {
-    const li = document.createElement('li');
-
-    const mainDiv = document.createElement('div');
-    mainDiv.className = 'channel-main';
-
-    const logo = document.createElement('img');
-    logo.src = channel.logo;
-    logo.alt = `${channel.name} logo`;
-    logo.style.width = '40px';  // para que los logos tengan tamaño uniforme
-    logo.style.height = 'auto';
-    logo.style.marginRight = '10px';
-
-    const nameSpan = document.createElement('span');
-    nameSpan.textContent = channel.name;
-    nameSpan.style.flexGrow = '1';
-
-    const arrow = document.createElement('span');
-    arrow.className = 'arrow';
-    arrow.textContent = '▼';
-    arrow.style.cursor = 'pointer';
-
-    mainDiv.style.display = 'flex';
-    mainDiv.style.alignItems = 'center';
-
-    mainDiv.appendChild(logo);
-    mainDiv.appendChild(nameSpan);
-    mainDiv.appendChild(arrow);
-
-    li.appendChild(mainDiv);
-
-    li.style.cursor = 'pointer';
-    li.style.padding = '8px 10px';
-    li.style.borderBottom = '1px solid #ccc';
-
-    li.addEventListener('click', () => {
-      player.load(channel.stream);
-      toggleProgramDropdown(li, channel, arrow);
-    });
-
-    list.appendChild(li);
-  });
-}
-
-loadChannels();
+  li.appendChild(header);
+  li.appendChild(btn);
+  channelsContainer.appendChild(li);
+});
