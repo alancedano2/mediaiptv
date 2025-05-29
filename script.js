@@ -24,6 +24,17 @@ const channels = [
       { start: '15:00', end: '15:30', title: 'El Perfil' },
       { start: '15:30', end: '17:30', title: '24/7 Retro' }
     ]
+  },
+  {
+    name: 'KQ105 Radio',
+    logo: 'https://pbs.twimg.com/profile_images/1644625373731700224/DSV-tXk9_400x400.jpg',
+    stream: 'https://live20.bozztv.com/akamaissh101/ssh101/kq105radio/chunks.m3u8',
+    programs: [
+      { start: '00:00', end: '06:00', title: 'Radio Chillout' },
+      { start: '06:00', end: '12:00', title: 'KQ Radio Mañanas' },
+      { start: '12:00', end: '18:00', title: 'KQ Radio Tardes' },
+      { start: '18:00', end: '23:59', title: 'Noche con KQ Radio' }
+    ]
   }
 ];
 
@@ -46,44 +57,68 @@ function getCurrentProgram(channel) {
   });
 }
 
+function toggleProgramDropdown(li, channel, arrow) {
+  const existingDropdown = li.querySelector('.program-dropdown');
+  if (existingDropdown) {
+    existingDropdown.remove();
+    arrow.classList.remove('open');
+    return;
+  }
+
+  // Cierra otras programaciones abiertas
+  document.querySelectorAll('.program-dropdown').forEach(d => d.remove());
+  document.querySelectorAll('.arrow.open').forEach(a => a.classList.remove('open'));
+
+  arrow.classList.add('open');
+
+  const nowProg = getCurrentProgram(channel);
+  const dropdown = document.createElement('div');
+  dropdown.className = 'program-dropdown';
+
+  channel.programs.forEach(p => {
+    const liveSpan = (nowProg && nowProg.title === p.title)
+      ? '<span class="live-label">EN VIVO</span>'
+      : '';
+    const pElem = document.createElement('p');
+    pElem.innerHTML = `${p.start} - ${p.end} — ${p.title} ${liveSpan}`;
+    dropdown.appendChild(pElem);
+  });
+
+  li.appendChild(dropdown);
+}
+
 function loadChannels() {
   const list = document.getElementById('channels');
-  channels.forEach((channel, index) => {
+  channels.forEach((channel, idx) => {
     const li = document.createElement('li');
+
+    const mainDiv = document.createElement('div');
+    mainDiv.className = 'channel-main';
+
     const logo = document.createElement('img');
     logo.src = channel.logo;
+    logo.alt = `${channel.name} logo`;
 
-    const span = document.createElement('span');
-    span.textContent = channel.name;
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = channel.name;
 
     const arrow = document.createElement('span');
-    arrow.textContent = '⯆';
-    arrow.style.marginLeft = 'auto';
+    arrow.className = 'arrow';
+    arrow.textContent = '▼';
 
-    li.appendChild(logo);
-    li.appendChild(span);
-    li.appendChild(arrow);
+    mainDiv.appendChild(logo);
+    mainDiv.appendChild(nameSpan);
+    mainDiv.appendChild(arrow);
 
-    li.onclick = () => {
+    li.appendChild(mainDiv);
+
+    li.addEventListener('click', () => {
       player.load(channel.stream);
-      showProgram(channel);
-    };
+      toggleProgramDropdown(li, channel, arrow);
+    });
 
     list.appendChild(li);
   });
 }
 
-function showProgram(channel) {
-  const box = document.getElementById('program-box');
-  const nowProg = getCurrentProgram(channel);
-  box.innerHTML = `<h3>Programación de ${channel.name}</h3>`;
-  channel.programs.forEach(p => {
-    const live = (nowProg && nowProg.title === p.title)
-      ? '<span class="live-label">EN VIVO</span>' : '';
-    box.innerHTML += `<p>${p.start} - ${p.end} — ${p.title} ${live}</p>`;
-  });
-  box.style.display = 'block';
-}
-
 loadChannels();
-showProgram(channels[0]);
