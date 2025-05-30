@@ -2,30 +2,198 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>IPTV Brutal</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Programación | KQ105</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Rubik', sans-serif;
+      background-color: #0f0f0f;
+      color: white;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      background-color: #111;
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #222;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    .navbar img {
+      height: 40px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #00ccff;
+    }
+
+    /* SECTION PROGRAMACION */
+    .programacion-section {
+      padding: 60px 20px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .programacion-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .canal-box {
+      background: #1a1a1a;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s ease;
+    }
+
+    .canal-box:hover {
+      transform: translateY(-5px);
+    }
+
+    .logo-canal {
+      width: 100%;
+      max-width: 250px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+
+    .canal-box h2 {
+      font-size: 26px;
+      color: #00ccff;
+      margin-bottom: 10px;
+    }
+
+    .canal-box h3 {
+      font-size: 20px;
+      color: #ffcc00;
+      margin-top: 20px;
+    }
+
+    .canal-box ul {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 10px;
+    }
+
+    .canal-box li {
+      margin-bottom: 10px;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(30px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
 </head>
 <body>
-  <nav>
-    <div class="logo">  
-      <img src="logo.png" alt="Logo" />
-      <span>StreamVerse IPTV</span>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <img src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png?resize=640%2C184" alt="Logo">
+    <div class="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/tv.html">TV</a>
+      <a href="/eventos.html">Eventos</a>
+      <a href="/shop.html">ShopZone</a>
+      <a href="/programacion.html">Programación</a>
     </div>
   </nav>
 
-  <main>
-    <div id="player-container">
-      <div id="player"></div>
+  <!-- PROGRAMACIÓN -->
+  <section class="programacion-section">
+    <div class="programacion-container">
+
+      <!-- KQ-105 RADIO -->
+      <div class="canal-box">
+        <img src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png?resize=640%2C184" alt="KQ105 Radio Logo" class="logo-canal">
+        <h2>KQ-105 Radio</h2>
+        <h3>Lunes a Viernes</h3>
+        <ul>
+          <li><strong>12:00am - 6:00am:</strong> Carlos Gabriel</li>
+          <li><strong>6:00am - 10:00am:</strong> Hector Ortiz</li>
+          <li><strong>10:00am - 3:00pm:</strong> Alex Diaz</li>
+          <li><strong>3:00pm - 6:00pm:</strong> La Tendencia de Molusco</li>
+          <li><strong>6:00pm - 7:00pm:</strong> Pedro Villegas</li>
+          <li><strong>7:00pm - 12:00am:</strong> Edwin Negrón</li>
+        </ul>
+        <h3>Fines de Semana</h3>
+        <ul>
+          <li><strong>12:00am - 7:00pm:</strong> Música sin parar</li>
+          <li><strong>7:00pm - 9:00pm:</strong> Top 20 Countdown</li>
+        </ul>
+      </div>
+
+      <!-- KQ-105 TV -->
+      <div class="canal-box">
+        <img src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png?resize=640%2C184" alt="KQ105 TV Logo" class="logo-canal">
+        <h2>KQ-105 TV</h2>
+        <h3>Todos los días</h3>
+        <ul>
+          <li><strong>12:00am - 6:00am:</strong> Videos Musicales</li>
+          <li><strong>6:00am - 10:00am:</strong> KQ Al Aire con Héctor Ortiz</li>
+          <li><strong>10:00am - 3:00pm:</strong> KQOnline con Alex Diaz</li>
+          <li><strong>3:00pm - 6:00pm:</strong> La Tendencia de Molusco</li>
+          <li><strong>6:00pm - 7:00pm:</strong> KQ Al Aire con Pedro Villegas</li>
+          <li><strong>7:00pm - 12:00am:</strong> Videos Musicales</li>
+        </ul>
+        <h3>Fines de Semana</h3>
+        <ul>
+          <li><strong>Sábado 12:00am - 6:00pm:</strong> Videos Musicales</li>
+          <li><strong>Sábado 7:00pm - 9:00pm:</strong> Top 20 Countdown</li>
+          <li><strong>Sábado 9:00pm - 12:00am:</strong> Videos Musicales</li>
+          <li><strong>Domingo 12:00am - 6:00pm:</strong> Videos Musicales</li>
+          <li><strong>Domingo 6:00pm - 8:00pm:</strong> Top 20 Countdown</li>
+          <li><strong>Domingo 8:00pm - 12:00am:</strong> Videos Musicales</li>
+        </ul>
+      </div>
+
+      <!-- eWo TV -->
+      <div class="canal-box">
+        <img src="https://ewopr-puce.vercel.app/logo.png" alt="eWo TV Logo" class="logo-canal">
+        <h2>eWo TV</h2>
+        <h3>Todos los días</h3>
+        <ul>
+          <li><strong>12:00am - 8:00am:</strong> SIGN OFF</li>
+          <li><strong>8:00am - 9:30am:</strong> eWo La Verdad Absoluta</li>
+          <li><strong>9:30am - 10:00am:</strong> Cuenta Regresiva</li>
+          <li><strong>10:00am - 11:00am:</strong> eWo El Update</li>
+          <li><strong>11:00am - 3:00pm:</strong> eWo ThrowBack</li>
+          <li><strong>3:00pm - 3:30pm:</strong> eWo El Perfil</li>
+          <li><strong>3:30pm - 5:30pm:</strong> eWo 24/7 Retro</li>
+          <li><strong>5:30pm - 12:00am:</strong> SIGN OFF</li>
+        </ul>
+        <h3>Fines de Semana</h3>
+        <ul>
+          <li><strong>Sábados y Domingos:</strong> SIGN OFF</li>
+        </ul>
+      </div>
+
     </div>
+  </section>
 
-    <aside id="channels-container">
-      <h2>Canales</h2>
-      <ul id="channels"></ul>
-    </aside>
-  </main>
-
-  <script src="script.js"></script>
 </body>
 </html>
