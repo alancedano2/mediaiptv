@@ -33,11 +33,11 @@ body {
 .player-section {
   width: 100%;
   max-width: 900px;
-  aspect-ratio: 16/9;
+  height: 500px; /* <<< ASEGURA QUE HAYA ALTURA */
   margin: 20px auto;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+  box-shadow: 0 0 20px rgba(0,0,0,
 }
 
 .canales {
