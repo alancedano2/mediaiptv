@@ -1,0 +1,100 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: #0f0f0f;
+  color: white;
+}
+
+.navbar {
+  background-color: #111;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  box-shadow: 0 0 10px #222;
+}
+
+.navbar img {
+  height: 50px;
+}
+
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 20px;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #00c3ff;
+}
+
+.player-section {
+  width: 100%;
+  max-width: 900px;
+  aspect-ratio: 16/9;
+  margin: 20px auto;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+.canales {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 900px;
+  margin: auto;
+  padding-bottom: 50px;
+}
+
+.canal {
+  background-color: #1a1a1a;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease;
+}
+
+.canal:hover {
+  transform: scale(1.02);
+}
+
+.canal img {
+  height: 50px;
+}
+
+.canal h3 {
+  margin-top: 10px;
+  font-size: 22px;
+}
+
+.canal button {
+  background-color: #00c3ff;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.canal button:hover {
+  background-color: #00e0ff;
+}
+
+.programacion {
+  margin-top: 15px;
+}
+
+.programacion ul {
+  padding-left: 20px;
+}
+
+.programacion li {
+  margin-bottom: 5px;
+}
