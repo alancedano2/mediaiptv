@@ -34,44 +34,41 @@ h2 {
 
 
     nav {
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 15px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between; /* Logo a la izquierda, links a la derecha */
-      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
 
-    nav img {
-      height: 40px;
-      cursor: pointer;
-    }
+nav img {
+  height: 40px;
+}
 
-    .nav-links {
-      display: flex;
-      gap: 25px;
-      justify-content: flex-end;
-      flex-grow: 1;
-    }
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+}
 
-    .nav-links a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1rem;
-      cursor: pointer;
-      text-align: right;
-      min-width: 110px;
-      display: block;
-      transition: color 0.3s ease;
-    }
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: color 0.3s;
+  cursor: pointer;
+}
 
-    .nav-links a:hover {
-      color: #00aaff;
-    }
+nav ul li a:hover {
+  color: #00aaff;
+}
 
     #player {
       width: 100%;
