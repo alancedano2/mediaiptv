@@ -11,6 +11,7 @@
       font-family: Arial, sans-serif;
       background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
       color: white;
+      scroll-behavior: smooth;
     }
 
     nav {
@@ -18,11 +19,36 @@
       padding: 15px 20px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
     nav img {
       height: 40px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+
+    nav ul li a:hover {
+      color: #00aaff;
     }
 
     #player {
@@ -30,6 +56,9 @@
       max-width: 900px;
       height: 500px;
       margin: 30px auto;
+      background-color: black;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,170,255,0.7);
     }
 
     .canales-container {
@@ -38,6 +67,8 @@
       justify-content: center;
       gap: 20px;
       padding: 20px;
+      max-width: 960px;
+      margin: 0 auto 60px auto;
     }
 
     .canal-box {
@@ -48,6 +79,7 @@
       width: 200px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       transition: transform 0.2s ease;
+      cursor: default;
     }
 
     .canal-box:hover {
@@ -78,12 +110,38 @@
     .canal-box button:hover {
       background-color: #0077cc;
     }
+
+    /* Secciones para scroll */
+    section {
+      max-width: 960px;
+      margin: 50px auto;
+      background-color: rgba(0,0,0,0.3);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,170,255,0.3);
+    }
+
+    section h2 {
+      margin-top: 0;
+      border-bottom: 2px solid #00aaff;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+      font-size: 2rem;
+    }
   </style>
 </head>
 <body>
 
   <nav>
     <img src="logo.png" alt="Logo">
+    <ul>
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#peliculas">Zona de Películas</a></li>
+      <li><a href="#repeticiones">Repeticiones</a></li>
+      <li><a href="#f1">F1</a></li>
+      <li><a href="#noticias">Noticias</a></li>
+      <li><a href="#tv">TV</a></li>
+    </ul>
   </nav>
 
   <div id="player"></div>
@@ -108,6 +166,37 @@
     </div>
   </div>
 
+  <!-- Secciones para scroll -->
+  <section id="inicio">
+    <h2>Inicio</h2>
+    <p>Bienvenido a StreamVerse, tu plataforma para streaming de eventos, películas y noticias en vivo.</p>
+  </section>
+
+  <section id="peliculas">
+    <h2>Zona de Películas</h2>
+    <p>Disfruta del mejor contenido exclusivo de plataformas como Prime Video, Max y más.</p>
+  </section>
+
+  <section id="repeticiones">
+    <h2>Repeticiones</h2>
+    <p>Revive los mejores eventos y shows, incluyendo tus repeticiones favoritas de WWE y otros contenidos.</p>
+  </section>
+
+  <section id="f1">
+    <h2>F1</h2>
+    <p>Próximamente: Noticias, análisis y transmisiones de Fórmula 1 para los fanáticos de la velocidad.</p>
+  </section>
+
+  <section id="noticias">
+    <h2>Noticias</h2>
+    <p>Mantente al día con lo último en entretenimiento, deportes, lucha libre y cultura digital.</p>
+  </section>
+
+  <section id="tv">
+    <h2>TV</h2>
+    <p>Accede a tus canales favoritos con streaming en vivo y contenido exclusivo en nuestra sección de TV.</p>
+  </section>
+
   <script>
     const player = new Clappr.Player({
       source: "https://live20.bozztv.com/giatv/giatv-PPVDeportes2/PPVDeportes2/chunks.m3u8",
@@ -121,6 +210,7 @@
     function cambiarStream(url) {
       player.load(url);
       player.play();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   </script>
 
