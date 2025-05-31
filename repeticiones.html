@@ -2,16 +2,17 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Repeticiones</title>
   <style>
     body {
+      margin: 0;
+      font-family: Arial, sans-serif;
       background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
       color: white;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
+      scroll-behavior: smooth;
     }
+
     nav {
       background-color: rgba(0, 0, 0, 0.7);
       padding: 15px 20px;
@@ -23,50 +24,72 @@
       top: 0;
       z-index: 1000;
     }
-    nav a {
+
+    nav img {
+      height: 40px;
+    }
+
+    nav .nav-links a {
       color: white;
       text-decoration: none;
       font-weight: bold;
+      font-size: 1rem;
       margin-left: 20px;
+      transition: color 0.3s;
+      cursor: pointer;
     }
-    .container {
+
+    nav .nav-links a:hover {
+      color: #00aaff;
+    }
+
+    .repeticiones-container {
+      max-width: 960px;
+      margin: 50px auto;
       display: flex;
-      gap: 30px;
       justify-content: center;
-      margin-top: 40px;
+      gap: 30px;
+      flex-wrap: wrap;
     }
-    .card {
-      background: rgba(0,0,0,0.6);
-      border-radius: 12px;
-      width: 220px;
-      text-align: center;
+
+    .repeticion-box {
+      background-color: rgba(0, 0, 0, 0.4);
+      border-radius: 15px;
       padding: 20px;
-      box-shadow: 0 0 10px #00aaff;
+      width: 250px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      text-align: center;
       transition: transform 0.2s ease;
     }
-    .card:hover {
+
+    .repeticion-box:hover {
       transform: scale(1.05);
     }
-    .card img {
-      width: 120px;
-      height: auto;
+
+    .repeticion-box img {
+      width: 100%;
+      height: 120px;
+      object-fit: contain;
       margin-bottom: 15px;
     }
-    .card h3 {
-      margin: 10px 0;
-      font-size: 1.5rem;
+
+    .repeticion-box h3 {
+      margin: 10px 0 15px 0;
+      font-size: 1.3rem;
     }
-    .card button {
-      padding: 10px 20px;
+
+    .repeticion-box button {
+      padding: 10px 15px;
       border: none;
       border-radius: 8px;
       background-color: #00aaff;
       color: white;
-      font-weight: bold;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      font-weight: bold;
+      transition: background 0.3s;
     }
-    .card button:hover {
+
+    .repeticion-box button:hover {
       background-color: #0077cc;
     }
   </style>
@@ -74,31 +97,34 @@
 <body>
 
   <nav>
-    <a href="/">Inicio</a>
-    <a href="/peliculas.html">Zona de Películas</a>
-    <a href="/repeticiones.html">Repeticiones</a>
-    <a href="/f1.html">F1</a>
-    <a href="/noticias.html">Noticias</a>
-    <a href="/tv.html">TV</a>
+    <a href="/"><img src="logo.png" alt="Logo"></a>
+    <div class="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/peliculas.html">Zona de Películas</a>
+      <a href="/repeticiones.html">Repeticiones</a>
+      <a href="/f1.html">F1</a>
+      <a href="/noticias.html">Noticias</a>
+      <a href="/tv.html">TV</a>
+    </div>
   </nav>
 
-  <div class="container">
-    <div class="card">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/WWE_Raw_logo.svg/2560px-WWE_Raw_logo.svg.png" alt="WWE RAW Logo" />
+  <div class="repeticiones-container">
+    <div class="repeticion-box">
+      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/42/WWE_Raw_logo.svg/1200px-WWE_Raw_logo.svg.png" alt="WWE RAW Logo" />
       <h3>WWE RAW</h3>
-      <button onclick="location.href='raw.html'">Ver Más</button>
+      <button onclick="location.href='raw.html'">Ver más</button>
     </div>
 
-    <div class="card">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/WWE_SmackDown_logo.svg/2560px-WWE_SmackDown_logo.svg.png" alt="WWE SmackDown Logo" />
+    <div class="repeticion-box">
+      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f2/WWE_SmackDown_logo_2016.svg/1200px-WWE_SmackDown_logo_2016.svg.png" alt="WWE SmackDown Logo" />
       <h3>WWE SmackDown</h3>
-      <button onclick="location.href='smackdown.html'">Ver Más</button>
+      <button onclick="location.href='smackdown.html'">Ver más</button>
     </div>
 
-    <div class="card">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/AEW_logo.svg" alt="AEW Logo" />
+    <div class="repeticion-box">
+      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f7/AEW_Dynamite_logo.svg/1200px-AEW_Dynamite_logo.svg.png" alt="AEW Logo" />
       <h3>AEW</h3>
-      <button onclick="location.href='aew.html'">Ver Más</button>
+      <button onclick="location.href='aew.html'">Ver más</button>
     </div>
   </div>
 
