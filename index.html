@@ -19,7 +19,7 @@
       padding: 15px 20px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: space-between; /* Logo a la izquierda, links a la derecha */
       box-shadow: 0 2px 5px rgba(0,0,0,0.5);
       position: sticky;
       top: 0;
@@ -28,26 +28,29 @@
 
     nav img {
       height: 40px;
+      cursor: pointer;
     }
 
-    nav ul {
-      list-style: none;
+    .nav-links {
       display: flex;
       gap: 25px;
-      margin: 0;
-      padding: 0;
+      justify-content: flex-end;
+      flex-grow: 1;
     }
 
-    nav ul li a {
+    .nav-links a {
       color: white;
       text-decoration: none;
       font-weight: bold;
       font-size: 1rem;
-      transition: color 0.3s;
       cursor: pointer;
+      text-align: right;
+      min-width: 110px;
+      display: block;
+      transition: color 0.3s ease;
     }
 
-    nav ul li a:hover {
+    .nav-links a:hover {
       color: #00aaff;
     }
 
@@ -133,14 +136,16 @@
 <body>
 
   <nav>
-  <a href="/"><img src="logo.png" alt="Logo"></a>
-  <a href="/">Inicio</a>
-  <a href="/peliculas.html">Zona de Películas</a>
-  <a href="/repeticiones.html">Repeticiones</a>
-  <a href="/f1.html">F1</a>
-  <a href="/noticias.html">Noticias</a>
-  <a href="/tv.html">TV</a>
-</nav>
+    <a href="/"><img src="logo.png" alt="Logo"></a>
+    <div class="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/peliculas.html">Zona de Películas</a>
+      <a href="/repeticiones.html">Repeticiones</a>
+      <a href="/f1.html">F1</a>
+      <a href="/noticias.html">Noticias</a>
+      <a href="/tv.html">TV</a>
+    </div>
+  </nav>
 
   <div id="player"></div>
 
@@ -164,37 +169,7 @@
     </div>
   </div>
 
-  <!-- Secciones para scroll -->
-  <section id="inicio">
-    <h2>Inicio</h2>
-    <p>Bienvenido a StreamVerse, tu plataforma para streaming de eventos, películas y noticias en vivo.</p>
-  </section>
-
-  <section id="peliculas">
-    <h2>Zona de Películas</h2>
-    <p>Disfruta del mejor contenido exclusivo de plataformas como Prime Video, Max y más.</p>
-  </section>
-
-  <section id="repeticiones">
-    <h2>Repeticiones</h2>
-    <p>Revive los mejores eventos y shows, incluyendo tus repeticiones favoritas de WWE y otros contenidos.</p>
-  </section>
-
-  <section id="f1">
-    <h2>F1</h2>
-    <p>Próximamente: Noticias, análisis y transmisiones de Fórmula 1 para los fanáticos de la velocidad.</p>
-  </section>
-
-  <section id="noticias">
-    <h2>Noticias</h2>
-    <p>Mantente al día con lo último en entretenimiento, deportes, lucha libre y cultura digital.</p>
-  </section>
-
-  <section id="tv">
-    <h2>TV</h2>
-    <p>Accede a tus canales favoritos con streaming en vivo y contenido exclusivo en nuestra sección de TV.</p>
-  </section>
-
+ 
   <script>
     const player = new Clappr.Player({
       source: "https://live20.bozztv.com/giatv/giatv-PPVDeportes2/PPVDeportes2/chunks.m3u8",
