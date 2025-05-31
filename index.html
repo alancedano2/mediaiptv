@@ -5,70 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Canales en Vivo</title>
   <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
-  <style>
+   <style>
     body {
-  font-family: Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.0; /* menos espacio entre líneas */
-  margin: 0;
-  padding: 0;
-  color: white;
-  background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
-}
-
-p {
-  margin: 10px 0; /* márgenes arriba y abajo más controlados */
-}
-
-section {
-  max-width: 1200px; /* más ancho para pantallas grandes */
-  padding: 20px 40px; /* puedes ajustar */
-  margin: 50px auto;
-  /* resto igual */
-}
-
-h2 {
-  margin-bottom: 12px;
-  line-height: 1.2; /* menos espacio debajo del título */
-}
-
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
+      color: white;
+      scroll-behavior: smooth;
+    }
 
     nav {
-  background-color: rgba(0, 0, 0, 0.7);
-  padding: 15px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
 
-nav img {
-  height: 40px;
-}
+    nav img {
+      height: 40px;
+    }
 
-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 25px;
-  margin: 0;
-  padding: 0;
-}
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      margin: 0;
+      padding: 0;
+    }
 
-nav ul li a {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 1rem;
-  transition: color 0.3s;
-  cursor: pointer;
-}
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
 
-nav ul li a:hover {
-  color: #00aaff;
-}
+    nav ul li a:hover {
+      color: #00aaff;
+    }
 
     #player {
       width: 100%;
