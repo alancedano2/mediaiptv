@@ -3,16 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Repeticiones - StreamVerse</title>
+  <title>Repeticiones</title>
   <style>
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
       background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
       color: white;
-      scroll-behavior: smooth;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
     }
-
     nav {
       background-color: rgba(0, 0, 0, 0.7);
       padding: 15px 20px;
@@ -24,71 +23,82 @@
       top: 0;
       z-index: 1000;
     }
-
-    nav img {
-      height: 40px;
-    }
-
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 25px;
-      margin: 0;
-      padding: 0;
-    }
-
-    nav ul li a {
+    nav a {
       color: white;
       text-decoration: none;
       font-weight: bold;
-      font-size: 1rem;
-      transition: color 0.3s;
-      cursor: pointer;
+      margin-left: 20px;
     }
-
-    nav ul li a:hover {
-      color: #00aaff;
-    }
-
-    .content-container {
-      max-width: 960px;
-      margin: 40px auto;
-      background-color: rgba(0,0,0,0.3);
-      padding: 40px 50px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,170,255,0.3);
+    .container {
       display: flex;
-      justify-content: flex-end;
-      text-align: right;
+      gap: 30px;
+      justify-content: center;
+      margin-top: 40px;
+    }
+    .card {
+      background: rgba(0,0,0,0.6);
+      border-radius: 12px;
+      width: 220px;
+      text-align: center;
+      padding: 20px;
+      box-shadow: 0 0 10px #00aaff;
+      transition: transform 0.2s ease;
+    }
+    .card:hover {
+      transform: scale(1.05);
+    }
+    .card img {
+      width: 120px;
+      height: auto;
+      margin-bottom: 15px;
+    }
+    .card h3 {
+      margin: 10px 0;
+      font-size: 1.5rem;
+    }
+    .card button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background-color: #00aaff;
+      color: white;
       font-weight: bold;
-      font-size: 1.2rem;
-      line-height: 1.6;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .card button:hover {
+      background-color: #0077cc;
     }
   </style>
 </head>
 <body>
 
   <nav>
-    <a href="/"><img src="logo.png" alt="Logo"></a>
-    <ul>
-      <li><a href="/">Inicio</a></li>
-      <li><a href="/peliculas.html">Zona de Películas</a></li>
-      <li><a href="/repeticiones.html">Repeticiones</a></li>
-      <li><a href="/f1.html">F1</a></li>
-      <li><a href="/noticias.html">Noticias</a></li>
-      <li><a href="/tv.html">TV</a></li>
-    </ul>
+    <a href="/">Inicio</a>
+    <a href="/peliculas.html">Zona de Películas</a>
+    <a href="/repeticiones.html">Repeticiones</a>
+    <a href="/f1.html">F1</a>
+    <a href="/noticias.html">Noticias</a>
+    <a href="/tv.html">TV</a>
   </nav>
 
-  <div class="content-container">
-    <div>
-      <h1>Repeticiones</h1>
-      <p>
-        Revive los mejores eventos y shows, incluyendo tus repeticiones favoritas de WWE, lucha libre, deportes y mucho más. Aquí podrás encontrar contenido exclusivo para que no te pierdas nada.
-      </p>
-      <p>
-        Próximamente estaremos añadiendo más repeticiones y funciones interactivas para mejorar tu experiencia. ¡Quédate atento y disfruta de lo mejor!
-      </p>
+  <div class="container">
+    <div class="card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/WWE_Raw_logo.svg/2560px-WWE_Raw_logo.svg.png" alt="WWE RAW Logo" />
+      <h3>WWE RAW</h3>
+      <button onclick="location.href='raw.html'">Ver Más</button>
+    </div>
+
+    <div class="card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/WWE_SmackDown_logo.svg/2560px-WWE_SmackDown_logo.svg.png" alt="WWE SmackDown Logo" />
+      <h3>WWE SmackDown</h3>
+      <button onclick="location.href='smackdown.html'">Ver Más</button>
+    </div>
+
+    <div class="card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/AEW_logo.svg" alt="AEW Logo" />
+      <h3>AEW</h3>
+      <button onclick="location.href='aew.html'">Ver Más</button>
     </div>
   </div>
 
