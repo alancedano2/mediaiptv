@@ -30,24 +30,28 @@
       height: 40px;
     }
 
-    nav ul {
-      list-style: none;
+    .nav-links {
       display: flex;
       gap: 25px;
-      margin: 0;
-      padding: 0;
     }
 
-    nav ul li a {
+    .nav-links a {
       color: white;
       text-decoration: none;
       font-weight: bold;
       font-size: 1rem;
       transition: color 0.3s;
       cursor: pointer;
+      padding: 5px 0;
     }
 
-    nav ul li a:hover {
+    /* Aquí marcamos Inicio como activo */
+    .nav-links a[href="/"] {
+      color: #00aaff;
+      border-bottom: 2px solid #00aaff;
+    }
+
+    .nav-links a:hover {
       color: #00aaff;
     }
 
