@@ -25,22 +25,29 @@
       z-index: 1000;
     }
 
-    nav a {
+    nav img {
+      height: 40px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li a {
       color: white;
       text-decoration: none;
       font-weight: bold;
       font-size: 1rem;
-      margin-left: 25px;
       transition: color 0.3s;
       cursor: pointer;
     }
 
-    nav a:hover {
+    nav ul li a:hover {
       color: #00aaff;
-    }
-
-    nav a:first-child {
-      margin-left: 0;
     }
 
     .content-container {
@@ -62,12 +69,15 @@
 <body>
 
   <nav>
-    <a href="/">Inicio</a>
-    <a href="/peliculas.html">Zona de Películas</a>
-    <a href="/repeticiones.html">Repeticiones</a>
-    <a href="/f1.html">F1</a>
-    <a href="/noticias.html">Noticias</a>
-    <a href="/tv.html">TV</a>
+    <a href="/"><img src="logo.png" alt="Logo"></a>
+    <ul>
+      <li><a href="/">Inicio</a></li>
+      <li><a href="/peliculas.html">Zona de Películas</a></li>
+      <li><a href="/repeticiones.html">Repeticiones</a></li>
+      <li><a href="/f1.html">F1</a></li>
+      <li><a href="/noticias.html">Noticias</a></li>
+      <li><a href="/tv.html">TV</a></li>
+    </ul>
   </nav>
 
   <div class="content-container">
