@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Disney+</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
+      color: white;
+    }
+
+    nav {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav img {
+      height: 40px;
+    }
+
+    nav .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+      margin-left: 20px;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+
+    nav .nav-links a:hover {
+      color: #00aaff;
+    }
+
+    .content {
+      text-align: center;
+      padding: 80px 20px;
+    }
+
+    .content h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .content p {
+      font-size: 1.2rem;
+      color: #d1d1d1;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/"><img src="logo.png" alt="Logo"></a>
+  <div class="nav-links">
+    <a href="/">Inicio</a>
+    <a href="/peliculas.html">Zona de Películas</a>
+    <a href="/repeticiones.html">Repeticiones</a>
+    <a href="/f1.html">F1</a>
+    <a href="/noticias.html">Noticias</a>
+    <a href="/tv.html">TV</a>
+  </div>
+</nav>
+
+<div class="content">
+  <h1>Disney+</h1>
+  <p><strong>Pronto se añadirán las películas, series y más...</strong></p>
+</div>
+
+</body>
+</html>
