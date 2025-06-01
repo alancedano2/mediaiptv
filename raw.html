@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Repeticiones WWE RAW</title>
+<style>
+  body {
+    margin: 0; font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
+    color: white;
+  }
+
+  nav {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  nav img {
+    height: 40px;
+  }
+
+  nav .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-left: 20px;
+    transition: color 0.3s;
+    cursor: pointer;
+  }
+
+  nav .nav-links a:hover {
+    color: #00aaff;
+  }
+
+  .container {
+    display: flex;
+    max-width: 1000px;
+    margin: 40px auto;
+    gap: 20px;
+  }
+
+  .video-player {
+    flex: 3;
+    background-color: rgba(0,0,0,0.4);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0,170,255,0.3);
+  }
+
+  video {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,170,255,0.7);
+  }
+
+  .playlist {
+    flex: 1;
+    background-color: rgba(0,0,0,0.4);
+    padding: 15px;
+    border-radius: 15px;
+    max-height: 480px;
+    overflow-y: auto;
+  }
+
+  .playlist h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+
+  .playlist-item {
+    padding: 8px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    background-color: rgba(255,255,255,0.1);
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .playlist-item:hover {
+    background-color: #00aaff;
+    color: black;
+  }
+
+  .playlist-item.active {
+    background-color: #0077cc;
+    color: white;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/"><img src="logo.png" alt="Logo"></a>
+  <div class="nav-links">
+    <a href="/">Inicio</a>
+    <a href="/peliculas.html">Zona de Películas</a>
+    <a href="/repeticiones.html">Repeticiones</a>
+    <a href="/f1.html">F1</a>
+    <a href="/noticias.html">Noticias</a>
+    <a href="/tv.html">TV</a>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="video-player">
+    <h2>Repeticiones WWE RAW</h2>
+    <video id="videoPlayer" controls>
+      <source src="videos/raw/repeticion1.mp4" type="video/mp4" />
+      Tu navegador no soporta la etiqueta video.
+    </video>
+  </div>
+
+  <div class="playlist">
+    <h3>Lista de Repeticiones</h3>
+    <div id="playlistItems"></div>
+  </div>
+</div>
+
+<script>
+  // Lista de videos que tienes en la carpeta videos/raw
+  const videos = [
+    {title: "Repetición 1", file: "repeticion1.mp4"},
+    {title: "Repetición 2", file: "repeticion2.mp4"},
+    {title: "Repetición 3", file: "repeticion3.mp4"}
+  ];
+
+  const playlistContainer = document.getElementById('playlistItems');
+  const videoPlayer = document.getElementById('videoPlayer');
+  
+  function loadVideo(index) {
+    const video = videos[index];
+    videoPlayer.src = `videos/raw/${video.file}`;
+    videoPlayer.load();
+    videoPlayer.play();
+
+    // Marca el elemento activo
+    document.querySelectorAll('.playlist-item').forEach((el,i) => {
+      if(i === index) el.classList.add('active');
+      else el.classList.remove('active');
+    });
+  }
+
+  // Crear lista en HTML
+  videos.forEach((video, index) => {
+    const div = document.createElement('div');
+    div.textContent = video.title;
+    div.classList.add('playlist-item');
+    if(index === 0) div.classList.add('active');
+    div.onclick = () => loadVideo(index);
+    playlistContainer.appendChild(div);
+  });
+
+  // Carga el primer video al abrir la página
+  loadVideo(0);
+</script>
+
+</body>
+</html>
