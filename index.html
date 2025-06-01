@@ -3,80 +3,150 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Canales en Línea</title>
-  <style>
+  <title>Canales en Vivo</title>
+  <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+   <style>
     body {
-      background-color: #121212;
-      color: white;
-      font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
+      color: white;
+      scroll-behavior: smooth;
     }
 
-    h1 {
-      text-align: center;
-      padding: 20px;
-      color: #ff0055;
+    nav {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav img {
+      height: 40px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: color 0.3s;
+      cursor: pointer;
+      padding: 5px 0;
+    }
+
+    .nav-links a[href="/"] {
+      color: #00aaff;
+      border-bottom: 2px solid #00aaff;
+    }
+
+    .nav-links a:hover {
+      color: #00aaff;
+    }
+
+    #player {
+      width: 100%;
+      max-width: 900px;
+      height: 500px;
+      margin: 30px auto;
+      background-color: black;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,170,255,0.7);
     }
 
     .canales-container {
       display: flex;
-      flex-wrap: nowrap;
-      overflow-x: auto;
+      flex-wrap: wrap;
+      justify-content: center;
       gap: 20px;
       padding: 20px;
+      max-width: 960px;
+      margin: 0 auto 60px auto;
     }
 
     .canal-box {
-      flex: 0 0 auto;
-      width: 200px;
-      background: #1e1e1e;
+      background-color: rgba(0, 0, 0, 0.4);
+      border-radius: 15px;
       padding: 15px;
-      border-radius: 12px;
       text-align: center;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+      width: 200px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease;
+      cursor: default;
+    }
+
+    .canal-box:hover {
+      transform: scale(1.05);
     }
 
     .canal-box img {
       width: 100%;
-      height: auto;
-      margin-bottom: 10px;
-      border-radius: 8px;
+      height: 100px;
       object-fit: contain;
-      background: white;
-      padding: 5px;
+      margin-bottom: 10px;
     }
 
     .canal-box h3 {
-      font-size: 16px;
-      margin-bottom: 10px;
+      margin: 10px 0;
     }
 
     .canal-box button {
-      padding: 8px 12px;
+      padding: 10px 15px;
       border: none;
-      background-color: #ff0055;
+      border-radius: 8px;
+      background-color: #00aaff;
       color: white;
-      border-radius: 6px;
       cursor: pointer;
       transition: background 0.3s;
     }
 
     .canal-box button:hover {
-      background-color: #ff3366;
+      background-color: #0077cc;
     }
 
-    .video-player {
-      width: 100%;
-      max-width: 800px;
-      margin: 30px auto;
-      display: block;
+    section {
+      max-width: 960px;
+      margin: 50px auto;
+      background-color: rgba(0,0,0,0.3);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,170,255,0.3);
+    }
+
+    section h2 {
+      margin-top: 0;
+      border-bottom: 2px solid #00aaff;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+      font-size: 2rem;
     }
   </style>
 </head>
 <body>
 
-  <h1>Canales en Vivo</h1>
+  <nav>
+    <a href="/"><img src="logo.png" alt="Logo"></a>
+    <div class="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/peliculas.html">Zona de Películas</a>
+      <a href="/repeticiones.html">Repeticiones</a>
+      <a href="https://mediaformulaiptv.vercel.app/f1zone.html">F1</a>
+      <a href="/noticias.html">Noticias</a>
+      <a href="/tv.html">TV</a>
+    </div>
+  </nav>
+
+  <div id="player"></div>
 
   <div class="canales-container">
     <div class="canal-box">
@@ -116,16 +186,20 @@
     </div>
   </div>
 
-  <video id="player" class="video-player" controls autoplay muted>
-    <source src="" type="application/x-mpegURL">
-    Tu navegador no admite la reproducción de video en vivo.
-  </video>
-
   <script>
+    const player = new Clappr.Player({
+      source: "https://live20.bozztv.com/giatv/giatv-PPVDeportes2/PPVDeportes2/chunks.m3u8",
+      parentId: "#player",
+      autoPlay: true,
+      width: "100%",
+      height: "100%",
+      mimeType: "application/x-mpegURL"
+    });
+
     function cambiarStream(url) {
-      const player = document.getElementById("player");
-      player.src = url;
+      player.load(url);
       player.play();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   </script>
 
