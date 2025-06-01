@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WWE RAW Live</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: white;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    .navbar {
+      background-color: #111;
+      padding: 1rem;
+      text-align: left;
+    }
+    .navbar img {
+      height: 40px;
+    }
+    .logo-container {
+      margin-top: 2rem;
+    }
+    .logo-container img {
+      max-width: 300px;
+      height: auto;
+    }
+    #player {
+      width: 80%;
+      height: 450px;
+      margin: 2rem auto;
+    }
+    .options {
+      margin-bottom: 2rem;
+    }
+    .options button {
+      margin: 0.5rem;
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .timer-msg {
+      font-size: 1.3rem;
+      margin-top: 2rem;
+    }
+    .countdown {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/WWE_RAW_Logo_2025.svg" alt="RAW Logo" />
+  </div>
+
+  <div class="logo-container">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/WWE_RAW_Logo_2025.svg" alt="RAW Logo" />
+  </div>
+
+  <div id="main-content">
+    <div id="player"></div>
+    <div class="options">
+      <button onclick="cambiarStream('https://live20.bozztv.com/akamaissh101/ssh101/wwerawspanish/playlist.m3u8')">Ver en Español</button>
+      <button onclick="cambiarStream('https://live20.bozztv.com/akamaissh101/ssh101/wwerawenglish/playlist.m3u8')">Ver en Inglés</button>
+    </div>
+  </div>
+
+  <div id="message" style="display: none">
+    <div class="timer-msg">Vuelva el lunes a las 8:00pm</div>
+    <div class="countdown" id="countdown"></div>
+  </div>
+
+  <script>
+    let player;
+    function cambiarStream(url) {
+      player.load({ source: url, mimeType: "application/x-mpegURL" });
+    }
+
+    function crearPlayer(url) {
+      player = new Clappr.Player({
+        source: url,
+        parentId: "#player",
+        width: "100%",
+        height: "100%",
+        autoPlay: true,
+        mute: false
+      });
+    }
+
+    function esLunes() {
+      const now = new Date();
+      return now.getDay() === 1;
+    }
+
+    function mostrarContenido() {
+      const ahora = new Date();
+      const dia = ahora.getDay();
+
+      if (dia === 1) {
+        document.getElementById("main-content").style.display = "block";
+        document.getElementById("message").style.display = "none";
+        crearPlayer("https://live20.bozztv.com/akamaissh101/ssh101/wwerawspanish/playlist.m3u8");
+      } else {
+        document.getElementById("main-content").style.display = "none";
+        document.getElementById("message").style.display = "block";
+        iniciarCuentaRegresiva();
+      }
+    }
+
+    function iniciarCuentaRegresiva() {
+      const ahora = new Date();
+      let proximoLunes = new Date();
+      proximoLunes.setDate(ahora.getDate() + ((8 - ahora.getDay()) % 7));
+      proximoLunes.setHours(20, 0, 0, 0);
+
+      function actualizarCountdown() {
+        const ahora = new Date();
+        const diferencia = proximoLunes - ahora;
+
+        const horas = Math.floor(diferencia / (1000 * 60 * 60));
+        const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+        const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+        document.getElementById("countdown").innerText = `${horas}h ${minutos}m ${segundos}s`;
+
+        if (diferencia < 0) {
+          location.reload();
+        }
+      }
+
+      actualizarCountdown();
+      setInterval(actualizarCountdown, 1000);
+    }
+
+    mostrarContenido();
+  </script>
+</body>
+</html>
