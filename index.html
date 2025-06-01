@@ -65,55 +65,51 @@
       box-shadow: 0 0 15px rgba(0,170,255,0.7);
     }
 
-    .canales-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      padding: 20px;
-      max-width: 960px;
-      margin: 0 auto 60px auto;
-    }
-
+     .canales-container {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 20px;
+  }
     .canal-box {
-      background-color: rgba(0, 0, 0, 0.4);
-      border-radius: 15px;
-      padding: 15px;
-      text-align: center;
-      width: 200px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      transition: transform 0.2s ease;
-      cursor: default;
-    }
-
+    flex: 0 0 auto;
+    width: 180px;
+    background: #1e1e1e;
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+  }
     .canal-box:hover {
       transform: scale(1.05);
     }
 
-    .canal-box img {
-      width: 100%;
-      height: 100px;
-      object-fit: contain;
-      margin-bottom: 10px;
-    }
+  .canal-box img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+    border-radius: 8px;
+  }
 
-    .canal-box h3 {
-      margin: 10px 0;
-    }
+   .canal-box h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
 
     .canal-box button {
-      padding: 10px 15px;
-      border: none;
-      border-radius: 8px;
-      background-color: #00aaff;
-      color: white;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
+    padding: 8px 12px;
+    border: none;
+    background-color: #ff0055;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
     .canal-box button:hover {
-      background-color: #0077cc;
-    }
+    background-color: #ff3366;
+  }
 
     /* Secciones para scroll */
     section {
