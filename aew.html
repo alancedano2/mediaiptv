@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AEW - Repeticiones</title>
+  <style>
+    body {
+      margin: 0; font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
+      color: white;
+    }
+
+    nav {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav img {
+      height: 40px;
+    }
+
+    nav .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+      margin-left: 20px;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+
+    nav .nav-links a:hover {
+      color: #00aaff;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: row;
+      max-width: 1200px;
+      margin: 40px auto;
+      gap: 20px;
+    }
+
+    .video-player {
+      flex: 3;
+      background-color: rgba(0,0,0,0.4);
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,170,255,0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .video-player iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,170,255,0.7);
+    }
+
+    .playlist {
+      flex: 1;
+      background-color: rgba(0,0,0,0.4);
+      padding: 15px;
+      border-radius: 15px;
+      max-height: 100%;
+      overflow-y: auto;
+    }
+
+    .playlist h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .playlist-item {
+      padding: 8px;
+      margin-bottom: 8px;
+      border-radius: 8px;
+      background-color: rgba(255,255,255,0.1);
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .playlist-item:hover {
+      background-color: #00aaff;
+      color: black;
+    }
+
+    .playlist-item.active {
+      background-color: #0077cc;
+      color: white;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/"><img src="logo.png" alt="Logo"></a>
+  <div class="nav-links">
+    <a href="/">Inicio</a>
+    <a href="/peliculas.html">Zona de Películas</a>
+    <a href="/repeticiones.html">Repeticiones</a>
+    <a href="/f1.html">F1</a>
+    <a href="/noticias.html">Noticias</a>
+    <a href="/tv.html">TV</a>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="video-player">
+    <iframe id="videoFrame" src="https://example.com/aew" allowfullscreen></iframe>
+  </div>
+
+  <div class="playlist">
+    <h3>Lista de Repeticiones</h3>
+    <div id="playlistItems">
+      <div class="playlist-item active" onclick="loadVideo('https://example.com/aew')">
+        AEW Dynamite - Último episodio
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function loadVideo(url) {
+    document.getElementById('videoFrame').src = url;
+    document.querySelectorAll('.playlist-item').forEach(el => el.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
