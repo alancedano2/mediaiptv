@@ -2,144 +2,208 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>WWE RAW Live</title>
-  <link rel="stylesheet" href="styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #000;
-      color: white;
       margin: 0;
-      padding: 0;
-      text-align: center;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
+      color: white;
+      scroll-behavior: smooth;
     }
-    .navbar {
-      background-color: #111;
-      padding: 1rem;
-      text-align: left;
+
+    nav {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
-    .navbar img {
+
+    nav img {
       height: 40px;
     }
-    .logo-container {
-      margin-top: 2rem;
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
     }
-    .logo-container img {
-      max-width: 300px;
-      height: auto;
-    }
-    #player {
-      width: 80%;
-      height: 450px;
-      margin: 2rem auto;
-    }
-    .options {
-      margin-bottom: 2rem;
-    }
-    .options button {
-      margin: 0.5rem;
-      padding: 0.7rem 1.5rem;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    .timer-msg {
-      font-size: 1.3rem;
-      margin-top: 2rem;
-    }
-    .countdown {
-      font-size: 2rem;
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
       font-weight: bold;
-      margin-top: 0.5rem;
+      font-size: 1rem;
+      transition: color 0.3s;
+      cursor: pointer;
+      padding: 5px 0;
+    }
+
+    .nav-links a[href="/tv.html"] {
+      color: #00aaff;
+      border-bottom: 2px solid #00aaff;
+    }
+
+    .nav-links a:hover {
+      color: #00aaff;
+    }
+
+    .logo-raw {
+      display: block;
+      margin: 40px auto 20px;
+      max-width: 300px;
+    }
+
+    #player {
+      width: 100%;
+      max-width: 900px;
+      height: 500px;
+      margin: 20px auto;
+      background-color: black;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,170,255,0.7);
+    }
+
+    .buttons {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .buttons button {
+      padding: 10px 20px;
+      margin: 0 10px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      background-color: #00aaff;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .buttons button:hover {
+      background-color: #0077cc;
+    }
+
+    .overlay {
+      text-align: center;
+      max-width: 600px;
+      margin: 50px auto;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,170,255,0.4);
+    }
+
+    .overlay h2 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+
+    .overlay p {
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+    }
+
+    #countdown {
+      font-size: 2rem;
+      color: #00aaff;
     }
   </style>
 </head>
 <body>
-  <div class="navbar">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/WWE_RAW_Logo_2025.svg" alt="RAW Logo" />
-  </div>
 
-  <div class="logo-container">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/WWE_RAW_Logo_2025.svg" alt="RAW Logo" />
-  </div>
-
-  <div id="main-content">
-    <div id="player"></div>
-    <div class="options">
-      <button onclick="cambiarStream('https://live20.bozztv.com/akamaissh101/ssh101/wwerawspanish/playlist.m3u8')">Ver en Español</button>
-      <button onclick="cambiarStream('https://live20.bozztv.com/akamaissh101/ssh101/wwerawenglish/playlist.m3u8')">Ver en Inglés</button>
+  <nav>
+    <a href="/"><img src="logo.png" alt="Logo principal"></a>
+    <div class="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/peliculas.html">Zona de Películas</a>
+      <a href="/repeticiones.html">Repeticiones</a>
+      <a href="https://mediaformulaiptv.vercel.app/f1zone.html">F1</a>
+      <a href="/noticias.html">Noticias</a>
+      <a href="/tv.html">TV</a>
     </div>
-  </div>
+  </nav>
 
-  <div id="message" style="display: none">
-    <div class="timer-msg">Vuelva el lunes a las 8:00pm</div>
-    <div class="countdown" id="countdown"></div>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/WWE_RAW_Logo_2025.svg" alt="WWE RAW Logo" class="logo-raw">
+
+  <div id="mensaje"></div>
+
+  <div id="player" style="display: none;"></div>
+
+  <div class="buttons" id="buttons" style="display: none;">
+    <button onclick="cambiarStream('https://live20.bozztv.com/akamaissh101/ssh101/wwerawspanish/playlist.m3u8')">Ver en Español</button>
+    <button onclick="cambiarStream('https://live20.bozztv.com/akamaissh101/ssh101/wwerawenglish/playlist.m3u8')">Ver en Inglés</button>
   </div>
 
   <script>
-    let player;
-    function cambiarStream(url) {
-      player.load({ source: url, mimeType: "application/x-mpegURL" });
-    }
+    const hoy = new Date();
+    const dia = hoy.getDay(); // 1 = lunes
 
-    function crearPlayer(url) {
-      player = new Clappr.Player({
-        source: url,
+    const playerElement = document.getElementById('player');
+    const buttonsElement = document.getElementById('buttons');
+    const mensaje = document.getElementById('mensaje');
+
+    if (dia === 1) {
+      // Mostrar el reproductor si es lunes
+      playerElement.style.display = 'block';
+      buttonsElement.style.display = 'block';
+
+      const player = new Clappr.Player({
+        source: "https://live20.bozztv.com/akamaissh101/ssh101/wwerawspanish/playlist.m3u8",
         parentId: "#player",
+        autoPlay: true,
         width: "100%",
         height: "100%",
-        autoPlay: true,
-        mute: false
+        mimeType: "application/x-mpegURL"
       });
-    }
 
-    function esLunes() {
-      const now = new Date();
-      return now.getDay() === 1;
-    }
+      window.cambiarStream = function(url) {
+        player.load(url);
+        player.play();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
 
-    function mostrarContenido() {
-      const ahora = new Date();
-      const dia = ahora.getDay();
+    } else {
+      // Mostrar mensaje y countdown
+      const target = new Date();
+      target.setDate(hoy.getDate() + ((1 + 7 - dia) % 7));
+      target.setHours(20, 0, 0, 0);
 
-      if (dia === 1) {
-        document.getElementById("main-content").style.display = "block";
-        document.getElementById("message").style.display = "none";
-        crearPlayer("https://live20.bozztv.com/akamaissh101/ssh101/wwerawspanish/playlist.m3u8");
-      } else {
-        document.getElementById("main-content").style.display = "none";
-        document.getElementById("message").style.display = "block";
-        iniciarCuentaRegresiva();
-      }
-    }
-
-    function iniciarCuentaRegresiva() {
-      const ahora = new Date();
-      let proximoLunes = new Date();
-      proximoLunes.setDate(ahora.getDate() + ((8 - ahora.getDay()) % 7));
-      proximoLunes.setHours(20, 0, 0, 0);
+      mensaje.innerHTML = `
+        <div class="overlay">
+          <h2>Vuelve el lunes a las 8:00pm</h2>
+          <p>Este canal solo está disponible los lunes a las 8:00pm</p>
+          <div id="countdown"></div>
+        </div>
+      `;
 
       function actualizarCountdown() {
-        const ahora = new Date();
-        const diferencia = proximoLunes - ahora;
+        const now = new Date().getTime();
+        const distancia = target - now;
 
-        const horas = Math.floor(diferencia / (1000 * 60 * 60));
-        const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
-        const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
-
-        document.getElementById("countdown").innerText = `${horas}h ${minutos}m ${segundos}s`;
-
-        if (diferencia < 0) {
+        if (distancia < 0) {
           location.reload();
+          return;
         }
+
+        const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
+        const segundos = Math.floor((distancia % (1000 * 60)) / 1000);
+
+        document.getElementById('countdown').innerText = `${horas}h ${minutos}m ${segundos}s`;
       }
 
       actualizarCountdown();
       setInterval(actualizarCountdown, 1000);
     }
-
-    mostrarContenido();
   </script>
+
 </body>
 </html>
