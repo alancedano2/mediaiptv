@@ -182,26 +182,40 @@
         </div>
       `;
 
-      function actualizarCountdown() {
-        const now = new Date().getTime();
-        const distancia = target - now;
+       function updateCountdown(targetDay, targetHour) {
+        const now = new Date();
+        let nextTarget = new Date();
 
-        if (distancia < 0) {
-          location.reload();
-          return;
-        }
+        nextTarget.setDate(now.getDate() + ((7 + targetDay - now.getDay()) % 7 || 7));
+        nextTarget.setHours(targetHour, 0, 0, 0);
 
-        const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
-        const segundos = Math.floor((distancia % (1000 * 60)) / 1000);
+        const interval = setInterval(() => {
+          const now = new Date();
+          const diff = nextTarget - now;
 
-        document.getElementById('countdown').innerText = `${horas}h ${minutos}m ${segundos}s`;
+          if (diff <= 0) {
+            clearInterval(interval);
+            location.reload(); // recarga al llegar el momento
+          }
+
+          const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+          const minutes = Math.floor((diff / (1000 * 60)) % 60);
+          const seconds = Math.floor((diff / 1000) % 60);
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+          document.getElementById('countdown').textContent = 
+            `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }, 1000);
       }
 
-      actualizarCountdown();
-      setInterval(actualizarCountdown, 1000);
-    }
-  </script>
-
-</body>
+      if (day !== 5 || today.getHours() < 20) {
+        blockMessage.style.display = 'block';
+        buttons.style.display = 'none';
+        playerContainer.style.display = 'none';
+        updateCountdown(5, 20); // viernes 8:00pm
+      } else {
+        setStream('https://live20.bozztv.com/akamaissh101/ssh101/wwesmackdownspanish/playlist.m3u8');
+      }
+    </script>
+  </body>
 </html>
