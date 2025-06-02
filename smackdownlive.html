@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WWE SmackDown Live</title>
+  <link rel="stylesheet" href="estilos.css" />
+  <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+  <style>
+    .content {
+      max-width: 1000px;
+      margin: auto;
+      padding: 2rem;
+      text-align: center;
+    }
+    .logo {
+      max-width: 300px;
+      margin-bottom: 1rem;
+    }
+    .options button {
+      margin: 1rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    #countdown {
+      font-size: 1.5rem;
+      margin-top: 1rem;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR Y FONDO DE TU SITIO PRINCIPAL -->
+  <header>
+    <nav class="navbar">
+      <div class="logo-nav">
+        <a href="index.html">
+          <img src="/logo.png" alt="Logo StreamVerse" height="50">
+        </a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="ppv.html">PPV</a></li>
+        <li><a href="streamzone.html">StreamZone+</a></li>
+        <li><a href="login.html">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="content">
+    <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/c/c9/WWE_SmackDown_%282024%29_Logo.svg" alt="SmackDown Logo" />
+
+    <div id="player-container"></div>
+
+    <div class="options" id="stream-options">
+      <button onclick="cambiarStream('https://live20.bozztv.com/akamaissh101/ssh101/wwesmackdownspanish/playlist.m3u8')">Ver en Español</button>
+      <button onclick="cambiarStream('https://live20.bozztv.com/akamaissh101/ssh101/wwesmackdownenglish/playlist.m3u8')">Ver en Inglés</button>
+    </div>
+
+    <div id="no-stream" style="display:none;">
+      <p style="font-size: 1.2rem; font-weight: bold;">SmackDown se transmite los viernes a las 8:00pm.</p>
+      <p id="countdown"></p>
+    </div>
+  </main>
+
+  <script>
+    const playerContainer = document.getElementById("player-container");
+    const streamOptions = document.getElementById("stream-options");
+    const noStream = document.getElementById("no-stream");
+    const countdownEl = document.getElementById("countdown");
+
+    function cambiarStream(url) {
+      playerContainer.innerHTML = "";
+      new Clappr.Player({
+        source: url,
+        parentId: "#player-container",
+        width: "100%",
+        height: "500px",
+        autoPlay: true,
+      });
+    }
+
+    function getNextFriday8PM() {
+      const now = new Date();
+      const result = new Date();
+      result.setDate(now.getDate() + ((5 + 7 - now.getDay()) % 7));
+      result.setHours(20, 0, 0, 0);
+
+      // Si es viernes y ya pasaron las 8:00pm, pasa al siguiente
+      if (now.getDay() === 5 && now > result) {
+        result.setDate(result.getDate() + 7);
+      }
+      return result;
+    }
+
+    function showCountdown() {
+      const target = getNextFriday8PM();
+      const now = new Date();
+      const diff = target - now;
+
+      if (diff <= 0) {
+        location.reload();
+        return;
+      }
+
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+      countdownEl.textContent = `Faltan ${days}d ${hours}h ${minutes}m ${seconds}s para SmackDown`;
+    }
+
+    const now = new Date();
+    const isFriday = now.getDay() === 5;
+    const isBefore8PM = now.getHours() < 20;
+
+    if (isFriday && isBefore8PM) {
+      // Show countdown until 8pm
+      streamOptions.style.display = "none";
+      noStream.style.display = "block";
+      showCountdown();
+      setInterval(showCountdown, 1000);
+    } else if (!isFriday || (isFriday && now.getHours() >= 20)) {
+      // Show player & options
+      cambiarStream("https://live20.bozztv.com/akamaissh101/ssh101/wwesmackdownenglish/playlist.m3u8");
+    } else {
+      streamOptions.style.display = "none";
+      noStream.style.display = "block";
+      showCountdown();
+      setInterval(showCountdown, 1000);
+    }
+  </script>
+</body>
+</html>
