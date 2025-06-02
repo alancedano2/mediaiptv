@@ -1,138 +1,135 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>WWE SmackDown Live</title>
-  <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
-  <style>
-    body {
-      margin: 0;
-      background: linear-gradient(to bottom, #000000, #1a1a1a);
-      font-family: Arial, sans-serif;
-      color: white;
-      text-align: center;
-    }
-    nav {
-      background-color: #111;
-      padding: 15px;
-      text-align: center;
-    }
-    nav img {
-      height: 40px;
-    }
-    .logo {
-      max-width: 300px;
-      margin: 20px auto 10px;
-    }
-    #player {
-      width: 80%;
-      height: 400px;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    .btn-container {
-      margin-top: 20px;
-    }
-    button {
-      padding: 10px 20px;
-      margin: 10px;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .es { background-color: #0074D9; color: white; }
-    .en { background-color: #2ECC40; color: white; }
-    #block-message {
-      margin-top: 30px;
-      font-size: 20px;
-      color: #ff4444;
-    }
-    #countdown {
-      font-size: 24px;
-      margin-top: 10px;
-      color: #ffffff;
-    }
-  </style>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>WWE SmackDown Live</title>
+    <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        background: #000;
+        font-family: Arial, sans-serif;
+        color: white;
+        text-align: center;
+      }
+      nav {
+        background-color: #111;
+        padding: 15px;
+        text-align: center;
+      }
+      nav img {
+        height: 40px;
+      }
+      .logo {
+        max-width: 300px;
+        margin: 20px auto 10px;
+      }
+      #player {
+        width: 80%;
+        height: 400px;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      .btn-container {
+        margin-top: 20px;
+      }
+      button {
+        padding: 10px 20px;
+        margin: 10px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .es { background-color: #0074D9; color: white; }
+      .en { background-color: #2ECC40; color: white; }
+      #block-message {
+        margin-top: 30px;
+        font-size: 20px;
+        color: #ff4444;
+      }
+      #countdown {
+        font-size: 24px;
+        margin-top: 10px;
+        color: #ffffff;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c9/WWE_SmackDown_%282024%29_Logo.svg" alt="WWE SmackDown Logo" />
+    </nav>
 
-  <nav>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c9/WWE_SmackDown_%282024%29_Logo.svg" alt="WWE SmackDown Logo" />
-  </nav>
+    <div class="logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c9/WWE_SmackDown_%282024%29_Logo.svg" alt="SmackDown" style="width: 100%;">
+    </div>
 
-  <div class="logo">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c9/WWE_SmackDown_%282024%29_Logo.svg" alt="SmackDown" style="width: 100%;">
-  </div>
+    <div id="block-message" style="display: none;">
+      <p>Vuelva el viernes a las 8:00pm</p>
+      <div id="countdown"></div>
+    </div>
 
-  <div id="block-message" style="display: none;">
-    <p>Vuelva el viernes a las 8:00pm</p>
-    <div id="countdown"></div>
-  </div>
+    <div id="player"></div>
 
-  <div id="player"></div>
+    <div class="btn-container" id="lang-buttons">
+      <button class="es" onclick="setStream('https://live20.bozztv.com/akamaissh101/ssh101/wwesmackdownspanish/playlist.m3u8')">Ver en Español</button>
+      <button class="en" onclick="setStream('https://live20.bozztv.com/akamaissh101/ssh101/wwesmackdownenglish/playlist.m3u8')">Ver en Inglés</button>
+    </div>
 
-  <div class="btn-container" id="lang-buttons">
-    <button class="es" onclick="setStream('https://live20.bozztv.com/akamaissh101/ssh101/wwesmackdownspanish/playlist.m3u8')">Ver en Español</button>
-    <button class="en" onclick="setStream('https://live20.bozztv.com/akamaissh101/ssh101/wwesmackdownenglish/playlist.m3u8')">Ver en Inglés</button>
-  </div>
+    <script>
+      const today = new Date();
+      const day = today.getDay(); // 5 = Viernes
 
-  <script>
-    const today = new Date();
-    const day = today.getDay(); // 0 = Domingo, 5 = Viernes
+      const playerContainer = document.getElementById('player');
+      const buttons = document.getElementById('lang-buttons');
+      const blockMessage = document.getElementById('block-message');
 
-    const playerContainer = document.getElementById('player');
-    const buttons = document.getElementById('lang-buttons');
-    const blockMessage = document.getElementById('block-message');
+      function setStream(url) {
+        playerContainer.innerHTML = '';
+        new Clappr.Player({
+          source: url,
+          parentId: '#player',
+          width: '100%',
+          height: '100%',
+          autoPlay: true
+        });
+      }
 
-    function setStream(url) {
-      playerContainer.innerHTML = '';
-      new Clappr.Player({
-        source: url,
-        parentId: '#player',
-        width: '100%',
-        height: '100%',
-        autoPlay: true
-      });
-    }
-
-    function updateCountdown(targetDay, targetHour) {
-      const now = new Date();
-      let nextTarget = new Date();
-
-      nextTarget.setDate(now.getDate() + ((7 + targetDay - now.getDay()) % 7 || 7));
-      nextTarget.setHours(targetHour, 0, 0, 0);
-
-      const interval = setInterval(() => {
+      function updateCountdown(targetDay, targetHour) {
         const now = new Date();
-        const diff = nextTarget - now;
+        let nextTarget = new Date();
 
-        if (diff <= 0) {
-          clearInterval(interval);
-          location.reload(); // recarga para mostrar el reproductor si ya es viernes 8pm
-        }
+        nextTarget.setDate(now.getDate() + ((7 + targetDay - now.getDay()) % 7 || 7));
+        nextTarget.setHours(targetHour, 0, 0, 0);
 
-        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((diff / (1000 * 60)) % 60);
-        const seconds = Math.floor((diff / 1000) % 60);
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const interval = setInterval(() => {
+          const now = new Date();
+          const diff = nextTarget - now;
 
-        document.getElementById('countdown').textContent = 
-          `${days}d ${hours}h ${minutes}m ${seconds}s`;
-      }, 1000);
-    }
+          if (diff <= 0) {
+            clearInterval(interval);
+            location.reload(); // recarga al llegar el momento
+          }
 
-    if (day !== 5 || today.getHours() < 20) {
-      // No es viernes o es viernes antes de las 8pm
-      blockMessage.style.display = 'block';
-      buttons.style.display = 'none';
-      playerContainer.style.display = 'none';
-      updateCountdown(5, 20); // próximo viernes a las 8pm
-    } else {
-      // Viernes después de las 8pm, reproducir por defecto en español
-      setStream('https://live20.bozztv.com/akamaissh101/ssh101/wwesmackdownspanish/playlist.m3u8');
-    }
-  </script>
-</body>
+          const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+          const minutes = Math.floor((diff / (1000 * 60)) % 60);
+          const seconds = Math.floor((diff / 1000) % 60);
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+          document.getElementById('countdown').textContent = 
+            `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }, 1000);
+      }
+
+      if (day !== 5 || today.getHours() < 20) {
+        blockMessage.style.display = 'block';
+        buttons.style.display = 'none';
+        playerContainer.style.display = 'none';
+        updateCountdown(5, 20); // viernes 8:00pm
+      } else {
+        setStream('https://live20.bozztv.com/akamaissh101/ssh101/wwesmackdownspanish/playlist.m3u8');
+      }
+    </script>
+  </body>
 </html>
