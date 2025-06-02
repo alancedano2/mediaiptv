@@ -90,31 +90,6 @@
     .buttons button:hover {
       background-color: #0077cc;
     }
-
-    .overlay {
-      text-align: center;
-      max-width: 600px;
-      margin: 50px auto;
-      background: rgba(0, 0, 0, 0.6);
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,170,255,0.4);
-    }
-
-    .overlay h2 {
-      font-size: 1.8rem;
-      margin-bottom: 10px;
-    }
-
-    .overlay p {
-      font-size: 1.2rem;
-      margin-bottom: 5px;
-    }
-
-    #countdown {
-      font-size: 2rem;
-      color: #00aaff;
-    }
   </style>
 </head>
 <body>
@@ -133,98 +108,27 @@
 
   <img src="https://upload.wikimedia.org/wikipedia/commons/c/c9/WWE_SmackDown_%282024%29_Logo.svg" alt="WWE SmackDown Logo" class="logo-smackdown">
 
-  <div id="mensaje"></div>
+  <div id="player"></div>
 
-  <div id="player" style="display: none;"></div>
-
-  <div class="buttons" id="buttons" style="display: none;">
+  <div class="buttons">
     <button onclick="cambiarStream('https://live20.bozztv.com/akamaissh101/ssh101/wwesdspanish/playlist.m3u8')">Ver en Español</button>
     <button onclick="cambiarStream('https://live20.bozztv.com/akamaissh101/ssh101/wwesdenglish/playlist.m3u8')">Ver en Inglés</button>
   </div>
 
   <script>
-    const hoy = new Date();
-    const dia = hoy.getDay(); // 5 = viernes
+    const player = new Clappr.Player({
+      source: "https://live20.bozztv.com/akamaissh101/ssh101/wwesdspanish/playlist.m3u8",
+      parentId: "#player",
+      autoPlay: true,
+      width: "100%",
+      height: "100%",
+      mimeType: "application/x-mpegURL"
+    });
 
-    const playerElement = document.getElementById('player');
-    const buttonsElement = document.getElementById('buttons');
-    const mensaje = document.getElementById('mensaje');
-
-    // Calculamos la fecha objetivo para viernes 8:00pm
-    let target = new Date(hoy);
-
-    if (dia === 5 && hoy.getHours() < 20) {
-      // Hoy es viernes antes de las 8pm, target es hoy 8pm
-      target.setHours(20, 0, 0, 0);
-    } else {
-      // Próximo viernes 8pm
-      const diasParaViernes = (5 + 7 - dia) % 7 || 7; 
-      target.setDate(hoy.getDate() + diasParaViernes);
-      target.setHours(20, 0, 0, 0);
-    }
-
-    if (dia === 5 && hoy.getHours() >= 20) {
-      // Si ya pasó viernes 8pm, ocultamos player y mostramos mensaje (ya terminó el show)
-      mostrarMensaje();
-    } else if (dia === 5 && hoy.getHours() < 20) {
-      // Mostrar player si es viernes antes de las 8pm
-      mostrarPlayer();
-    } else {
-      // Otros días: mostrar mensaje con countdown
-      mostrarMensaje();
-    }
-
-    function mostrarPlayer() {
-      playerElement.style.display = 'block';
-      buttonsElement.style.display = 'block';
-
-      const player = new Clappr.Player({
-        source: "https://live20.bozztv.com/akamaissh101/ssh101/wwesdspanish/playlist.m3u8",
-        parentId: "#player",
-        autoPlay: true,
-        width: "100%",
-        height: "100%",
-        mimeType: "application/x-mpegURL"
-      });
-
-      window.cambiarStream = function(url) {
-        player.load(url);
-        player.play();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      };
-    }
-
-    function mostrarMensaje() {
-      playerElement.style.display = 'none';
-      buttonsElement.style.display = 'none';
-
-      mensaje.innerHTML = `
-        <div class="overlay">
-          <h2>Vuelve el viernes a las 8:00pm</h2>
-          <p>Este canal solo está disponible los viernes a las 8:00pm</p>
-          <div id="countdown"></div>
-        </div>
-      `;
-
-      function actualizarCountdown() {
-        const now = new Date().getTime();
-        const distancia = target - now;
-
-        if (distancia < 0) {
-          location.reload();
-          return;
-        }
-
-        const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
-        const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
-        const segundos = Math.floor((distancia % (1000 * 60)) / 1000);
-
-        document.getElementById('countdown').innerText = `${dias}d ${horas}h ${minutos}m ${segundos}s`;
-      }
-
-      actualizarCountdown();
-      setInterval(actualizarCountdown, 1000);
+    function cambiarStream(url) {
+      player.load(url);
+      player.play();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   </script>
 
