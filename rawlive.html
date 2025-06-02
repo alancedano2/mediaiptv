@@ -143,15 +143,31 @@
   </div>
 
   <script>
-    const hoy = new Date();
-    const dia = hoy.getDay(); // 1 = lunes
+    // Datos del show WWE RAW: lunes 8:00pm a 10:00pm
+    const DIA_SHOW = 1; // lunes (0-domingo, 1-lunes, ...)
+    const HORA_INICIO = 20; // 20:00 hrs
+    const DURACION_HORAS = 2;
+
+    const ahora = new Date();
+    const diaActual = ahora.getDay();
+    const horaActual = ahora.getHours();
+    const minutosActual = ahora.getMinutes();
 
     const playerElement = document.getElementById('player');
     const buttonsElement = document.getElementById('buttons');
     const mensaje = document.getElementById('mensaje');
 
-    if (dia === 1) {
-      // Mostrar el reproductor si es lunes
+    function estaEnVivo() {
+      if (diaActual !== DIA_SHOW) return false;
+      // Verificar si la hora está dentro del rango 20:00 - 22:00
+      if (horaActual > HORA_INICIO && horaActual < (HORA_INICIO + DURACION_HORAS)) return true;
+      // Si es la hora exacta de inicio con minutos >= 0
+      if (horaActual === HORA_INICIO) return true;
+      return false;
+    }
+
+    if (estaEnVivo()) {
+      // Mostrar el reproductor y botones
       playerElement.style.display = 'block';
       buttonsElement.style.display = 'block';
 
@@ -171,10 +187,17 @@
       };
 
     } else {
-      // Mostrar mensaje y countdown
-      const target = new Date();
-      target.setDate(hoy.getDate() + ((1 + 7 - dia) % 7));
-      target.setHours(20, 0, 0, 0);
+      // Calcular la próxima fecha y hora de WWE RAW (lunes 20:00)
+      const proximoShow = new Date(ahora);
+      // Si hoy es lunes y ya pasó el horario, sumar 7 días
+      if (diaActual === DIA_SHOW && (horaActual > HORA_INICIO || (horaActual === HORA_INICIO && minutosActual > 0))) {
+        proximoShow.setDate(ahora.getDate() + 7);
+      } else {
+        // Ajustar al próximo lunes
+        const diasParaLunes = (DIA_SHOW + 7 - diaActual) % 7;
+        proximoShow.setDate(ahora.getDate() + diasParaLunes);
+      }
+      proximoShow.setHours(HORA_INICIO, 0, 0, 0);
 
       mensaje.innerHTML = `
         <div class="overlay">
@@ -185,8 +208,8 @@
       `;
 
       function actualizarCountdown() {
-        const now = new Date().getTime();
-        const distancia = target - now;
+        const ahoraMs = new Date().getTime();
+        const distancia = proximoShow.getTime() - ahoraMs;
 
         if (distancia < 0) {
           location.reload();
