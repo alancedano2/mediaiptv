@@ -1,104 +1,36 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Noticias - StreamVerse</title>
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom, #000000, #111111);
-      color: white;
-    }
-
-    header {
-      background-color: #111;
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      font-size: 24px;
-      color: white;
-      text-decoration: none;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 12px;
-      font-weight: bold;
-      transition: 0.3s;
-    }
-
-    nav a:hover {
-      color: #00bfff;
-    }
-
-    .contenido {
-      padding: 20px;
-      text-align: center;
-    }
-
-    .iframe-container {
-      margin-top: 20px;
-      width: 90%;
-      max-width: 1200px;
-      height: 700px;
-      margin-left: auto;
-      margin-right: auto;
-      border: 3px solid #00bfff;
-      border-radius: 15px;
-      overflow: hidden;
-    }
-
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    @media (max-width: 768px) {
-      .iframe-container {
-        height: 500px;
-      }
-
-      nav {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <header>
-    <a href="index.html" class="logo">StreamVerse</a>
-    <nav>
-      <a href="index.html">Inicio</a>
-      <a href="tv.html">TV</a>
-      <a href="eventos.html">Eventos</a>
-      <a href="noticias.html">Noticias</a>
-      <a href="shop.html">ShopZone</a>
-    </nav>
-  </header>
-
-  <div class="contenido">
-    <h1>Noticias Deportivas</h1>
-    <div class="iframe-container">
-      <iframe src="https://www.espn.com" title="Noticias de Deportes"></iframe>
+<section style="padding: 40px 20px;">
+  <h2 style="text-align:center; font-size: 2rem; margin-bottom: 30px; color: #00c8ff;">Noticias Deportivas</h2>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; max-width: 1200px; margin: auto;">
+    
+    <div style="background-color: rgba(0,0,0,0.6); border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,170,255,0.4); transition: transform 0.3s;">
+      <img src="https://seeklogo.com/images/N/nba-logo-9EEDC06C90-seeklogo.com.png" alt="NBA" style="height: 60px; margin-bottom: 10px;">
+      <h3 style="color: #00c8ff;">NBA Noticias</h3>
+      <a href="https://www.nba.com/news" target="_blank" style="color:white; background:#00aaff; padding: 8px 15px; border-radius: 8px; text-decoration:none; display:inline-block; margin-top:10px;">Visitar</a>
     </div>
-  </div>
 
-</body>
-</html>
+    <div style="background-color: rgba(0,0,0,0.6); border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,170,255,0.4); transition: transform 0.3s;">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg" alt="ESPN" style="height: 50px; margin-bottom: 10px;">
+      <h3 style="color: #00c8ff;">ESPN Deportes</h3>
+      <a href="https://www.espn.com" target="_blank" style="color:white; background:#00aaff; padding: 8px 15px; border-radius: 8px; text-decoration:none; display:inline-block; margin-top:10px;">Visitar</a>
+    </div>
+
+    <div style="background-color: rgba(0,0,0,0.6); border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,170,255,0.4); transition: transform 0.3s;">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/WWE_Logo.svg" alt="WWE" style="height: 55px; margin-bottom: 10px;">
+      <h3 style="color: #00c8ff;">WWE Noticias</h3>
+      <a href="https://www.wwe.com/news" target="_blank" style="color:white; background:#00aaff; padding: 8px 15px; border-radius: 8px; text-decoration:none; display:inline-block; margin-top:10px;">Visitar</a>
+    </div>
+
+    <div style="background-color: rgba(0,0,0,0.6); border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,170,255,0.4); transition: transform 0.3s;">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/f/f7/MLB_logo.svg" alt="MLB" style="height: 55px; margin-bottom: 10px;">
+      <h3 style="color: #00c8ff;">MLB Noticias</h3>
+      <a href="https://www.mlb.com/news" target="_blank" style="color:white; background:#00aaff; padding: 8px 15px; border-radius: 8px; text-decoration:none; display:inline-block; margin-top:10px;">Visitar</a>
+    </div>
+
+    <div style="background-color: rgba(0,0,0,0.6); border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,170,255,0.4); transition: transform 0.3s;">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/b/bf/FIFA_logo_without_slogan.svg" alt="FIFA" style="height: 50px; margin-bottom: 10px;">
+      <h3 style="color: #00c8ff;">FIFA Futbol</h3>
+      <a href="https://www.fifa.com/news" target="_blank" style="color:white; background:#00aaff; padding: 8px 15px; border-radius: 8px; text-decoration:none; display:inline-block; margin-top:10px;">Visitar</a>
+    </div>
+
+  </div>
+</section>
