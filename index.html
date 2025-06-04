@@ -2,96 +2,243 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Reproductor con cuadro "En vivo"</title>
-  <style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Canales en Vivo</title>
+  <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+   <style>
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
-      background: #111;
-      color: #eee;
-      padding: 20px;
+      background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
+      color: white;
+      scroll-behavior: smooth;
+    }
+
+    nav {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 15px 20px;
       display: flex;
-      flex-direction: column;
       align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
-    .en-vivo-cuadro {
-      border: 2px solid red;
-      padding: 10px 20px;
-      margin-bottom: 10px;
-      width: 500px;
-      font-size: 18px;
+
+    nav img {
+      height: 40px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
       font-weight: bold;
-      background: #330000;
-      border-radius: 6px;
+      font-size: 1rem;
+      transition: color 0.3s;
+      cursor: pointer;
+      padding: 5px 0;
     }
-    video {
-      width: 500px;
-      height: 280px;
-      background: black;
+
+    .nav-links a[href="/"] {
+      color: #00aaff;
+      border-bottom: 2px solid #00aaff;
+    }
+
+    .nav-links a:hover {
+      color: #00aaff;
+    }
+
+    #live-info {
+      max-width: 900px;
+      margin: 20px auto 10px auto;
+      padding: 12px 20px;
+      background-color: #b30000; /* rojo fuerte */
       border-radius: 8px;
-      outline: none;
+      font-size: 1.2rem;
+      font-weight: bold;
+      box-shadow: 0 0 15px rgba(179, 0, 0, 0.7);
+      color: white;
+      text-align: center;
+      user-select: none;
     }
-    select {
-      margin-bottom: 20px;
-      padding: 8px;
-      font-size: 16px;
-      border-radius: 5px;
+
+    #player {
+      width: 100%;
+      max-width: 900px;
+      height: 500px;
+      margin: 0 auto 30px auto;
+      background-color: black;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,170,255,0.7);
+    }
+
+    .canales-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+      max-width: 960px;
+      margin: 0 auto 60px auto;
+    }
+
+    .canal-box {
+      background-color: rgba(0, 0, 0, 0.4);
+      border-radius: 15px;
+      padding: 15px;
+      text-align: center;
+      width: 200px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease;
+      cursor: default;
+    }
+
+    .canal-box:hover {
+      transform: scale(1.05);
+    }
+
+    .canal-box img {
+      width: 100%;
+      height: 100px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+
+    .canal-box h3 {
+      margin: 10px 0;
+    }
+
+    .canal-box button {
+      padding: 10px 15px;
       border: none;
-      width: 520px;
+      border-radius: 8px;
+      background-color: #00aaff;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .canal-box button:hover {
+      background-color: #0077cc;
+    }
+
+    section {
+      max-width: 960px;
+      margin: 50px auto;
+      background-color: rgba(0,0,0,0.3);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,170,255,0.3);
+    }
+
+    section h2 {
+      margin-top: 0;
+      border-bottom: 2px solid #00aaff;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+      font-size: 2rem;
     }
   </style>
 </head>
 <body>
 
-  <select id="canalSelector">
-    <option value="" selected>-- Seleccione un canal --</option>
-    <option value="ppv">PPV 01</option>
-    <option value="nba">NBA</option>
-    <option value="mlb">MLB</option>
-    <option value="ewo">EWO TV</option>
-    <option value="bsn">BSN PR</option>
-    <option value="kq105">kq105tv</option>
-    <option value="netflix">netflixeventos</option>
-  </select>
+  <nav>
+    <a href="/"><img src="logo.png" alt="Logo"></a>
+    <div class="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/peliculas.html">Zona de Películas</a>
+      <a href="/repeticiones.html">Repeticiones</a>
+      <a href="https://mediaformulaiptv.vercel.app/f1zone.html">F1</a>
+      <a href="/noticias.html">Noticias</a>
+      <a href="/tv.html">TV</a>
+    </div>
+  </nav>
 
-  <div class="en-vivo-cuadro" id="enVivoCuadro">
-    En vivo: Ningún canal seleccionado
+  <!-- Cuadro rojo arriba del reproductor -->
+  <div id="live-info">
+    En vivo: [Aquí pones el canal o evento que está en vivo]
   </div>
 
-  <video controls id="player" poster="https://via.placeholder.com/500x280?text=Reproductor">
-    <!-- Aquí iría el src dinámico si quieres -->
-    <source src="" type="video/mp4" />
-    Tu navegador no soporta video.
-  </video>
+  <div id="player"></div>
 
-<script>
-  const canalSelector = document.getElementById('canalSelector');
-  const enVivoCuadro = document.getElementById('enVivoCuadro');
-  const player = document.getElementById('player');
+  <div class="canales-container">
+    <div class="canal-box">
+      <img src="https://pngimg.com/uploads/netflix/netflix_PNG15.png" alt="Netflix Eventos Logo" />
+      <h3>NetFlix Eventos</h3>
+      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-PPVDeportes2/PPVDeportes2/chunks.m3u8')">Reproducir</button>
+    </div>
 
-  // Textos para cada canal
-  const enVivoText = {
-    ppv: 'Visite mediaiptv.vercel.app para más detalles',
-    nba: 'NBA Finals: Indiana Pacers vs Oklahoma City Thunder',
-    mlb: 'Visite mediaiptv.vercel.app para más detalles',
-    ewo: 'eWo La Verdad Absoluta y más programación',
-    bsn: 'Visite mediaiptv.vercel.app para más detalles',
-    kq105: 'KQ Al Aire con Héctor Ortiz y más',
-    netflix: 'WWE Raw, WWE SmackDown y WWE NXT esta semana',
-  };
+    <div class="canal-box">
+      <img src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png" alt="KQ-105 TV Logo" />
+      <h3>KQ-105 TV</h3>
+      <button onclick="cambiarStream('https://live20.bozztv.com/akamaissh101/ssh101/kq105/chunks.m3u8')">Reproducir</button>
+    </div>
 
-  canalSelector.addEventListener('change', () => {
-    const canal = canalSelector.value;
-    if (canal && enVivoText[canal]) {
-      enVivoCuadro.textContent = 'En vivo: ' + enVivoText[canal];
-      // Aquí puedes poner código para cambiar el video src si quieres
-      // player.src = "url_del_stream_del_canal";
-    } else {
-      enVivoCuadro.textContent = 'En vivo: Ningún canal seleccionado';
-      // player.src = "";
+    <div class="canal-box">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/Shaw_PPV.png" alt="PPV 01 Logo" />
+      <h3>PPV 01</h3>
+      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-PPV1/PPV1/chunks.m3u8')">Reproducir</button>
+    </div>
+
+    <div class="canal-box">
+      <img src="https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png" alt="NBA Logo" />
+      <h3>NBA</h3>
+      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-NBA01/NBA01/chunks.m3u8')">Reproducir</button>
+    </div>
+
+    <div class="canal-box">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Major_League_Baseball_logo.svg/1200px-Major_League_Baseball_logo.svg.png" alt="MLB Logo" />
+      <h3>MLB</h3>
+      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-MLB01/MLB01/chunks.m3u8')">Reproducir</button>
+    </div>
+
+    <div class="canal-box">
+      <img src="https://ewopr-puce.vercel.app/logo.png" alt="EWO TV Logo" />
+      <h3>EWO TV</h3>
+      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-eWoPRTV/eWoPRTV/chunks.m3u8')">Reproducir</button>
+    </div>
+
+    <div class="canal-box">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/WWE_RAW_Logo_2025.svg" alt="WWE RAW Live Logo" />
+      <h3>WWE RAW Live</h3>
+      <button onclick="window.location.href='rawlive.html'">Ver en Vivo</button>
+    </div>
+
+    <div class="canal-box">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c9/WWE_SmackDown_%282024%29_Logo.svg" alt="WWE SmackDown Live Logo" />
+      <h3>WWE SmackDown Live</h3>
+      <button onclick="window.location.href='smackdownlive.html'">Ver en Vivo</button>
+    </div>
+
+    <div class="canal-box">
+      <img src="https://upload.wikimedia.org/wikipedia/en/f/fe/Baloncesto_Superior_Nacional.png" alt="BSN PR Logo" />
+      <h3>BSN PR</h3>
+      <button onclick="cambiarStream('https://live20.bozztv.com/akamaissh101/ssh101/bsnpuertorico/playlist.m3u8')">Reproducir</button>
+    </div>
+  </div>
+
+  <script>
+    const player = new Clappr.Player({
+      source: "https://live20.bozztv.com/giatv/giatv-PPVDeportes2/PPVDeportes2/chunks.m3u8",
+      parentId: "#player",
+      autoPlay: true,
+      width: "100%",
+      height: "100%",
+      mimeType: "application/x-mpegURL"
+    });
+
+    function cambiarStream(url) {
+      player.load(url);
+      player.play();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  });
-</script>
+  </script>
 
 </body>
 </html>
