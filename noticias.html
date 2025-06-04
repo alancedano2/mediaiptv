@@ -101,7 +101,7 @@
     /* Contenedor principal */
     main {
       max-width: 960px;
-      margin: 40px auto;
+      margin: 40px auto 80px;
       padding: 0 20px;
     }
 
@@ -146,6 +146,24 @@
       background: #005bb5;
       box-shadow: 0 0 15px #00aaff;
     }
+
+    /* Iframe contenedor */
+    #iframeContainer {
+      margin-top: 30px;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 0 20px #00aaff;
+      display: none; /* Oculto al inicio */
+      height: 600px;
+      background: black;
+    }
+
+    #newsIframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 15px;
+    }
   </style>
 </head>
 <body>
@@ -181,6 +199,10 @@
         <div class="news-option" onclick="abrirNoticia('https://www.nfl.com')">NFL</div>
         <div class="news-option" onclick="abrirNoticia('https://www.ncaa.com/news')">NCAA</div>
       </div>
+
+      <div id="iframeContainer">
+        <iframe id="newsIframe" src="" title="Noticias Deportivas"></iframe>
+      </div>
     </div>
   </main>
 
@@ -195,9 +217,13 @@
       hamburger.setAttribute('aria-expanded', !expanded);
     });
 
-    // Permite abrir noticias en nueva pestaña
+    // Función para abrir noticia dentro del iframe
     function abrirNoticia(url) {
-      window.open(url, '_blank', 'noopener');
+      const iframeContainer = document.getElementById('iframeContainer');
+      const iframe = document.getElementById('newsIframe');
+      iframe.src = url;
+      iframeContainer.style.display = 'block';
+      iframe.scrollIntoView({ behavior: 'smooth' });
     }
   </script>
 
