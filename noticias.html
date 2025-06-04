@@ -1,1 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Noticias/title>
+  <link rel="stylesheet" href="estilos.css" />
+  <style>
+    body {
+      background: linear-gradient(to bottom, #000000, #1a1a1a);
+      color: white;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
 
+    header {
+      background-color: rgba(0, 0, 0, 0.85);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      padding: 10px 0;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: auto;
+      padding: 0 20px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links li a {
+      color: #fff;
+      text-decoration: none;
+      padding: 5px 10px;
+      transition: 0.3s;
+    }
+
+    .nav-links li a.active,
+    .nav-links li a:hover {
+      background: #ff0000;
+      border-radius: 5px;
+    }
+
+    .noticias-container {
+      padding: 120px 20px 40px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .botones {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .botones button {
+      background-color: #222;
+      color: #fff;
+      border: 1px solid #444;
+      border-radius: 6px;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .botones button:hover {
+      background-color: #ff0000;
+      border-color: #ff0000;
+    }
+
+    .iframe-box {
+      width: 100%;
+      height: 80vh;
+      border: 3px solid #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .iframe-box iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header>
+    <nav>
+      <div class="logo">EWO</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="eventos.html">Eventos</a></li>
+        <li><a href="tv.html">TV</a></li>
+        <li><a href="shopzone.html">ShopZone</a></li>
+        <li><a class="active" href="noticias.html">Noticias</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- CONTENIDO -->
+  <div class="noticias-container">
+    <h1 style="text-align: center;">Noticias Deportivas</h1>
+    
+    <!-- Botones -->
+    <div class="botones">
+      <button onclick="cambiarIframe('https://www.espn.com')">ESPN</button>
+      <button onclick="cambiarIframe('https://www.mlb.com/news')">MLB</button>
+      <button onclick="cambiarIframe('https://www.nba.com/news')">NBA</button>
+      <button onclick="cambiarIframe('https://www.wwe.com/news')">WWE</button>
+      <button onclick="cambiarIframe('https://bleacherreport.com')">Bleacher Report</button>
+    </div>
+
+    <!-- Iframe -->
+    <div class="iframe-box">
+      <iframe id="iframeNoticias" src="https://www.espn.com" loading="lazy"></iframe>
+    </div>
+  </div>
+
+  <script>
+    function cambiarIframe(url) {
+      const iframe = document.getElementById("iframeNoticias");
+      iframe.src = url;
+    }
+  </script>
+</body>
+</html>
