@@ -1,36 +1,205 @@
-<section style="padding: 40px 20px;">
-  <h2 style="text-align:center; font-size: 2rem; margin-bottom: 30px; color: #00c8ff;">Noticias Deportivas</h2>
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; max-width: 1200px; margin: auto;">
-    
-    <div style="background-color: rgba(0,0,0,0.6); border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,170,255,0.4); transition: transform 0.3s;">
-      <img src="https://seeklogo.com/images/N/nba-logo-9EEDC06C90-seeklogo.com.png" alt="NBA" style="height: 60px; margin-bottom: 10px;">
-      <h3 style="color: #00c8ff;">NBA Noticias</h3>
-      <a href="https://www.nba.com/news" target="_blank" style="color:white; background:#00aaff; padding: 8px 15px; border-radius: 8px; text-decoration:none; display:inline-block; margin-top:10px;">Visitar</a>
-    </div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Noticias Deportivas - StreamVerse</title>
+  <style>
+    /* Reset básico */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
+      color: white;
+      min-height: 100vh;
+      scroll-behavior: smooth;
+    }
 
-    <div style="background-color: rgba(0,0,0,0.6); border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,170,255,0.4); transition: transform 0.3s;">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg" alt="ESPN" style="height: 50px; margin-bottom: 10px;">
-      <h3 style="color: #00c8ff;">ESPN Deportes</h3>
-      <a href="https://www.espn.com" target="_blank" style="color:white; background:#00aaff; padding: 8px 15px; border-radius: 8px; text-decoration:none; display:inline-block; margin-top:10px;">Visitar</a>
-    </div>
+    /* Navbar */
+    nav {
+      background-color: rgba(0,0,0,0.8);
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.7);
+    }
+    nav a.logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      font-size: 1.5rem;
+      gap: 10px;
+    }
+    nav a.logo img {
+      height: 40px;
+    }
 
-    <div style="background-color: rgba(0,0,0,0.6); border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,170,255,0.4); transition: transform 0.3s;">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/WWE_Logo.svg" alt="WWE" style="height: 55px; margin-bottom: 10px;">
-      <h3 style="color: #00c8ff;">WWE Noticias</h3>
-      <a href="https://www.wwe.com/news" target="_blank" style="color:white; background:#00aaff; padding: 8px 15px; border-radius: 8px; text-decoration:none; display:inline-block; margin-top:10px;">Visitar</a>
-    </div>
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+      padding: 5px 0;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: #00aaff;
+      border-bottom: 2px solid #00aaff;
+    }
 
-    <div style="background-color: rgba(0,0,0,0.6); border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,170,255,0.4); transition: transform 0.3s;">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/f/f7/MLB_logo.svg" alt="MLB" style="height: 55px; margin-bottom: 10px;">
-      <h3 style="color: #00c8ff;">MLB Noticias</h3>
-      <a href="https://www.mlb.com/news" target="_blank" style="color:white; background:#00aaff; padding: 8px 15px; border-radius: 8px; text-decoration:none; display:inline-block; margin-top:10px;">Visitar</a>
-    </div>
+    /* Hamburguesa */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+    }
+    .hamburger div {
+      width: 25px;
+      height: 3px;
+      background-color: white;
+      border-radius: 2px;
+    }
 
-    <div style="background-color: rgba(0,0,0,0.6); border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,170,255,0.4); transition: transform 0.3s;">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/b/bf/FIFA_logo_without_slogan.svg" alt="FIFA" style="height: 50px; margin-bottom: 10px;">
-      <h3 style="color: #00c8ff;">FIFA Futbol</h3>
-      <a href="https://www.fifa.com/news" target="_blank" style="color:white; background:#00aaff; padding: 8px 15px; border-radius: 8px; text-decoration:none; display:inline-block; margin-top:10px;">Visitar</a>
-    </div>
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        background: rgba(0, 0, 0, 0.95);
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+        border-radius: 10px;
+        width: 150px;
+      }
+      .nav-links.show {
+        display: flex;
+      }
+      .hamburger {
+        display: flex;
+      }
+    }
 
-  </div>
-</section>
+    /* Contenedor principal */
+    main {
+      max-width: 960px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    /* Cuadro de noticias deportivas */
+    .news-box {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 0 15px rgba(0,170,255,0.5);
+    }
+
+    .news-box h2 {
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 1.8rem;
+      color: #00aaff;
+      text-shadow: 0 0 5px #00aaff;
+    }
+
+    .news-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .news-option {
+      background: #002a4e;
+      border-radius: 10px;
+      padding: 15px 20px;
+      flex: 1 1 120px;
+      text-align: center;
+      cursor: pointer;
+      color: white;
+      font-weight: bold;
+      font-size: 1.1rem;
+      transition: background 0.3s;
+      user-select: none;
+      box-shadow: 0 0 10px #004e8a;
+    }
+    .news-option:hover {
+      background: #005bb5;
+      box-shadow: 0 0 15px #00aaff;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="logo">
+      <img src="logo.png" alt="StreamVerse Logo" />
+      StreamVerse
+    </a>
+    <div class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" role="button" tabindex="0">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <a href="/" class="active">Inicio</a>
+      <a href="/peliculas.html">Películas</a>
+      <a href="/repeticiones.html">Repeticiones</a>
+      <a href="/f1zone.html">F1</a>
+      <a href="/noticias.html">Noticias</a>
+      <a href="/tv.html">TV</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="news-box">
+      <h2>Noticias Deportivas</h2>
+      <div class="news-options">
+        <div class="news-option" onclick="abrirNoticia('https://www.nba.com')">NBA</div>
+        <div class="news-option" onclick="abrirNoticia('https://www.espn.com')">ESPN</div>
+        <div class="news-option" onclick="abrirNoticia('https://www.wwe.com')">WWE</div>
+        <div class="news-option" onclick="abrirNoticia('https://www.mlb.com')">MLB</div>
+        <div class="news-option" onclick="abrirNoticia('https://www.nfl.com')">NFL</div>
+        <div class="news-option" onclick="abrirNoticia('https://www.ncaa.com/news')">NCAA</div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Toggle menú hamburguesa en móvil
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('show');
+      const expanded = hamburger.getAttribute('aria-expanded') === 'true' || false;
+      hamburger.setAttribute('aria-expanded', !expanded);
+    });
+
+    // Permite abrir noticias en nueva pestaña
+    function abrirNoticia(url) {
+      window.open(url, '_blank', 'noopener');
+    }
+  </script>
+
+</body>
+</html>
