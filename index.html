@@ -51,7 +51,6 @@
       color: #00aaff;
     }
 
-    /* HAMBURGER MENU */
     .hamburger {
       display: none;
       flex-direction: column;
@@ -177,8 +176,36 @@
   <div id="player"></div>
 
   <div class="canales-container">
-    <!-- ... todos tus canales como antes ... -->
-    <!-- Aquí puedes copiar los mismos canal-box que ya tienes -->
+    <div class="canal-box">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Logo_Telemundo_Puerto_Rico.png" alt="Telemundo PR">
+      <h3>Telemundo PR</h3>
+      <button onclick="cambiarStream('https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8')">Ver Canal</button>
+    </div>
+    <div class="canal-box">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/WAPA_TV_Logo_2018.svg/2560px-WAPA_TV_Logo_2018.svg.png" alt="Wapa TV">
+      <h3>Wapa TV</h3>
+      <button onclick="cambiarStream('https://dai2.xumo.com/amagi_hls_data_xumo1212A-redboxwapa/CDN/playlist.m3u8')">Ver Canal</button>
+    </div>
+    <div class="canal-box">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Univision_logo_2019.svg/2560px-Univision_logo_2019.svg.png" alt="Univisión">
+      <h3>Univisión</h3>
+      <button onclick="cambiarStream('https://dai.google.com/linear/hls/event/tp93Vvi9Q1a-WEtrq0VXRQ/master.m3u8')">Ver Canal</button>
+    </div>
+    <div class="canal-box">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Logo_WAPA_Deportes.png/1200px-Logo_WAPA_Deportes.png" alt="WAPA Deportes">
+      <h3>WAPA Deportes</h3>
+      <button onclick="cambiarStream('https://wapa-deportes.com/live/stream.m3u8')">Ver Canal</button>
+    </div>
+    <div class="canal-box">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/8d/The_Weather_Channel_logo_2005-present.svg" alt="Weather Channel">
+      <h3>Weather Channel</h3>
+      <button onclick="cambiarStream('https://weather-lh.akamaihd.net/i/twc_1@92006/master.m3u8')">Ver Canal</button>
+    </div>
+    <div class="canal-box">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/NBC_logo_2022.svg/2560px-NBC_logo_2022.svg.png" alt="NBC">
+      <h3>NBC News Now</h3>
+      <button onclick="cambiarStream('https://nbcnewsnow-lh.akamaihd.net/i/nbcnewsnow_1@156630/master.m3u8')">Ver Canal</button>
+    </div>
   </div>
 
   <script>
