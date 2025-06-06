@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Canales en Vivo</title>
   <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
   <style>
@@ -110,6 +110,31 @@
     .canal-box button:hover {
       background-color: #0077cc;
     }
+
+    .hamburger-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #00aaff;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      cursor: pointer;
+      z-index: 9999;
+      transition: background 0.3s ease;
+    }
+    .hamburger-btn:hover {
+      background-color: #0077cc;
+    }
+    .hamburger-btn img {
+      width: 30px;
+      height: 30px;
+    }
   </style>
 </head>
 <body>
@@ -131,62 +156,41 @@
   <div id="player"></div>
 
   <div class="canales-container">
-
     <div class="canal-box">
-      <img src="https://pngimg.com/uploads/netflix/netflix_PNG15.png" alt="Netflix Eventos" />
+      <img src="https://img.icons8.com/color/480/netflix-desktop-app.png" alt="Netflix Eventos" />
       <h3>NetFlix Eventos</h3>
-      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-PPVDeportes2/PPVDeportes2/chunks.m3u8', 'NetFlix Eventos')">Reproducir</button>
+      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-PPVDeportes2/PPVDeportes2/chunks.m3u8', 'NetFlix Eventos')">Ver Canal</button>
     </div>
 
     <div class="canal-box">
-      <img src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png" alt="KQ-105 TV" />
-      <h3>KQ-105 TV</h3>
-      <button onclick="cambiarStream('https://live20.bozztv.com/akamaissh101/ssh101/kq105/chunks.m3u8', 'KQ-105 TV')">Reproducir</button>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/NBC_logo.svg/1200px-NBC_logo.svg.png" alt="NBC Puerto Rico" />
+      <h3>NBC Puerto Rico</h3>
+      <button onclick="cambiarStream('https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8', 'NBC Puerto Rico')">Ver Canal</button>
     </div>
 
     <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/Shaw_PPV.png" alt="PPV 01" />
-      <h3>PPV 01</h3>
-      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-PPV1/PPV1/chunks.m3u8', 'PPV 01')">Reproducir</button>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Telemundo_logo.svg/1200px-Telemundo_logo.svg.png" alt="Telemundo PR" />
+      <h3>Telemundo Puerto Rico</h3>
+      <button onclick="cambiarStream('https://edge.streann.com/live/8f8f23fbac0b4f3cbcd2891c74a4f238/playlist.m3u8', 'Telemundo Puerto Rico')">Ver Canal</button>
     </div>
 
     <div class="canal-box">
-      <img src="https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png" alt="NBA" />
-      <h3>NBA</h3>
-      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-NBA01/NBA01/chunks.m3u8', 'NBA')">Reproducir</button>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Logo_de_Sin_Fronteras_Television.png/640px-Logo_de_Sin_Fronteras_Television.png" alt="Sin Fronteras TV" />
+      <h3>Sin Fronteras TV</h3>
+      <button onclick="cambiarStream('https://sinfronteras.example.com/stream.m3u8', 'Sin Fronteras TV')">Ver Canal</button>
     </div>
 
     <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Major_League_Baseball_logo.svg/1200px-Major_League_Baseball_logo.svg.png" alt="MLB" />
-      <h3>MLB</h3>
-      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-MLB01/MLB01/chunks.m3u8', 'MLB')">Reproducir</button>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/CNN_International_logo.svg/1200px-CNN_International_logo.svg.png" alt="CNN en Español" />
+      <h3>CNN en Español</h3>
+      <button onclick="cambiarStream('https://cnn.example.com/stream.m3u8', 'CNN en Español')">Ver Canal</button>
     </div>
-
-    <div class="canal-box">
-      <img src="https://ewopr-puce.vercel.app/logo.png" alt="EWO TV" />
-      <h3>EWO TV</h3>
-      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-eWoPRTV/eWoPRTV/chunks.m3u8', 'EWO TV')">Reproducir</button>
-    </div>
-
-    <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/WWE_RAW_Logo_2025.svg" alt="WWE RAW Live" />
-      <h3>WWE RAW Live</h3>
-      <button onclick="window.location.href='rawlive.html'">Ver en Vivo</button>
-    </div>
-
-    <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c9/WWE_SmackDown_%282024%29_Logo.svg" alt="WWE SmackDown Live" />
-      <h3>WWE SmackDown Live</h3>
-      <button onclick="window.location.href='smackdownlive.html'">Ver en Vivo</button>
-    </div>
-
-    <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/en/f/fe/Baloncesto_Superior_Nacional.png" alt="BSN PR" />
-      <h3>BSN PR</h3>
-      <button onclick="cambiarStream('https://live20.bozztv.com/akamaissh101/ssh101/bsnpuertorico/playlist.m3u8', 'BSN PR')">Reproducir</button>
-    </div>
-
   </div>
+
+  <!-- Botón hamburguesa flotante -->
+  <button class="hamburger-btn" onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-PPVDeportes2/PPVDeportes2/chunks.m3u8', 'NetFlix Eventos')">
+    <img src="https://cdn-icons-png.flaticon.com/512/1828/1828859.png" alt="Menu" />
+  </button>
 
   <script>
     const player = new Clappr.Player({
