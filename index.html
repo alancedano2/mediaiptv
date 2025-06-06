@@ -13,7 +13,6 @@
       color: white;
       scroll-behavior: smooth;
     }
-
     nav {
       background-color: rgba(0, 0, 0, 0.7);
       padding: 15px 20px;
@@ -25,16 +24,13 @@
       top: 0;
       z-index: 1000;
     }
-
     nav img {
       height: 40px;
     }
-
     .nav-links {
       display: flex;
       gap: 25px;
     }
-
     .nav-links a {
       color: white;
       text-decoration: none;
@@ -44,30 +40,24 @@
       cursor: pointer;
       padding: 5px 0;
     }
-
     .nav-links a[href="/"] {
       color: #00aaff;
       border-bottom: 2px solid #00aaff;
     }
-
     .nav-links a:hover {
       color: #00aaff;
     }
-
     .live-title {
       text-align: center;
       font-size: 1.5rem;
       font-weight: bold;
-      margin: 20px 0 10px 0;
+      margin: 20px auto 10px auto;
       background-color: rgba(0, 170, 255, 0.1);
       padding: 10px 20px;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,170,255,0.4);
       max-width: 900px;
-      margin-left: auto;
-      margin-right: auto;
     }
-
     #player {
       width: 100%;
       max-width: 900px;
@@ -77,7 +67,6 @@
       border-radius: 12px;
       box-shadow: 0 0 15px rgba(0,170,255,0.7);
     }
-
     .canales-container {
       display: flex;
       flex-wrap: wrap;
@@ -87,7 +76,6 @@
       max-width: 960px;
       margin: 0 auto 60px auto;
     }
-
     .canal-box {
       background-color: rgba(0, 0, 0, 0.4);
       border-radius: 15px;
@@ -98,22 +86,18 @@
       transition: transform 0.2s ease;
       cursor: default;
     }
-
     .canal-box:hover {
       transform: scale(1.05);
     }
-
     .canal-box img {
       width: 100%;
       height: 100px;
       object-fit: contain;
       margin-bottom: 10px;
     }
-
     .canal-box h3 {
       margin: 10px 0;
     }
-
     .canal-box button {
       padding: 10px 15px;
       border: none;
@@ -123,7 +107,6 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-
     .canal-box button:hover {
       background-color: #0077cc;
     }
@@ -143,64 +126,66 @@
     </div>
   </nav>
 
-  <div class="live-title" id="liveTitle">EN VIVO: Seleccione un canal</div>
+  <div class="live-title" id="liveTitle">EN VIVO: NetFlix Eventos</div>
 
   <div id="player"></div>
 
   <div class="canales-container">
+
     <div class="canal-box">
-      <img src="https://pngimg.com/uploads/netflix/netflix_PNG15.png" alt="Netflix Eventos Logo" />
+      <img src="https://pngimg.com/uploads/netflix/netflix_PNG15.png" alt="Netflix Eventos" />
       <h3>NetFlix Eventos</h3>
-      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-PPVDeportes2/PPVDeportes2/chunks.m3u8', 'Regrese el 11 de julio para el evento Katie Taylor vs. Amanda Serrano 3')">Reproducir</button>
+      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-PPVDeportes2/PPVDeportes2/chunks.m3u8', 'NetFlix Eventos')">Reproducir</button>
     </div>
 
     <div class="canal-box">
-      <img src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png" alt="KQ-105 TV Logo" />
+      <img src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png" alt="KQ-105 TV" />
       <h3>KQ-105 TV</h3>
-      <button onclick="cambiarStream('https://live20.bozztv.com/akamaissh101/ssh101/kq105/chunks.m3u8', 'Fuera del aire')">Reproducir</button>
+      <button onclick="cambiarStream('https://live20.bozztv.com/akamaissh101/ssh101/kq105/chunks.m3u8', 'KQ-105 TV')">Reproducir</button>
     </div>
 
     <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/Shaw_PPV.png" alt="PPV 01 Logo" />
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/Shaw_PPV.png" alt="PPV 01" />
       <h3>PPV 01</h3>
-      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-PPV1/PPV1/chunks.m3u8', 'Premios Tu Musica Urbano')">Reproducir</button>
+      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-PPV1/PPV1/chunks.m3u8', 'PPV 01')">Reproducir</button>
     </div>
 
     <div class="canal-box">
-      <img src="https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png" alt="NBA Logo" />
+      <img src="https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png" alt="NBA" />
       <h3>NBA</h3>
-      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-NBA01/NBA01/chunks.m3u8', 'Regrese a las 8:00pm para el Game 1 de Indiana Pacers vs Oklahoma City Thunder')">Reproducir</button>
+      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-NBA01/NBA01/chunks.m3u8', 'NBA')">Reproducir</button>
     </div>
 
     <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Major_League_Baseball_logo.svg/1200px-Major_League_Baseball_logo.svg.png" alt="MLB Logo" />
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Major_League_Baseball_logo.svg/1200px-Major_League_Baseball_logo.svg.png" alt="MLB" />
       <h3>MLB</h3>
-      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-MLB01/MLB01/chunks.m3u8', 'New York Yankees vs Cleveland Guardians')">Reproducir</button>
+      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-MLB01/MLB01/chunks.m3u8', 'MLB')">Reproducir</button>
     </div>
 
     <div class="canal-box">
-      <img src="https://ewopr-puce.vercel.app/logo.png" alt="EWO TV Logo" />
+      <img src="https://ewopr-puce.vercel.app/logo.png" alt="EWO TV" />
       <h3>EWO TV</h3>
-      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-eWoPRTV/eWoPRTV/chunks.m3u8', 'Fuera del aire')">Reproducir</button>
+      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-eWoPRTV/eWoPRTV/chunks.m3u8', 'EWO TV')">Reproducir</button>
     </div>
 
     <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/WWE_RAW_Logo_2025.svg" alt="WWE RAW Live Logo" />
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/WWE_RAW_Logo_2025.svg" alt="WWE RAW Live" />
       <h3>WWE RAW Live</h3>
       <button onclick="window.location.href='rawlive.html'">Ver en Vivo</button>
     </div>
 
     <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c9/WWE_SmackDown_%282024%29_Logo.svg" alt="WWE SmackDown Live Logo" />
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c9/WWE_SmackDown_%282024%29_Logo.svg" alt="WWE SmackDown Live" />
       <h3>WWE SmackDown Live</h3>
       <button onclick="window.location.href='smackdownlive.html'">Ver en Vivo</button>
     </div>
 
     <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/en/f/fe/Baloncesto_Superior_Nacional.png" alt="Regrese a las 8:00pm para el juego de Criollos de Caguas vs Gigantes de Carolina" />
+      <img src="https://upload.wikimedia.org/wikipedia/en/f/fe/Baloncesto_Superior_Nacional.png" alt="BSN PR" />
       <h3>BSN PR</h3>
       <button onclick="cambiarStream('https://live20.bozztv.com/akamaissh101/ssh101/bsnpuertorico/playlist.m3u8', 'BSN PR')">Reproducir</button>
     </div>
+
   </div>
 
   <script>
