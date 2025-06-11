@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Canales en Vivo</title>
   <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
-  <script src="https://cdn.plyr.io/3.7.2/plyr.js"></script>
-  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.2/plyr.css">
   <style>
     body {
       margin: 0;
@@ -14,6 +12,50 @@
       background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
       color: white;
       scroll-behavior: smooth;
+    }
+    nav {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    nav img {
+      height: 40px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: color 0.3s;
+      cursor: pointer;
+      padding: 5px 0;
+    }
+    .nav-links a[href="/"] {
+      color: #00aaff;
+      border-bottom: 2px solid #00aaff;
+    }
+    .nav-links a:hover {
+      color: #00aaff;
+    }
+    #player {
+      width: 100%;
+      max-width: 900px;
+      height: 500px;
+      margin: 30px auto;
+      background-color: black;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,170,255,0.7);
+      position: relative;
     }
     .canales-container {
       display: flex;
@@ -29,14 +71,23 @@
       border-radius: 15px;
       padding: 15px;
       text-align: center;
-      width: 220px;
+      width: 200px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease;
+      cursor: default;
+      position: relative;
+    }
+    .canal-box:hover {
+      transform: scale(1.05);
     }
     .canal-box img {
       width: 100%;
       height: 100px;
       object-fit: contain;
       margin-bottom: 10px;
+    }
+    .canal-box h3 {
+      margin: 10px 0;
     }
     .canal-box button {
       padding: 10px 15px;
@@ -45,78 +96,192 @@
       background-color: #00aaff;
       color: white;
       cursor: pointer;
+      transition: background 0.3s;
     }
-    .player-container {
+    .canal-box button:hover {
+      background-color: #0077cc;
+    }
+
+    /* Estilos para la hamburguesa y menú dentro del cuadro del canal Netflix Eventos */
+    .hamburger {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 30px;
+      height: 25px;
+      cursor: pointer;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .hamburger div {
+      background-color: white;
+      height: 4px;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    .menu-opciones {
+      position: absolute;
+      top: 45px;
+      right: 10px;
+      background-color: rgba(0,0,0,0.85);
+      border-radius: 8px;
+      box-shadow: 0 0 10px #00aaff;
+      width: 140px;
+      display: none;
+      flex-direction: column;
+      padding: 10px 0;
+      z-index: 100;
+    }
+    .menu-opciones button {
+      background: none;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: left;
       width: 100%;
-      max-width: 900px;
-      height: 500px;
-      margin: 30px auto;
-      background-color: black;
-      border-radius: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
     }
+    .menu-opciones button:hover {
+      background-color: #0077cc;
+    }
+
   </style>
 </head>
 <body>
 
-  <div id="player" class="player-container"></div>
+  <nav>
+    <a href="/"><img src="logo.png" alt="Logo"></a>
+    <div class="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/peliculas.html">Zona de Películas</a>
+      <a href="/repeticiones.html">Repeticiones</a>
+      <a href="https://mediaformulaiptv.vercel.app/f1zone.html">F1</a>
+      <a href="/noticias.html">Noticias</a>
+      <a href="/tv.html">TV</a>
+    </div>
+  </nav>
+
+  <div id="player"></div>
 
   <div class="canales-container">
-    <!-- Canales ordenados alfabéticamente -->
+
+    <!-- Canal NetFlix Eventos con hamburguesa -->
+    <div class="canal-box" id="netflix-eventos-box">
+      <img src="https://pngimg.com/uploads/netflix/netflix_PNG15.png" alt="Netflix Eventos Logo" />
+      <h3>NetFlix Eventos</h3>
+
+      <div class="hamburger" id="hamburger-netflix" title="Opciones de idioma">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+
+      <div class="menu-opciones" id="menu-netflix">
+        <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-PPVDeportes2/PPVDeportes2/chunks.m3u8')">Español</button>
+        <button onclick="cambiarStream('https://live20.bozztv.com/akamaissh101/ssh101/wwerawenglish/playlist.m3u8')">Inglés</button>
+      </div>
+    </div>
+
+    <!-- Resto de canales -->
     <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/en/b/bc/KABC-TV-Logo-2021.png" alt="ABC 7" />
-      <h3>ABC 7</h3>
-      <button onclick="crearVideoJS('http://xpaneltv.com:8080/live/ArtuDamb/63815850/80362.ts')">Reproducir</button>
+      <img src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png" alt="KQ-105 TV Logo" />
+      <h3>KQ-105 TV</h3>
+      <button onclick="cambiarStream('https://live20.bozztv.com/akamaissh101/ssh101/kq105/chunks.m3u8')">Reproducir</button>
     </div>
 
     <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/DAZN_Logo_Master.svg/2048px-DAZN_Logo_Master.svg.png" alt="DAZN" />
-      <h3>DAZN</h3>
-      <button onclick="crearVideoJS('http://xpaneltv.com:8080/live/ArtuDamb/63815850/172129.ts')">Reproducir</button>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/Shaw_PPV.png" alt="PPV 01 Logo" />
+      <h3>PPV 01</h3>
+      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-PPV1/PPV1/chunks.m3u8')">Reproducir</button>
     </div>
 
     <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/7/70/DAZN_F1_logo.png" alt="DAZN F1" />
-      <h3>DAZN F1</h3>
-      <button onclick="crearVideoJS('http://xpaneltv.com:8080/live/ArtuDamb/63815850/231743.ts')">Reproducir</button>
+      <img src="https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png" alt="NBA Logo" />
+      <h3>NBA</h3>
+      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-NBA01/NBA01/chunks.m3u8')">Reproducir</button>
     </div>
 
     <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Espn_deportes.png" alt="ESPN Deportes" />
-      <h3>ESPN Deportes</h3>
-      <button onclick="crearVideoJS('http://xpaneltv.com:8080/live/ArtuDamb/63815850/284261.ts')">Reproducir</button>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Major_League_Baseball_logo.svg/1200px-Major_League_Baseball_logo.svg.png" alt="MLB Logo" />
+      <h3>MLB</h3>
+      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-MLB01/MLB01/chunks.m3u8')">Reproducir</button>
     </div>
 
     <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/2015_Fox_Sports_1_logo.svg/800px-2015_Fox_Sports_1_logo.svg.png" alt="Fox Sports 1" />
-      <h3>Fox Sports 1</h3>
-      <button onclick="crearVideoJS('http://xpaneltv.com:8080/live/ArtuDamb/63815850/51276.ts')">Reproducir</button>
+      <img src="https://ewopr-puce.vercel.app/logo.png" alt="EWO TV Logo" />
+      <h3>EWO TV</h3>
+      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-eWoPRTV/eWoPRTV/chunks.m3u8')">Reproducir</button>
     </div>
 
     <div class="canal-box">
-      <img src="https://bloximages.newyork1.vip.townnews.com/wapa.tv/content/tncms/custom/image/128579b4-6ac2-11ed-8535-d36612803c67.png" alt="Wapa Deportes" />
-      <h3>Wapa Deportes</h3>
-      <button onclick="crearVideoJS('http://playtv44.com:8080/live/983973559/123456/218827.ts')">Reproducir</button>
+      <img src="https://upload.wikimedia.org/wikipedia/en/f/fe/Baloncesto_Superior_Nacional.png" alt="BSN PR" />
+      <h3>BSN PR</h3>
+      <button onclick="cambiarStream('https://live20.bozztv.com/akamaissh101/ssh101/bsnpuertorico/playlist.m3u8', 'BSN PR')">Reproducir</button>
     </div>
 
-    <!-- Últimos canales sin orden alfabético -->
-    <div class="canal-box">
-      <img src="https://i.iheart.com/v3/re/new_assets/5f74a4a363b6fc169219d8aa" alt="Fidelity 95.7" />
-      <h3>Fidelity 95.7</h3>
-      <audio id="fidelity" controls>
-        <source src="https://server7.servistreaming.com/proxy/fidelity?mp=/stream?type=.mp3" type="audio/mp3">
-      </audio>
-    </div>
+  
+
   </div>
 
   <script>
-    function crearVideoJS(url) {
-      const playerContainer = document.getElementById('player');
-      playerContainer.innerHTML = `<video id="video-player" class="video-js vjs-default-skin" controls preload="auto" width="100%" height="100%">
-                                     <source src="${url}" type="application/x-mpegURL">
-                                   </video>`;
-      videojs('video-player', { fluid: true });
+    const playerContainer = document.getElementById('player');
+    let player = null;
+
+    // Función para crear y reproducir el stream
+    function crearPlayer(url) {
+      if(player) {
+        player.destroy();
+      }
+      player = new Clappr.Player({
+        parent: playerContainer,
+        source: url,
+        width: '100%',
+        height: '100%',
+        autoPlay: true,
+        mute: false,
+        poster: '',
+        mediacontrol: { seekbar: "#00aaff" },
+        playback: { hlsjsConfig: { maxBufferLength: 30 } },
+        plugins: [Clappr.FlasHLS]
+      });
     }
+
+    // Cambiar el stream cuando se selecciona un canal o idioma
+    function cambiarStream(url) {
+      crearPlayer(url);
+      // Si el menú hamburguesa está abierto, lo cerramos al elegir opción
+      const menu = document.getElementById('menu-netflix');
+      if(menu.style.display === 'flex') {
+        menu.style.display = 'none';
+      }
+    }
+
+    // Inicializamos con NetFlix Eventos Español al cargar la página
+    cambiarStream('https://live20.bozztv.com/giatv/giatv-PPVDeportes2/PPVDeportes2/chunks.m3u8');
+
+    // Control menú hamburguesa NetFlix Eventos
+    const hamburgerNetflix = document.getElementById('hamburger-netflix');
+    const menuNetflix = document.getElementById('menu-netflix');
+
+    hamburgerNetflix.addEventListener('click', () => {
+      if(menuNetflix.style.display === 'flex') {
+        menuNetflix.style.display = 'none';
+      } else {
+        menuNetflix.style.display = 'flex';
+      }
+    });
+
+    // Cerrar menú si se hace click fuera
+    document.addEventListener('click', (e) => {
+      if(!hamburgerNetflix.contains(e.target) && !menuNetflix.contains(e.target)) {
+        menuNetflix.style.display = 'none';
+      }
+    });
   </script>
 
 </body>
-</html>
+</html> 
