@@ -1,25 +1,285 @@
-.nav-links a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 1rem;
-  transition: all 0.3s ease-in-out;
-  position: relative;
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Stream de Canales</title>
 
-.nav-links a::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 100%;
-  height: 2px;
-  background-color: #00aaff;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease-in-out;
-}
+<!-- Video.js CSS -->
+<link href="https://vjs.zencdn.net/7.22.2/video-js.css" rel="stylesheet" />
 
-.nav-links a:hover::after {
-  transform: scaleX(1);
-}
+<!-- Plyr.js CSS -->
+<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: #eee;
+    margin: 0; padding: 0;
+  }
+  header {
+    background: #222;
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+  .canales {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+  }
+  .canal {
+    background: #222;
+    border-radius: 8px;
+    width: 320px;
+    padding: 10px;
+    box-sizing: border-box;
+    text-align: center;
+  }
+  .canal img {
+    max-width: 150px;
+    margin-bottom: 10px;
+  }
+  .video-js, .plyr__video-embed {
+    width: 100%;
+    height: 180px;
+    border-radius: 6px;
+  }
+</style>
+</head>
+<body>
+
+<header>Stream de Canales</header>
+
+<div class="canales">
+
+  <!-- ABC 7 -->
+  <div class="canal">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/b/bc/KABC-TV-Logo-2021.png" alt="ABC 7 Logo" />
+    <video
+      id="abc7"
+      class="video-js vjs-default-skin"
+      controls
+      preload="auto"
+      data-setup='{}'
+      playsinline
+      >
+      <source src="http://xpaneltv.com:8080/live/ArtuDamb/63815850/80362.ts" type="application/x-mpegURL" />
+    </video>
+  </div>
+
+  <!-- DAZN -->
+  <div class="canal">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/DAZN_Logo_Master.svg/2048px-DAZN_Logo_Master.svg.png" alt="DAZN Logo" />
+    <video
+      id="dazn"
+      class="video-js vjs-default-skin"
+      controls
+      preload="auto"
+      data-setup='{}'
+      playsinline
+      >
+      <source src="http://xpaneltv.com:8080/live/ArtuDamb/63815850/172129.ts" type="application/x-mpegURL" />
+    </video>
+  </div>
+
+  <!-- DAZN F1 -->
+  <div class="canal">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/7/70/DAZN_F1_logo.png" alt="DAZN F1 Logo" />
+    <video
+      id="daznf1"
+      class="video-js vjs-default-skin"
+      controls
+      preload="auto"
+      data-setup='{}'
+      playsinline
+      >
+      <source src="http://xpaneltv.com:8080/live/ArtuDamb/63815850/231743.ts" type="application/x-mpegURL" />
+    </video>
+  </div>
+
+  <!-- ESPN -->
+  <div class="canal">
+    <img src="https://static.vecteezy.com/system/resources/thumbnails/027/127/453/small_2x/espn-logo-espn-icon-transparent-free-png.png" alt="ESPN Logo" />
+    <video
+      id="espn"
+      class="video-js vjs-default-skin"
+      controls
+      preload="auto"
+      data-setup='{}'
+      playsinline
+      >
+      <source src="http://xpaneltv.com:8080/live/ArtuDamb/63815850/51265.ts" type="application/x-mpegURL" />
+    </video>
+  </div>
+
+  <!-- ESPN Deportes -->
+  <div class="canal">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Espn_deportes.png" alt="ESPN Deportes Logo" />
+    <video
+      id="espndeportes"
+      class="video-js vjs-default-skin"
+      controls
+      preload="auto"
+      data-setup='{}'
+      playsinline
+      >
+      <source src="http://xpaneltv.com:8080/live/ArtuDamb/63815850/284261.ts" type="application/x-mpegURL" />
+    </video>
+  </div>
+
+  <!-- Punto 2 (Clappr) -->
+  <div class="canal">
+    <img src="https://todaystelevisionpr.com/sites/local-satellitetv.com/pages/images/punto2-color-logo.png" alt="Punto 2 Logo" />
+    <div id="punto2-player"></div>
+  </div>
+
+  <!-- TeleOnce -->
+  <div class="canal">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Teleonce_Logo_2021_%28cropped%29.svg" alt="TeleOnce Logo" />
+    <video
+      id="teleonce"
+      class="video-js vjs-default-skin"
+      controls
+      preload="auto"
+      data-setup='{}'
+      playsinline
+      >
+      <source src="http://playtv44.com:8080/live/983973559/123456/218825.ts" type="application/x-mpegURL" />
+    </video>
+  </div>
+
+  <!-- Telemundo PR (Clappr) -->
+  <div class="canal">
+    <img src="https://upload.wikimedia.org/wikipedia/en/8/8d/Telemundo_Puerto_Rico.svg" alt="Telemundo PR Logo" />
+    <div id="telemundo-player"></div>
+  </div>
+
+  <!-- Wapa Deportes -->
+  <div class="canal">
+    <img src="https://bloximages.newyork1.vip.townnews.com/wapa.tv/content/tncms/custom/image/128579b4-6ac2-11ed-8535-d36612803c67.png" alt="Wapa Deportes Logo" />
+    <video
+      id="wapa"
+      class="video-js vjs-default-skin"
+      controls
+      preload="auto"
+      data-setup='{}'
+      playsinline
+      >
+      <source src="http://playtv44.com:8080/live/983973559/123456/218827.ts" type="application/x-mpegURL" />
+    </video>
+  </div>
+
+  <!-- WWE Network -->
+  <div class="canal">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/WWE_Logo.svg/640px-WWE_Logo.svg.png" alt="WWE Network Logo" />
+    <video
+      id="wwe"
+      class="video-js vjs-default-skin"
+      controls
+      preload="auto"
+      data-setup='{}'
+      playsinline
+      >
+      <source src="http://xpaneltv.com:8080/live/ArtuDamb/63815850/229821.ts" type="application/x-mpegURL" />
+    </video>
+  </div>
+
+  <!-- FOX Sports 1 -->
+  <div class="canal">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/2015_Fox_Sports_1_logo.svg/800px-2015_Fox_Sports_1_logo.svg.png" alt="Fox Sports 1 Logo" />
+    <video
+      id="foxsports1"
+      class="video-js vjs-default-skin"
+      controls
+      preload="auto"
+      data-setup='{}'
+      playsinline
+      >
+      <source src="http://xpaneltv.com:8080/live/ArtuDamb/63815850/51276.ts" type="application/x-mpegURL" />
+    </video>
+  </div>
+
+  <!-- Radios sin orden alfabético -->
+
+  <!-- Fidelity 95.7 -->
+  <div class="canal">
+    <img src="https://i.iheart.com/v3/re/new_assets/5f74a4a363b6fc169219d8aa" alt="Fidelity 95.7 Logo" />
+    <audio controls crossorigin>
+      <source src="https://server7.servistreaming.com/proxy/fidelity?mp=/stream?type=.mp3" type="audio/mpeg" />
+    </audio>
+  </div>
+
+  <!-- Hot102 -->
+  <div class="canal">
+    <img src="https://i.iheart.com/v3/re/assets.streams/65c1066ce88913ce26be1f55" alt="Hot102 Logo" />
+    <audio controls crossorigin>
+      <source src="https://server7.servistreaming.com/proxy/hot?mp=/stream?type=.mp3" type="audio/mpeg" />
+    </audio>
+  </div>
+
+  <!-- KQ105 -->
+  <div class="canal">
+    <img src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png" alt="KQ105 Logo" />
+    <div id="kq105-player"></div>
+  </div>
+
+  <!-- NuevaVida -->
+  <div class="canal">
+    <img src="https://nuevavida.fm/wp-content/uploads/2022/01/el-reto-de-los-te-logos-con-marlyn-arroyo_thumbnail.jpg" alt="NuevaVida Logo" />
+    <audio controls crossorigin>
+      <source src="https://panel.streamenviron.com:8154/stream.mp3" type="audio/mpeg" />
+    </audio>
+  </div>
+
+</div>
+
+<!-- Video.js JS -->
+<script src="https://vjs.zencdn.net/7.22.2/video.min.js"></script>
+
+<!-- Clappr JS -->
+<script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+
+<!-- Plyr.js JS -->
+<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+
+<script>
+  // Clappr players
+  var telemundoPlayer = new Clappr.Player({
+    parentId: '#telemundo-player',
+    source: 'https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8',
+    width: '100%',
+    height: 180,
+    autoPlay: false,
+    mute: false,
+  });
+
+  var punto2Player = new Clappr.Player({
+    parentId: '#punto2-player',
+    source: 'https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream2/master.m3u8',
+    width: '100%',
+    height: 180,
+    autoPlay: false,
+    mute: false,
+  });
+
+  var kq105Player = new Clappr.Player({
+    parentId: '#kq105-player',
+    source: 'https://televicentro.streamguys1.com/wkaqfm/playlist.m3u8?listeningSessionID=67acd14beee8d430_10287212_os9qEWaJ_MjA1LjIzNC4yMTIuMTQw_000000174Np&downloadSessionID=0&key=01c804a8663a4d6f85af625fe28c982aba4db423010cf5b57d1e62338ad0b8d5&aw_0_1st.playerId=kq105&source=kq105.com&us_privacy=1YNY&clientType=web&callLetters=WKAQ-FM&devicename=web-desktop&stationid=1846&dist=kq105.com&subscription_type=free&aw_0_1st.version=1.0_html5&aw_0_1st.playerid=kq105_floating_player',
+    width: '100%',
+    height: 180,
+    autoPlay: false,
+    mute: false,
+  });
+
+  // Plyr for audio players
+  const players = Plyr.setup('audio', {});
+
+</script>
+
+</body>
+</html>
