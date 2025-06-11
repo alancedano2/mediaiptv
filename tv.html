@@ -4,25 +4,63 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Canales en Vivo</title>
+
+  <!-- Clappr -->
   <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
-  <script src="https://cdn.plyr.io/3.7.2/plyr.js"></script>
-  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.2/plyr.css">
+  <!-- Video.js -->
+  <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+  <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
       color: white;
+      scroll-behavior: smooth;
     }
     nav {
       background-color: rgba(0, 0, 0, 0.7);
       padding: 15px 20px;
       display: flex;
+      align-items: center;
       justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
       position: sticky;
       top: 0;
       z-index: 1000;
     }
+    nav img {
+      height: 40px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: color 0.3s;
+      cursor: pointer;
+      padding: 5px 0;
+    }
+    .nav-links a:hover {
+      color: #00aaff;
+    }
+
+    #player {
+      width: 100%;
+      max-width: 900px;
+      height: 500px;
+      margin: 30px auto;
+      background-color: black;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,170,255,0.7);
+      position: relative;
+    }
+
     .canales-container {
       display: flex;
       flex-wrap: wrap;
@@ -30,14 +68,21 @@
       gap: 20px;
       padding: 20px;
       max-width: 960px;
-      margin: 0 auto;
+      margin: 0 auto 60px auto;
     }
+
     .canal-box {
       background-color: rgba(0, 0, 0, 0.4);
       border-radius: 15px;
       padding: 15px;
       text-align: center;
-      width: 220px;
+      width: 200px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease;
+      cursor: default;
+    }
+    .canal-box:hover {
+      transform: scale(1.05);
     }
     .canal-box img {
       width: 100%;
@@ -45,19 +90,25 @@
       object-fit: contain;
       margin-bottom: 10px;
     }
+    .canal-box h3 {
+      margin: 10px 0;
+    }
     .canal-box button {
-      padding: 10px;
+      padding: 10px 15px;
       border: none;
+      border-radius: 8px;
       background-color: #00aaff;
       color: white;
       cursor: pointer;
+      transition: background 0.3s;
     }
-    #player {
-      width: 100%;
-      max-width: 900px;
-      height: 500px;
-      margin: 30px auto;
-      background: black;
+    .canal-box button:hover {
+      background-color: #0077cc;
+    }
+
+    video {
+      width: 100% !important;
+      height: 100% !important;
       border-radius: 12px;
     }
   </style>
@@ -68,86 +119,85 @@
     <a href="/"><img src="logo.png" alt="Logo"></a>
     <div class="nav-links">
       <a href="/">Inicio</a>
-      <a href="/peliculas.html">Zona de Películas</a>
-      <a href="/repeticiones.html">Repeticiones</a>
-      <a href="https://mediaformulaiptv.vercel.app/f1zone.html">F1</a>
-      <a href="/noticias.html">Noticias</a>
-      <a href="/tv.html">TV</a>
+      <a href="#">Deportes</a>
+      <a href="#">Noticias</a>
+      <a href="#">TV</a>
     </div>
   </nav>
 
   <div id="player"></div>
 
   <div class="canales-container">
-    <!-- Canales ordenados alfabéticamente -->
-    <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/en/b/bc/KABC-TV-Logo-2021.png" alt="ABC 7" />
-      <h3>ABC 7</h3>
-      <button onclick="crearVideoJS('http://xpaneltv.com:8080/live/ArtuDamb/63815850/80362.ts')">Reproducir</button>
-    </div>
 
     <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/DAZN_Logo_Master.svg/2048px-DAZN_Logo_Master.svg.png" alt="DAZN" />
-      <h3>DAZN</h3>
-      <button onclick="crearVideoJS('http://xpaneltv.com:8080/live/ArtuDamb/63815850/172129.ts')">Reproducir</button>
-    </div>
-
-    <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/7/70/DAZN_F1_logo.png" alt="DAZN F1" />
-      <h3>DAZN F1</h3>
-      <button onclick="crearVideoJS('http://xpaneltv.com:8080/live/ArtuDamb/63815850/231743.ts')">Reproducir</button>
+      <img src="https://bloximages.newyork1.vip.townnews.com/wapa.tv/content/tncms/custom/image/128579b4-6ac2-11ed-8535-d36612803c67.png" alt="Wapa Deportes" />
+      <h3>Wapa Deportes</h3>
+      <button onclick="reproducirVideoJS('http://playtv44.com:8080/live/983973559/123456/218827.ts')">Reproducir</button>
     </div>
 
     <div class="canal-box">
       <img src="https://upload.wikimedia.org/wikipedia/en/8/8d/Telemundo_Puerto_Rico.svg" alt="Telemundo PR" />
       <h3>Telemundo PR</h3>
-      <button onclick="crearClappr('https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8')">Reproducir</button>
+      <button onclick="reproducirClappr('https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8')">Reproducir</button>
     </div>
 
     <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/Shaw_PPV.png" alt="Fox Sports 1" />
-      <h3>Fox Sports 1</h3>
-      <button onclick="crearVideoJS('http://xpaneltv.com:8080/live/ArtuDamb/63815850/51276.ts')">Reproducir</button>
+      <img src="https://todaystelevisionpr.com/sites/local-satellitetv.com/pages/images/punto2-color-logo.png" alt="Punto 2" />
+      <h3>Punto 2</h3>
+      <button onclick="reproducirClappr('https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream2/master.m3u8')">Reproducir</button>
     </div>
 
     <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/0/03/WWE_Logo.svg" alt="WWE Network" />
-      <h3>WWE Network</h3>
-      <button onclick="crearVideoJS('http://xpaneltv.com:8080/live/ArtuDamb/63815850/229821.ts')">Reproducir</button>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/TeleOnce_Puerto_Rico_logo_2021.png/320px-TeleOnce_Puerto_Rico_logo_2021.png" alt="TeleOnce" />
+      <h3>TeleOnce</h3>
+      <button onclick="reproducirClappr('https://livecdnh1.tvnow.com/teleonce/teleonce/playlist.m3u8')">Reproducir</button>
     </div>
 
-    <!-- Últimos canales sin orden alfabético -->
-    <div class="canal-box">
-      <img src="https://i.iheart.com/v3/re/new_assets/5f74a4a363b6fc169219d8aa" alt="Fidelity 95.7" />
-      <h3>Fidelity 95.7</h3>
-      <audio controls>
-        <source src="https://server7.servistreaming.com/proxy/fidelity?mp=/stream?type=.mp3" type="audio/mp3">
-      </audio>
-    </div>
-
-    <div class="canal-box">
-      <img src="https://i.iheart.com/v3/re/assets.streams/65c1066ce88913ce26be1f55" alt="Hot102" />
-      <h3>Hot102</h3>
-      <audio controls>
-        <source src="https://server7.servistreaming.com/proxy/hot?mp=/stream?type=.mp3" type="audio/mp3">
-      </audio>
-    </div>
   </div>
 
   <script>
-    function crearVideoJS(url) {
-      const playerContainer = document.getElementById('player');
-      playerContainer.innerHTML = `<video class="video-js vjs-default-skin" controls preload="auto" width="100%" height="100%">
-                                     <source src="${url}" type="application/x-mpegURL">
-                                   </video>`;
-      videojs(playerContainer.firstChild, { fluid: true });
+    const playerContainer = document.getElementById('player');
+    let currentPlayer = null;
+
+    function limpiarPlayer() {
+      if (currentPlayer) {
+        if (typeof currentPlayer.dispose === 'function') {
+          currentPlayer.dispose(); // Para video.js
+        } else if (typeof currentPlayer.destroy === 'function') {
+          currentPlayer.destroy(); // Para Clappr
+        }
+        currentPlayer = null;
+        playerContainer.innerHTML = '';
+      }
     }
 
-    function crearClappr(url) {
-      const playerContainer = document.getElementById('player');
-      playerContainer.innerHTML = '';
-      new Clappr.Player({ source: url, parent: playerContainer, autoPlay: true });
+    function reproducirClappr(url) {
+      limpiarPlayer();
+      currentPlayer = new Clappr.Player({
+        parent: playerContainer,
+        source: url,
+        width: '100%',
+        height: '100%',
+        autoPlay: true,
+        mute: false,
+        mediacontrol: { seekbar: "#00aaff" },
+        playback: { hlsjsConfig: { maxBufferLength: 30 } }
+      });
     }
+
+    function reproducirVideoJS(url) {
+      limpiarPlayer();
+      const video = document.createElement('video');
+      video.className = 'video-js vjs-default-skin';
+      video.setAttribute('controls', true);
+      video.setAttribute('autoplay', true);
+      video.innerHTML = `<source src="${url}" type="application/x-mpegURL">`;
+      playerContainer.appendChild(video);
+      currentPlayer = videojs(video);
+    }
+
+    // Cargar canal por defecto (opcional)
+    reproducirClappr('https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8');
   </script>
 
 </body>
