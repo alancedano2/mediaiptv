@@ -2,149 +2,198 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TV | Zona</title>
+  <title>Canales en Vivo</title>
+  <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+  <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
-      color: white;
+      background: #111;
+      color: #fff;
+      padding: 20px;
     }
-
-    nav {
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 15px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    nav img {
-      height: 40px;
-    }
-
-    nav .nav-links a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1rem;
-      margin-left: 20px;
-      transition: color 0.3s;
-      cursor: pointer;
-    }
-
-    nav .nav-links a:hover {
-      color: #00aaff;
-    }
-
-    .tv-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 30px;
-      justify-content: center;
-      padding: 40px 20px;
-    }
-
-    #player {
-      width: 640px;
-      height: 360px;
+    .canal {
+      margin-bottom: 40px;
+      padding: 20px;
+      background: #1e1e1e;
       border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.4);
     }
-
-    .channel-list {
-      max-width: 300px;
-    }
-
-    .channel-list h2 {
-      margin-bottom: 15px;
-      text-align: center;
-    }
-
-    .channel-button {
-      display: block;
-      width: 100%;
-      background-color: #00aaff;
-      color: white;
-      font-weight: bold;
-      padding: 10px;
+    .canal img {
+      max-height: 50px;
       margin-bottom: 10px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s;
     }
-
-    .channel-button:hover {
-      background-color: #0077cc;
+    .canal h3 {
+      margin-top: 10px;
     }
-
-    @media (max-width: 768px) {
-      .tv-container {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      #player {
-        width: 100%;
-        max-width: 100%;
-        height: auto;
-      }
-
-      .channel-list {
-        width: 100%;
-        max-width: 400px;
-      }
+    video, .player, .plyr__video-embed {
+      width: 100%;
+      max-width: 800px;
+      height: 450px;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
 
-<nav>
-  <a href="/"><img src="logo.png" alt="Logo"></a>
-  <div class="nav-links">
-    <a href="/">Inicio</a>
-    <a href="/peliculas.html">Zona de Películas</a>
-    <a href="/repeticiones.html">Repeticiones</a>
-    <a href="https://mediaformulaiptv.vercel.app/f1zone.html">F1</a>
-    <a href="/noticias.html">Noticias</a>
-    <a href="/tv.html">TV</a>
+  <!-- ABC 7 -->
+  <div class="canal">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/b/bc/KABC-TV-Logo-2021.png" alt="ABC 7" />
+    <h3>ABC 7</h3>
+    <video-js id="abc7" class="video-js" controls preload="auto">
+      <source src="http://xpaneltv.com:8080/live/ArtuDamb/63815850/80362.ts" type="application/x-mpegURL" />
+    </video-js>
   </div>
-</nav>
 
-<div class="tv-container">
-  <div id="player"></div>
-
-  <div class="channel-list">
-    <h2>Canales en Vivo</h2>
-    <button class="channel-button" onclick="changeChannel('https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8')">Telemundo PR</button>
-    <button class="channel-button" onclick="changeChannel('https://dai.google.com/linear/hls/event/BJtkN1R7QnS5uTxwY9B4lw/master.m3u8')">WAPA TV</button>
-    <button class="channel-button" onclick="changeChannel('https://livestream.gruporadioformula.com/RadioFormula/ip/master.m3u8')">Radio Fórmula</button>
-    <button class="channel-button" onclick="changeChannel('https://stream.une.net.co/colegiomayor/streams/live.m3u8')">Canal Universitario</button>
+  <!-- DAZN -->
+  <div class="canal">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/DAZN_Logo_Master.svg/2048px-DAZN_Logo_Master.svg.png" alt="DAZN" />
+    <h3>DAZN</h3>
+    <video-js id="dazn" class="video-js" controls preload="auto">
+      <source src="http://xpaneltv.com:8080/live/ArtuDamb/63815850/172129.ts" type="application/x-mpegURL" />
+    </video-js>
   </div>
-</div>
 
-<script>
-  let player = new Clappr.Player({
-    source: "https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8",
-    parentId: "#player",
-    autoPlay: true,
-    mute: false,
-    width: "100%",
-    height: "100%",
-  });
+  <!-- DAZN F1 -->
+  <div class="canal">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/7/70/DAZN_F1_logo.png" alt="DAZN F1" />
+    <h3>DAZN F1</h3>
+    <video-js id="daznf1" class="video-js" controls preload="auto">
+      <source src="http://xpaneltv.com:8080/live/ArtuDamb/63815850/231743.ts" type="application/x-mpegURL" />
+    </video-js>
+  </div>
 
-  function changeChannel(url) {
-    player.load(url);
-    player.play();
-  }
-</script>
+  <!-- ESPN -->
+  <div class="canal">
+    <img src="https://static.vecteezy.com/system/resources/thumbnails/027/127/453/small_2x/espn-logo-espn-icon-transparent-free-png.png" alt="ESPN" />
+    <h3>ESPN</h3>
+    <video-js id="espn" class="video-js" controls preload="auto">
+      <source src="http://xpaneltv.com:8080/live/ArtuDamb/63815850/51265.ts" type="application/x-mpegURL" />
+    </video-js>
+  </div>
 
+  <!-- ESPN Deportes -->
+  <div class="canal">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Espn_deportes.png" alt="ESPN Deportes" />
+    <h3>ESPN Deportes</h3>
+    <video-js id="espndep" class="video-js" controls preload="auto">
+      <source src="http://xpaneltv.com:8080/live/ArtuDamb/63815850/284261.ts" type="application/x-mpegURL" />
+    </video-js>
+  </div>
+
+  <!-- Fox Sports 1 -->
+  <div class="canal">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/2015_Fox_Sports_1_logo.svg/800px-2015_Fox_Sports_1_logo.svg.png" alt="Fox Sports 1" />
+    <h3>Fox Sports 1</h3>
+    <video-js id="fs1" class="video-js" controls preload="auto">
+      <source src="http://xpaneltv.com:8080/live/ArtuDamb/63815850/51276.ts" type="application/x-mpegURL" />
+    </video-js>
+  </div>
+
+  <!-- Punto 2 -->
+  <div class="canal">
+    <img src="https://todaystelevisionpr.com/sites/local-satellitetv.com/pages/images/punto2-color-logo.png" alt="Punto 2" />
+    <h3>Punto 2</h3>
+    <div id="punto2" class="player"></div>
+    <script>
+      new Clappr.Player({
+        source: "https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream2/master.m3u8",
+        parentId: "#punto2",
+        width: "100%",
+        height: 450
+      });
+    </script>
+  </div>
+
+  <!-- Telemundo PR -->
+  <div class="canal">
+    <img src="https://upload.wikimedia.org/wikipedia/en/8/8d/Telemundo_Puerto_Rico.svg" alt="Telemundo PR" />
+    <h3>Telemundo PR</h3>
+    <div id="telemundo" class="player"></div>
+    <script>
+      new Clappr.Player({
+        source: "https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8",
+        parentId: "#telemundo",
+        width: "100%",
+        height: 450
+      });
+    </script>
+  </div>
+
+  <!-- TeleOnce -->
+  <div class="canal">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Teleonce_Logo_2021_%28cropped%29.svg" alt="TeleOnce" />
+    <h3>TeleOnce</h3>
+    <video-js id="teleonce" class="video-js" controls preload="auto">
+      <source src="http://playtv44.com:8080/live/983973559/123456/218825.ts" type="application/x-mpegURL" />
+    </video-js>
+  </div>
+
+  <!-- Wapa Deportes -->
+  <div class="canal">
+    <img src="https://bloximages.newyork1.vip.townnews.com/wapa.tv/content/tncms/custom/image/128579b4-6ac2-11ed-8535-d36612803c67.png" alt="Wapa Deportes" />
+    <h3>Wapa Deportes</h3>
+    <video-js id="wapa" class="video-js" controls preload="auto">
+      <source src="http://playtv44.com:8080/live/983973559/123456/218827.ts" type="application/x-mpegURL" />
+    </video-js>
+  </div>
+
+  <!-- WWE Network -->
+  <div class="canal">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/WWE_Logo.svg/640px-WWE_Logo.svg.png" alt="WWE Network" />
+    <h3>WWE Network</h3>
+    <video-js id="wwe" class="video-js" controls preload="auto">
+      <source src="http://xpaneltv.com:8080/live/ArtuDamb/63815850/229821.ts" type="application/x-mpegURL" />
+    </video-js>
+  </div>
+
+  <!-- === RADIOS (sin orden) === -->
+
+  <!-- Fidelity 95.7 -->
+  <div class="canal">
+    <img src="https://i.iheart.com/v3/re/new_assets/5f74a4a363b6fc169219d8aa" alt="Fidelity 95.7" />
+    <h3>Fidelity 95.7</h3>
+    <audio class="plyr" controls>
+      <source src="https://server7.servistreaming.com/proxy/fidelity?mp=/stream?type=.mp3" type="audio/mp3" />
+    </audio>
+  </div>
+
+  <!-- Hot 102 -->
+  <div class="canal">
+    <img src="https://i.iheart.com/v3/re/assets.streams/65c1066ce88913ce26be1f55" alt="Hot 102" />
+    <h3>Hot 102</h3>
+    <audio class="plyr" controls>
+      <source src="https://server7.servistreaming.com/proxy/hot?mp=/stream?type=.mp3" type="audio/mp3" />
+    </audio>
+  </div>
+
+  <!-- KQ105 -->
+  <div class="canal">
+    <img src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png" alt="KQ105" />
+    <h3>KQ105</h3>
+    <div id="kq105" class="player"></div>
+    <script>
+      new Clappr.Player({
+        source: "https://televicentro.streamguys1.com/wkaqfm/playlist.m3u8",
+        parentId: "#kq105",
+        width: "100%",
+        height: 100,
+        autoPlay: false
+      });
+    </script>
+  </div>
+
+  <!-- Nueva Vida -->
+  <div class="canal">
+    <img src="https://nuevavida.fm/wp-content/uploads/2022/01/el-reto-de-los-te-logos-con-marlyn-arroyo_thumbnail.jpg" alt="Nueva Vida" />
+    <h3>Nueva Vida</h3>
+    <audio class="plyr" controls>
+      <source src="https://panel.streamenviron.com:8154/stream.mp3" type="audio/mp3" />
+    </audio>
+  </div>
+
+  <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+  <script>const players = Plyr.setup('.plyr');</script>
 </body>
 </html>
