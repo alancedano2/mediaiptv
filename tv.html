@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TV | StreamVerse</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://vjs.zencdn.net/8.5.2/video-js.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+  <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+</head>
+<body>
+
+<header>
+  <div class="navbar">
+    <div class="logo">StreamVerse</div>
+    <div class="hamburger">☰</div>
+  </div>
+</header>
+
+<main class="main-tv">
+  <section class="player-container">
+    <div id="player-area">
+      <!-- Aquí se inyectará el reproductor dinámicamente -->
+    </div>
+  </section>
+
+  <section class="channels">
+    <h2>Canales en Vivo</h2>
+    <div class="channel-grid">
+      <!-- Canales inyectados aquí -->
+    </div>
+  </section>
+</main>
+
+<script>
+  const channels = [
+    {
+      name: "ABC 7",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/b/bc/KABC-TV-Logo-2021.png",
+      stream: "http://xpaneltv.com:8080/live/ArtuDamb/63815850/80362.ts",
+      type: "videojs"
+    },
+    {
+      name: "DAZN",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/DAZN_Logo_Master.svg/2048px-DAZN_Logo_Master.svg.png",
+      stream: "http://xpaneltv.com:8080/live/ArtuDamb/63815850/172129.ts",
+      type: "videojs"
+    },
+    {
+      name: "DAZN F1",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/7/70/DAZN_F1_logo.png",
+      stream: "http://xpaneltv.com:8080/live/ArtuDamb/63815850/231743.ts",
+      type: "videojs"
+    },
+    {
+      name: "ESPN",
+      logo: "https://static.vecteezy.com/system/resources/thumbnails/027/127/453/small_2x/espn-logo-espn-icon-transparent-free-png.png",
+      stream: "http://xpaneltv.com:8080/live/ArtuDamb/63815850/51265.ts",
+      type: "videojs"
+    },
+    {
+      name: "ESPN Deportes",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/8/82/Espn_deportes.png",
+      stream: "http://xpaneltv.com:8080/live/ArtuDamb/63815850/284261.ts",
+      type: "videojs"
+    },
+    {
+      name: "Fox Sports 1",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/2015_Fox_Sports_1_logo.svg/800px-2015_Fox_Sports_1_logo.svg.png",
+      stream: "http://xpaneltv.com:8080/live/ArtuDamb/63815850/51276.ts",
+      type: "videojs"
+    },
+    {
+      name: "Punto 2",
+      logo: "https://todaystelevisionpr.com/sites/local-satellitetv.com/pages/images/punto2-color-logo.png",
+      stream: "https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream2/master.m3u8",
+      type: "clappr"
+    },
+    {
+      name: "TeleOnce",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/a/a5/Teleonce_Logo_2021_%28cropped%29.svg",
+      stream: "http://playtv44.com:8080/live/983973559/123456/218825.ts",
+      type: "videojs"
+    },
+    {
+      name: "Telemundo PR",
+      logo: "https://upload.wikimedia.org/wikipedia/en/8/8d/Telemundo_Puerto_Rico.svg",
+      stream: "https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8",
+      type: "clappr"
+    },
+    {
+      name: "Wapa Deportes",
+      logo: "https://bloximages.newyork1.vip.townnews.com/wapa.tv/content/tncms/custom/image/128579b4-6ac2-11ed-8535-d36612803c67.png",
+      stream: "http://playtv44.com:8080/live/983973559/123456/218827.ts",
+      type: "videojs"
+    },
+    {
+      name: "WWE Network",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/WWE_Logo.svg/640px-WWE_Logo.svg.png",
+      stream: "http://xpaneltv.com:8080/live/ArtuDamb/63815850/229821.ts",
+      type: "videojs"
+    },
+    // Radios
+    {
+      name: "Fidelity 95.7",
+      logo: "https://i.iheart.com/v3/re/new_assets/5f74a4a363b6fc169219d8aa",
+      stream: "https://server7.servistreaming.com/proxy/fidelity?mp=/stream?type=.mp3",
+      type: "plyr"
+    },
+    {
+      name: "Hot102",
+      logo: "https://i.iheart.com/v3/re/assets.streams/65c1066ce88913ce26be1f55",
+      stream: "https://server7.servistreaming.com/proxy/hot?mp=/stream?type=.mp3",
+      type: "plyr"
+    },
+    {
+      name: "KQ105",
+      logo: "https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png",
+      stream: "https://televicentro.streamguys1.com/wkaqfm/playlist.m3u8",
+      type: "clappr"
+    },
+    {
+      name: "NuevaVida",
+      logo: "https://nuevavida.fm/wp-content/uploads/2022/01/el-reto-de-los-te-logos-con-marlyn-arroyo_thumbnail.jpg",
+      stream: "https://panel.streamenviron.com:8154/stream.mp3",
+      type: "plyr"
+    }
+  ];
+
+  const grid = document.querySelector('.channel-grid');
+  const playerArea = document.getElementById('player-area');
+
+  channels.forEach(channel => {
+    const card = document.createElement('div');
+    card.classList.add('channel-card');
+    card.innerHTML = `<img src="${channel.logo}" alt="${channel.name}" title="${channel.name}">`;
+    card.onclick = () => loadPlayer(channel);
+    grid.appendChild(card);
+  });
+
+  function loadPlayer({ stream, type }) {
+    playerArea.innerHTML = '';
+    if (type === 'videojs') {
+      const video = document.createElement('video');
+      video.className = 'video-js vjs-default-skin';
+      video.controls = true;
+      video.autoplay = true;
+      video.innerHTML = `<source src="${stream}" type="application/x-mpegURL">`;
+      playerArea.appendChild(video);
+      videojs(video);
+    } else if (type === 'clappr') {
+      const player = new Clappr.Player({
+        source: stream,
+        parentId: '#player-area',
+        autoPlay: true
+      });
+    } else if (type === 'plyr') {
+      const audio = document.createElement('audio');
+      audio.controls = true;
+      audio.autoplay = true;
+      audio.src = stream;
+      audio.className = 'plyr-audio';
+      playerArea.appendChild(audio);
+      new Plyr(audio);
+    }
+  }
+</script>
+
+</body>
+</html>
