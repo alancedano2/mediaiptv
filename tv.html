@@ -15,6 +15,50 @@
       color: white;
       scroll-behavior: smooth;
     }
+    nav {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    nav img {
+      height: 40px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: color 0.3s;
+      cursor: pointer;
+      padding: 5px 0;
+    }
+    .nav-links a[href="/"] {
+      color: #00aaff;
+      border-bottom: 2px solid #00aaff;
+    }
+    .nav-links a:hover {
+      color: #00aaff;
+    }
+    #player {
+      width: 100%;
+      max-width: 900px;
+      height: 500px;
+      margin: 30px auto;
+      background-color: black;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,170,255,0.7);
+      position: relative;
+    }
     .canales-container {
       display: flex;
       flex-wrap: wrap;
@@ -46,19 +90,23 @@
       color: white;
       cursor: pointer;
     }
-    .player-container {
-      width: 100%;
-      max-width: 900px;
-      height: 500px;
-      margin: 30px auto;
-      background-color: black;
-      border-radius: 12px;
-    }
   </style>
 </head>
 <body>
 
-  <div id="player" class="player-container"></div>
+  <nav>
+    <a href="/"><img src="logo.png" alt="Logo"></a>
+    <div class="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/peliculas.html">Zona de Películas</a>
+      <a href="/repeticiones.html">Repeticiones</a>
+      <a href="https://mediaformulaiptv.vercel.app/f1zone.html">F1</a>
+      <a href="/noticias.html">Noticias</a>
+      <a href="/tv.html">TV</a>
+    </div>
+  </nav>
+
+  <div id="player"></div>
 
   <div class="canales-container">
     <!-- Canales ordenados alfabéticamente -->
@@ -75,27 +123,9 @@
     </div>
 
     <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/7/70/DAZN_F1_logo.png" alt="DAZN F1" />
-      <h3>DAZN F1</h3>
-      <button onclick="crearVideoJS('http://xpaneltv.com:8080/live/ArtuDamb/63815850/231743.ts')">Reproducir</button>
-    </div>
-
-    <div class="canal-box">
       <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Espn_deportes.png" alt="ESPN Deportes" />
       <h3>ESPN Deportes</h3>
       <button onclick="crearVideoJS('http://xpaneltv.com:8080/live/ArtuDamb/63815850/284261.ts')">Reproducir</button>
-    </div>
-
-    <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/2015_Fox_Sports_1_logo.svg/800px-2015_Fox_Sports_1_logo.svg.png" alt="Fox Sports 1" />
-      <h3>Fox Sports 1</h3>
-      <button onclick="crearVideoJS('http://xpaneltv.com:8080/live/ArtuDamb/63815850/51276.ts')">Reproducir</button>
-    </div>
-
-    <div class="canal-box">
-      <img src="https://bloximages.newyork1.vip.townnews.com/wapa.tv/content/tncms/custom/image/128579b4-6ac2-11ed-8535-d36612803c67.png" alt="Wapa Deportes" />
-      <h3>Wapa Deportes</h3>
-      <button onclick="crearVideoJS('http://playtv44.com:8080/live/983973559/123456/218827.ts')">Reproducir</button>
     </div>
 
     <!-- Últimos canales sin orden alfabético -->
