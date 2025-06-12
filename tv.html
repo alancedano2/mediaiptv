@@ -2,166 +2,67 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Canales en Vivo</title>
+  <link href="https://vjs.zencdn.net/8.3.0/video-js.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
-  <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
-  <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
-
+  <script src="https://vjs.zencdn.net/8.3.0/video.min.js"></script>
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background: #0d1b2a;
-      color: white;
-    }
-    nav {
-      background: rgba(0,0,0,0.8);
-      padding: 15px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    nav img {
-      height: 40px;
-    }
-    .nav-links a {
-      margin-left: 20px;
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    #player {
-      width: 100%;
-      max-width: 900px;
-      height: 500px;
-      margin: 30px auto;
-      background-color: black;
-      border-radius: 12px;
-    }
-    .canales-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      padding: 20px;
-    }
-    .canal-box {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 10px;
-      padding: 15px;
+      background: #111;
+      color: #fff;
       text-align: center;
-      width: 200px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
-    .canal-box img {
-      width: 100%;
-      height: 100px;
-      object-fit: contain;
+    .canal {
+      margin-bottom: 30px;
+    }
+    .logo {
+      width: 120px;
       margin-bottom: 10px;
     }
-    .canal-box button {
-      padding: 8px 12px;
-      border: none;
-      background: #00aaff;
-      color: white;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .canal-box button:hover {
-      background: #0077cc;
-    }
-    .en-mantenimiento {
-      color: #ff6666;
-      font-weight: bold;
-      margin-top: 10px;
+    .player {
+      width: 80%;
+      max-width: 720px;
+      margin: 0 auto;
     }
   </style>
 </head>
 <body>
+  <h1>Canales en Vivo</h1>
 
-  <nav>
-    <img src="logo.png" alt="Logo">
-    <div class="nav-links">
-      <a href="#">Inicio</a>
-      <a href="#">TV</a>
-      <a href="#">Deportes</a>
+  <!-- WAPA Deportes con Video.js -->
+  <div class="canal">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/WAPA_Deportes_logo.png" class="logo" alt="WAPA Deportes"/>
+    <div class="player">
+      <video id="wapaPlayer" class="video-js vjs-default-skin" controls preload="auto" width="720" height="405"></video>
     </div>
-  </nav>
+  </div>
 
-  <div id="player"></div>
-
-  <div class="canales-container">
-
-    <!-- Wapa Deportes -->
-    <div class="canal-box">
-      <img src="https://bloximages.newyork1.vip.townnews.com/wapa.tv/content/tncms/custom/image/128579b4-6ac2-11ed-8535-d36612803c67.png" alt="Wapa Deportes">
-      <h3>Wapa Deportes</h3>
-      <button onclick="reproducirVideoJS('http://playtvpremium.xyz:8080/live/595991351780py/090325play/848317.ts')">Reproducir</button>
-    </div>
-
-    <!-- Telemundo PR -->
-    <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/en/8/8d/Telemundo_Puerto_Rico.svg" alt="Telemundo PR">
-      <h3>Telemundo PR</h3>
-      <button onclick="reproducirClappr('https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8')">Reproducir</button>
-    </div>
-
-    <!-- Punto 2 -->
-    <div class="canal-box">
-      <img src="https://todaystelevisionpr.com/sites/local-satellitetv.com/pages/images/punto2-color-logo.png" alt="Punto 2">
-      <h3>Punto 2</h3>
-      <button onclick="reproducirClappr('https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream2/master.m3u8')">Reproducir</button>
-    </div>
-
-    <!-- TeleOnce -->
-    <div class="canal-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Teleonce_Logo_2021_%28cropped%29.svg" alt="TeleOnce">
-      <h3>TeleOnce</h3>
-      <button onclick="reproducirVideoJS('http://playtvpremium.xyz:8080/live/595991351780py/090325play/372002.ts')">Reproducir</button>
-    </div>
-
-    <!-- Los demás canales se mantienen igual... -->
-
+  <!-- Canal Proxy Clappr -->
+  <div class="canal">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Telemundo_Puerto_Rico_Logo.png" class="logo" alt="Telemundo PR"/>
+    <div class="player" id="telemundoPlayer"></div>
   </div>
 
   <script>
-    const playerContainer = document.getElementById('player');
-    let currentPlayer = null;
+    const proxyBase = "http://192.168.1.18/proxy?url="; // <-- PON AQUÍ TU IP LOCAL
 
-    function limpiarPlayer() {
-      if (currentPlayer && typeof currentPlayer.dispose === 'function') {
-        currentPlayer.dispose();
-      }
-      if (currentPlayer && typeof currentPlayer.destroy === 'function') {
-        currentPlayer.destroy();
-      }
-      playerContainer.innerHTML = '';
-      currentPlayer = null;
-    }
+    // WAPA Deportes (con proxy y Video.js)
+    const wapaURL = proxyBase + encodeURIComponent("http://playtvpremium.xyz:8080/live/595991351780py/090325play/372002.m3u8");
+    const wapaPlayer = videojs('wapaPlayer');
+    wapaPlayer.src({ type: 'application/x-mpegURL', src: wapaURL });
 
-    function reproducirClappr(url) {
-      limpiarPlayer();
-      currentPlayer = new Clappr.Player({
-        parent: playerContainer,
-        source: url,
-        width: '100%',
-        height: '100%',
-        autoPlay: true,
-        mute: false
-      });
-    }
-
-    function reproducirVideoJS(url) {
-      limpiarPlayer();
-      const videoHTML = `
-        <video id="videojs-player" class="video-js vjs-default-skin" controls autoplay muted width="100%" height="100%">
-          <source src="${url}" type="application/x-mpegURL" />
-        </video>`;
-      playerContainer.innerHTML = videoHTML;
-      currentPlayer = videojs('videojs-player');
-    }
+    // Telemundo PR (con proxy y Clappr)
+    const telemundoURL = proxyBase + encodeURIComponent("http://playtvpremium.xyz:8080/live/595991351780py/090325play/372003.m3u8");
+    new Clappr.Player({
+      source: telemundoURL,
+      parentId: "#telemundoPlayer",
+      width: "100%",
+      height: 405,
+      autoPlay: true,
+      mute: false
+    });
   </script>
-
 </body>
 </html>
