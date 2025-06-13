@@ -65,17 +65,9 @@
                 font-size: 0.9rem; /* Opcional: reduce el tamaño de fuente */
             }
             /* Opcional: Ocultar algunos enlaces menos importantes para ahorrar espacio */
-            .nav-links a:nth-child(n+4) { /* Oculta a partir del 4to enlace */
+            .nav-links a:nth-child(n+4) { /* Oculta a partir del 4to enlace (Inicio, Películas, Repeticiones visibles) */
                 display: none;
             }
-            /* Si prefieres que se apilen verticalmente (menos común en navbars horizontales) */
-            /*
-            .nav-links {
-                flex-direction: column;
-                align-items: flex-end;
-                gap: 5px;
-            }
-            */
         }
         /* Fin de NAVBAR FIX */
 
@@ -146,7 +138,9 @@
         .channels-sidebar .canal-box {
             display: flex;
             align-items: center;
+            /* justifyContent cambia porque el epg-info estará abajo */
             justify-content: space-between;
+            flex-wrap: wrap; /* Permitir que los elementos se envuelvan para el epg-info */
             background-color: rgba(0, 0, 0, 0.6);
             margin-bottom: 10px;
             padding: 10px;
@@ -181,6 +175,37 @@
             font-size: 0.8rem;
             flex-shrink: 0;
         }
+
+        /* Estilos para el cuadro EPG */
+        .epg-info {
+            width: 100%; /* Ocupa todo el ancho disponible debajo del botón */
+            background-color: rgba(0, 0, 0, 0.4); /* Un fondo ligeramente más oscuro */
+            border-radius: 8px;
+            padding: 5px 8px;
+            margin-top: 8px; /* Espacio entre el botón/nombre y el cuadro EPG */
+            font-size: 0.85rem;
+            color: #bbb;
+            box-sizing: border-box;
+            line-height: 1.3; /* Espacio entre líneas */
+        }
+
+        .epg-info p {
+            margin: 0; /* Elimina el margen predeterminado de los párrafos */
+        }
+
+        .epg-program-title {
+            font-weight: bold;
+            color: white;
+            white-space: nowrap; /* Evita que el título se rompa */
+            overflow: hidden; /* Oculta el texto que desborda */
+            text-overflow: ellipsis; /* Añade puntos suspensivos si el texto es demasiado largo */
+        }
+
+        .epg-program-time {
+            font-size: 0.75rem;
+            color: #999;
+        }
+
 
         /* Estilos para las secciones desplegables (detalles/summary) */
         .eventos-section {
@@ -265,154 +290,254 @@
             <div class="eventos-section">
                 <summary>Canales en Vivo</summary>
                 <div class="eventos-channels-container">
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="telemundo-pr.us">
                         <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s12468_dark_360w_270h.png" alt="Telemundo PR Logo" />
                         <h3>Telemundo PR</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="wapa-tv.us">
                         <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s63389_dark_360w_270h.png" alt="Wapa TV Logo" />
                         <h3>Wapa TV</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/371996.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="wapa-deportes.us">
                         <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s63739_dark_360w_270h.png" alt="Wapa Deportes Logo" />
                         <h3>Wapa Deportes</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/371993.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="teleonce.us">
                         <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s43726_dark_360w_270h.png" alt="TeleOnce Logo" />
                         <h3>TeleOnce</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/372002.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="abc7.us">
                         <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s10003_dark_360w_270h.png" alt="ABC 7 Logo" />
                         <h3>ABC 7</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/896411.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="tnt.us">
                         <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s11164_dark_360w_270h.png" alt="TNT Logo" />
                         <h3>TNT</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/939486.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="usa-network.us">
                         <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s11207_dark_360w_270h.png" alt="USA Network Logo" />
                         <h3>USA Network</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/939487.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="dazn1.es">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/DAZN_1.svg/1280px-DAZN_1.svg.png" alt="DAZN 1 Logo" />
                         <h3>DAZN 1</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/544810.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="daznf1.es">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/7/70/DAZN_F1_logo.png" alt="DAZN F1 Logo" />
                         <h3>DAZN F1</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/544213.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="espn.us">
                         <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s10179_dark_360w_270h.png" alt="ESPN (USA) Logo" />
                         <h3>ESPN (USA)</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/840789.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="espn2.us">
                         <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s12444_dark_360w_270h.png" alt="ESPN 2 (USA) Logo" />
                         <h3>ESPN 2 (USA)</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/896116.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="espn-deportes.us">
                         <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s25595_dark_360w_270h.png" alt="ESPN Deportes Logo" />
                         <h3>ESPN Deportes</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/878936.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="fox-deportes.us">
                         <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s15377_dark_360w_270h.png" alt="Fox Deportes Logo" />
                         <h3>Fox Deportes</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/878935.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="fs2.us">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/FS2_logo_2015.svg/800px-FS2_logo_2015.svg.png" alt="FS2 Logo" />
                         <h3>FS2</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/775027.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="foxsports-premium.mx">
                         <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s123582_dark_360w_270h.png" alt="Fox Sports Premium MX Logo" />
                         <h3>Fox Sports Premium MX</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/409436.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="mlb-network.us">
                         <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s62081_dark_360w_270h.png" alt="MLB Network Logo" />
                         <h3>MLB Network</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/830401.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="nba-tv.us">
                         <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s32281_dark_360w_270h.png" alt="NBA TV Logo" />
                         <h3>NBA TV</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/830392.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="nbcsports-bayarea.us">
                         <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s63138_dark_360w_270h.png" alt="NBC Sports Bay Area Logo" />
                         <h3>NBC Sports Bay Area</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/775134.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="nbcsports-boston.us">
                         <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s49198_dark_360w_270h.png" alt="NBC Sports Boston Logo" />
                         <h3>NBC Sports Boston</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/775135.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="nbcsports-california.us">
                         <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s44917_dark_360w_270h.png" alt="NBC Sports California Logo" />
                         <h3>NBC Sports California</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/775136.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="nbcsports-chicago.us">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/NBC_Sports_Chicago_2023.svg/960px-NBC_Sports_Chicago_2023.svg.png" alt="NBC Sports Chicago Logo" />
                         <h3>NBC Sports Chicago</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/775077.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="nbcsports-philadelphia.us">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/NBC_Sports_Philadelphia_2023.svg/330px-NBC_Sports_Philadelphia_2023.svg.png" alt="NBC Sports Philadelphia Logo" />
                         <h3>NBC Sports Philadelphia</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/775079.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="nbcsports-washington.us">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/NBC_Sports_Washington.png" alt="NBC Sports Washington Logo" />
                         <h3>NBC Sports Washington</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/775080.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="wwe-network.us">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/WWE_Logo.svg/640px-WWE_Logo.svg.png" alt="WWE Network Logo" />
                         <h3>WWE Network</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/940203.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="yes-network.us">
                         <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s30017_dark_360w_270h.png" alt="YES Network Logo" />
                         <h3>YES Network</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/864765.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -420,58 +545,94 @@
             <details class="eventos-section">
                 <summary>Disney+ Eventos</summary>
                 <div class="eventos-channels-container">
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="disneyplus1.us">
                         <img src="https://cdn.vox-cdn.com/thumbor/yDcDkg5256nShkwb7J5ZelaLf2k=/0x0:1920x1080/1400x1050/filters:focal(960x540:961x541)/cdn.vox-cdn.com/uploads/chorus_asset/file/25357066/Disney__Logo_March_2024.png" alt="Disney+ 1 Logo" />
                         <h3>Disney+ 1</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/662325.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="disneyplus2.us">
                         <img src="https://cdn.vox-cdn.com/thumbor/yDcDkg5256nShkwb7J5ZelaLf2k=/0x0:1920x1080/1400x1050/filters:focal(960x540:961x541)/cdn.vox-cdn.com/uploads/chorus_asset/file/25357066/Disney__Logo_March_2024.png" alt="Disney+ 2 Logo" />
                         <h3>Disney+ 2</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/662327.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="disneyplus3.us">
                         <img src="https://cdn.vox-cdn.com/thumbor/yDcDkg5256nShkwb7J5ZelaLf2k=/0x0:1920x1080/1400x1050/filters:focal(960x540:961x541)/cdn.vox-cdn.com/uploads/chorus_asset/file/25357066/Disney__Logo_March_2024.png" alt="Disney+ 3 Logo" />
                         <h3>Disney+ 3</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/662328.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="disneyplus4.us">
                         <img src="https://cdn.vox-cdn.com/thumbor/yDcDkg5256nShkwb7J5ZelaLf2k=/0x0:1920x1080/1400x1050/filters:focal(960x540:961x541)/cdn.vox-cdn.com/uploads/chorus_asset/file/25357066/Disney__Logo_March_2024.png" alt="Disney+ 4 Logo" />
                         <h3>Disney+ 4</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/662342.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="disneyplus5.us">
                         <img src="https://cdn.vox-cdn.com/thumbor/yDcDkg5256nShkwb7J5ZelaLf2k=/0x0:1920x1080/1400x1050/filters:focal(960x540:961x541)/cdn.vox-cdn.com/uploads/chorus_asset/file/25357066/Disney__Logo_March_2024.png" alt="Disney+ 5 Logo" />
                         <h3>Disney+ 5</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/699786.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="disneyplus6.us">
                         <img src="https://cdn.vox-cdn.com/thumbor/yDcDkg5256nShkwb7J5ZelaLf2k=/0x0:1920x1080/1400x1050/filters:focal(960x540:961x541)/cdn.vox-cdn.com/uploads/chorus_asset/file/25357066/Disney__Logo_March_2024.png" alt="Disney+ 6 Logo" />
                         <h3>Disney+ 6</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/874816.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="disneyplus7.us">
                         <img src="https://cdn.vox-cdn.com/thumbor/yDcDkg5256nShkwb7J5ZelaLf2k=/0x0:1920x1080/1400x1050/filters:focal(960x540:961x541)/cdn.vox-cdn.com/uploads/chorus_asset/file/25357066/Disney__Logo_March_2024.png" alt="Disney+ 7 Logo" />
                         <h3>Disney+ 7</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/874817.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="disneyplus8.us">
                         <img src="https://cdn.vox-cdn.com/thumbor/yDcDkg5256nShkwb7J5ZelaLf2k=/0x0:1920x1080/1400x1050/filters:focal(960x540:961x541)/cdn.vox-cdn.com/uploads/chorus_asset/file/25357066/Disney__Logo_March_2024.png" alt="Disney+ 8 Logo" />
                         <h3>Disney+ 8</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/874818.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="disneyplus9.us">
                         <img src="https://cdn.vox-cdn.com/thumbor/yDcDkg5256nShkwb7J5ZelaLf2k=/0x0:1920x1080/1400x1050/filters:focal(960x540:961x541)/cdn.vox-cdn.com/uploads/chorus_asset/file/25357066/Disney__Logo_March_2024.png" alt="Disney+ 9 Logo" />
                         <h3>Disney+ 9</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/874819.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
                 </div>
             </details>
@@ -479,22 +640,34 @@
             <details class="eventos-section">
                 <summary>Netflix Eventos</summary>
                 <div class="eventos-channels-container">
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="netflix-eventos1.us">
                         <img src="https://images.icon-icons.com/2699/PNG/512/netflix_logo_icon_170919.png" alt="NetFlix Eventos 1 Logo" />
                         <h3>NetFlix Eventos 1</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=https://giatv.bozztv.com/giatv/giatv-PPVDeportes2/PPVDeportes2/playlist.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="netflix-eventos2.us">
                         <img src="https://images.icon-icons.com/2699/PNG/512/netflix_logo_icon_170919.png" alt="NetFlix Eventos 2 Logo" />
                         <h3>NetFlix Eventos 2</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/960232.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
 
-                    <div class="canal-box">
+                    <div class="canal-box" data-channel-id="netflix-eventos3.us">
                         <img src="https://images.icon-icons.com/2699/PNG/512/netflix_logo_icon_170919.png" alt="NetFlix Eventos 3 Logo" />
                         <h3>NetFlix Eventos 3</h3>
                         <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/960233.m3u8')">Reproducir</button>
+                        <div class="epg-info">
+                            <p class="epg-program-title">Cargando programación...</p>
+                            <p class="epg-program-time"></p>
+                        </div>
                     </div>
                 </div>
             </details>
@@ -516,9 +689,152 @@
             player.play();
         }
 
-        // Inicializamos con Telemundo PR al cargar la página (o el primer canal en la lista principal)
+        // Llama a la función para cambiar el stream al cargar la página
         document.addEventListener('DOMContentLoaded', () => {
-            cambiarStream('https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8');
+            cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8');
+        });
+
+        // --- FUNCIONALIDAD EPG ---
+
+        let epgData = null;
+        // URL de tu archivo EPG
+        const EPG_URL = 'http://m3u4u.com/epg/j67zn6r9xzcq5k8wnd1w';
+
+        async function fetchAndParseEPG() {
+            try {
+                console.log("Cargando EPG desde:", EPG_URL);
+                const response = await fetch(EPG_URL);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const xmlText = await response.text();
+                const parser = new DOMParser();
+                epgData = parser.parseFromString(xmlText, "application/xml");
+                console.log("EPG cargado y parseado con éxito.");
+
+                // Si el XML no se parseó correctamente, el error se captura aquí
+                if (epgData.querySelector('parsererror')) {
+                    console.error("Error al parsear el XML del EPG:", epgData.querySelector('parsererror').textContent);
+                    throw new Error("XML del EPG mal formado.");
+                }
+
+                updateAllChannelEPG(); // Una vez cargado, actualiza todos los canales
+            } catch (error) {
+                console.error("Error al cargar o parsear el EPG:", error);
+                // Mostrar un mensaje de error en la UI para el usuario
+                document.querySelectorAll('.epg-program-title').forEach(el => {
+                    el.textContent = 'Error EPG';
+                    el.nextElementSibling.textContent = 'Intente de nuevo más tarde.';
+                });
+            }
+        }
+
+        // Función para parsear el formato de tiempo XMLTV (YYYYMMDDHHmmss [±HHMM])
+        // Esto es crucial y puede ser delicado. Se asume que el offset de zona horaria
+        // del EPG es el que se quiere usar, o que es UTC.
+        function parseXmlTvTime(timeStr) {
+            // Eliminar cualquier signo de zona horaria al final para crear una fecha ISO compatible para Date
+            const cleanedTimeStr = timeStr.replace(/(\+\d{4}|\-\d{4}|Z)$/, ''); // Remueve +HHMM o Z
+
+            const year = parseInt(cleanedTimeStr.substring(0, 4), 10);
+            const month = parseInt(cleanedTimeStr.substring(4, 6), 10) - 1; // Meses son 0-index en JavaScript
+            const day = parseInt(cleanedTimeStr.substring(6, 8), 10);
+            const hour = parseInt(cleanedTimeStr.substring(8, 10), 10);
+            const minute = parseInt(cleanedTimeStr.substring(10, 12), 10);
+            const second = parseInt(cleanedTimeStr.substring(12, 14), 10);
+
+            // Intentar crear la fecha. Asumir UTC si no se puede inferir la zona horaria del string.
+            const date = new Date(Date.UTC(year, month, day, hour, minute, second));
+
+            // Si el string original contenía un offset (ej. +0400), ajustarlo.
+            // Esto es una simplificación; un manejo completo requeriría más lógica
+            // o una librería de fechas.
+            const offsetMatch = timeStr.match(/(\+\d{4}|\-\d{4})$/);
+            if (offsetMatch) {
+                const offsetSign = offsetMatch[0][0];
+                const offsetHours = parseInt(offsetMatch[0].substring(1, 3), 10);
+                const offsetMinutes = parseInt(offsetMatch[0].substring(3, 5), 10);
+                const offsetMilliseconds = (offsetHours * 60 + offsetMinutes) * 60 * 1000;
+
+                if (offsetSign === '+') {
+                    date.setTime(date.getTime() - offsetMilliseconds);
+                } else if (offsetSign === '-') {
+                    date.setTime(date.getTime() + offsetMilliseconds);
+                }
+            }
+
+            return date.getTime(); // Retorna el timestamp en milisegundos UTC
+        }
+
+
+        function getProgramForChannel(channelId) {
+            if (!epgData) return { title: 'No hay datos EPG', time: '' };
+
+            const programs = epgData.querySelectorAll('programme');
+            const now = Date.now(); // Tiempo actual en milisegundos
+
+            for (let i = 0; i < programs.length; i++) {
+                const program = programs[i];
+                const progChannel = program.getAttribute('channel');
+
+                if (progChannel === channelId) {
+                    const startStr = program.getAttribute('start');
+                    const stopStr = program.getAttribute('stop');
+
+                    const startTime = parseXmlTvTime(startStr);
+                    const endTime = parseXmlTvTime(stopStr);
+
+                    if (now >= startTime && now < endTime) {
+                        // Encontrado el programa actual
+                        const titleElement = program.querySelector('title');
+                        const title = titleElement ? titleElement.textContent : 'Título no disponible';
+
+                        const formatTime = (timestamp) => {
+                            // Convertir a la hora local del usuario para mostrar
+                            const date = new Date(timestamp);
+                            const hours = date.getHours().toString().padStart(2, '0');
+                            const minutes = date.getMinutes().toString().padStart(2, '0');
+                            return `${hours}:${minutes}`;
+                        };
+
+                        return {
+                            title: title,
+                            time: `${formatTime(startTime)} - ${formatTime(endTime)}`
+                        };
+                    }
+                }
+            }
+            return { title: 'Programación no disponible', time: '' };
+        }
+
+        function updateAllChannelEPG() {
+            const channelBoxes = document.querySelectorAll('.channels-sidebar .canal-box');
+            channelBoxes.forEach(box => {
+                const channelId = box.dataset.channelId; // Obtiene el ID del canal del data-attribute
+                if (channelId) {
+                    const program = getProgramForChannel(channelId);
+                    const titleElement = box.querySelector('.epg-program-title');
+                    const timeElement = box.querySelector('.epg-program-time');
+
+                    if (titleElement && timeElement) {
+                        titleElement.textContent = program.title;
+                        timeElement.textContent = program.time;
+                    }
+                } else {
+                    console.warn("Canal-box sin data-channel-id:", box);
+                    const titleElement = box.querySelector('.epg-program-title');
+                    const timeElement = box.querySelector('.epg-program-time');
+                    if (titleElement) titleElement.textContent = 'ID de canal no definido';
+                    if (timeElement) timeElement.textContent = '';
+                }
+            });
+        }
+
+        // Llama a la función para cargar el EPG cuando la página esté lista
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchAndParseEPG(); // Carga el EPG al inicio
+            // Actualiza el EPG cada 5 minutos (300000 milisegundos)
+            setInterval(updateAllChannelEPG, 300000);
         });
     </script>
 
