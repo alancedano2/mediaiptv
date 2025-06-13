@@ -1,136 +1,105 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>StreamVerse TV</title>
-  <link href="https://vjs.zencdn.net/8.9.0/video-js.css" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canales en vivo - StreamVerse</title>
+  <link href="https://vjs.zencdn.net/8.3.0/video-js.css" rel="stylesheet" />
   <style>
     body {
-      margin: 0;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
       color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
     }
-
-    .navbar {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      height: 60px;
-      background: rgba(0, 0, 0, 0.85);
+    header {
+      background-color: #121212;
+      padding: 1rem 2rem;
       display: flex;
       align-items: center;
-      padding: 0 20px;
-      z-index: 1000;
+      justify-content: space-between;
     }
-
-    .navbar img {
-      height: 40px;
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+      color: #00bfff;
     }
-
     .container {
-      margin-top: 80px;
-      padding: 20px;
+      padding: 2rem;
     }
-
-    .video-container {
-      max-width: 100%;
-      margin: 0 auto 40px auto;
-    }
-
-    .channel-grid {
+    .channel-logos {
       display: flex;
       flex-wrap: wrap;
-      gap: 15px;
+      gap: 10px;
       justify-content: center;
+      margin-top: 1rem;
     }
-
-    .channel {
-      background: #1e1e1e;
-      border-radius: 12px;
-      padding: 10px;
+    .channel-logos img {
+      width: 120px;
+      height: auto;
       cursor: pointer;
-      transition: transform 0.2s ease;
-      max-width: 150px;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      transition: 0.3s;
     }
-
-    .channel:hover {
-      transform: scale(1.05);
+    .channel-logos img:hover {
+      border-color: #00bfff;
     }
-
-    .channel img {
-      width: 100%;
-      border-radius: 8px;
+    .video-container {
+      max-width: 960px;
+      margin: auto;
     }
   </style>
 </head>
 <body>
-
-  <div class="navbar">
-    <img src="https://streamverse.fraelvillegasplay9.workers.dev/logo.svg" alt="StreamVerse Logo">
-  </div>
+  <header>
+    <h1>📺 StreamVerse - TV en Vivo</h1>
+  </header>
 
   <div class="container">
     <div class="video-container">
-      <video id="videoPlayer" class="video-js vjs-default-skin" controls autoplay preload="auto" width="100%" height="480">
+      <video id="player" class="video-js vjs-default-skin" controls preload="auto" width="100%" height="480" data-setup='{}'>
         <source src="https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/371993.m3u8" type="application/x-mpegURL" />
       </video>
     </div>
 
-    <div class="channel-grid" id="channelGrid">
-      <!-- Canales se cargarán por JS -->
+    <div class="channel-logos" id="channels">
+      <!-- Aquí van los logos dinámicos -->
     </div>
   </div>
 
-  <script src="https://vjs.zencdn.net/8.9.0/video.min.js"></script>
+  <script src="https://vjs.zencdn.net/8.3.0/video.min.js"></script>
   <script>
-    const player = videojs('videoPlayer');
-
-    const canales = [
-      {
-        nombre: "Wapa Deportes",
-        logo: "http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s63739_dark_360w_270h.png",
-        stream: "https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/371993.m3u8"
-      },
-      {
-        nombre: "Wapa TV",
-        logo: "http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s63389_dark_360w_270h.png",
-        stream: "https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/371996.m3u8"
-      },
-      {
-        nombre: "DAZN F1",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/7/70/DAZN_F1_logo.png",
-        stream: "https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/544213.m3u8"
-      },
-      {
-        nombre: "ESPN",
-        logo: "http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s10179_dark_360w_270h.png",
-        stream: "https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/840789.m3u8"
-      },
-      {
-        nombre: "NBA TV",
-        logo: "http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s32281_dark_360w_270h.png",
-        stream: "https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/830392.m3u8"
-      },
-      {
-        nombre: "WWE Network",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/WWE_Logo.svg/640px-WWE_Logo.svg.png",
-        stream: "https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/940203.m3u8"
-      }
+    const channels = [
+      { name: 'Wapa Deportes', logo: 'http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s63739_dark_360w_270h.png', stream: 'https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/371993.m3u8' },
+      { name: 'Wapa TV', logo: 'http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s63389_dark_360w_270h.png', stream: 'https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/371996.m3u8' },
+      { name: 'DAZN F1', logo: 'https://upload.wikimedia.org/wikipedia/commons/7/70/DAZN_F1_logo.png', stream: 'https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/544213.m3u8' },
+      { name: 'DAZN 1', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/DAZN_1.svg/1280px-DAZN_1.svg.png', stream: 'https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/544810.m3u8' },
+      { name: 'ESPN (USA)', logo: 'http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s10179_dark_360w_270h.png', stream: 'https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/840789.m3u8' },
+      { name: 'ESPN 2 (USA)', logo: 'http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s12444_dark_360w_270h.png', stream: 'https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/896116.m3u8' },
+      { name: 'ESPN Deportes', logo: 'http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s25595_dark_360w_270h.png', stream: 'https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/878936.m3u8' },
+      { name: 'Fox Deportes', logo: 'http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s15377_dark_360w_270h.png', stream: 'https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/878935.m3u8' },
+      { name: 'Fox Sports Premium MX', logo: 'http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s123582_dark_360w_270h.png', stream: 'https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/409436.m3u8' },
+      // Puedes continuar agregando los demás canales aquí...
     ];
 
-    const channelGrid = document.getElementById("channelGrid");
+    const channelContainer = document.getElementById('channels');
+    const player = videojs('player');
 
-    canales.forEach(canal => {
-      const div = document.createElement("div");
-      div.className = "channel";
-      div.innerHTML = `<img src="${canal.logo}" alt="${canal.nombre}" title="${canal.nombre}" />`;
-      div.onclick = () => {
-        player.src({ type: "application/x-mpegURL", src: canal.stream });
+    channels.forEach(channel => {
+      const img = document.createElement('img');
+      img.src = channel.logo;
+      img.alt = channel.name;
+      img.title = channel.name;
+      img.onclick = () => {
+        player.src({
+          type: 'application/x-mpegURL',
+          src: channel.stream
+        });
         player.play();
       };
-      channelGrid.appendChild(div);
+      channelContainer.appendChild(img);
     });
   </script>
 </body>
