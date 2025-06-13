@@ -14,24 +14,31 @@
             scroll-behavior: smooth;
             min-height: 100vh;
         }
+
+        /* NAVBAR FIX */
         nav {
             background-color: rgba(0, 0, 0, 0.7);
             padding: 15px 20px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: space-between; /* Empuja el logo a un lado y los enlaces al otro */
             box-shadow: 0 2px 5px rgba(0,0,0,0.5);
             position: sticky;
             top: 0;
             z-index: 1000;
             width: 100%;
+            box-sizing: border-box; /* Asegura que el padding no cause desbordamiento */
         }
         nav img {
             height: 40px;
+            flex-shrink: 0; /* Evita que el logo se encoja */
         }
         .nav-links {
             display: flex;
             gap: 25px;
+            flex-wrap: wrap; /* Permite que los enlaces se envuelvan a la siguiente línea si no hay espacio */
+            justify-content: flex-end; /* Alinea los enlaces a la derecha si se envuelven */
+            align-items: center; /* Centra verticalmente los enlaces */
         }
         .nav-links a {
             color: white;
@@ -41,6 +48,7 @@
             transition: color 0.3s;
             cursor: pointer;
             padding: 5px 0;
+            white-space: nowrap; /* Evita que los enlaces se rompan en varias líneas */
         }
         .nav-links a[href="/"] {
             color: #00aaff;
@@ -49,6 +57,28 @@
         .nav-links a:hover {
             color: #00aaff;
         }
+
+        /* MEDIA QUERY para ocultar/ajustar enlaces en pantallas pequeñas si no caben en una línea */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 15px; /* Reduce el espacio entre enlaces en pantallas más pequeñas */
+                font-size: 0.9rem; /* Opcional: reduce el tamaño de fuente */
+            }
+            /* Opcional: Ocultar algunos enlaces menos importantes para ahorrar espacio */
+            .nav-links a:nth-child(n+4) { /* Oculta a partir del 4to enlace */
+                display: none;
+            }
+            /* Si prefieres que se apilen verticalmente (menos común en navbars horizontales) */
+            /*
+            .nav-links {
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 5px;
+            }
+            */
+        }
+        /* Fin de NAVBAR FIX */
+
 
         /* Contenedor principal para el reproductor y la lista de canales */
         .main-content-wrapper {
@@ -67,7 +97,7 @@
             }
         }
 
-        /* REVERTIDO: Estilos para el reproductor como en tu código original */
+        /* Estilos para el reproductor como en tu código original */
         #player-container {
             flex-grow: 1; /* Ocupa el espacio restante */
             height: 600px; /* Altura fija para el reproductor */
