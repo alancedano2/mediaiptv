@@ -2,176 +2,121 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Canales en Vivo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StreamVerse - TV</title>
   <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
-  <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
-      color: white;
+      background-color: #0e0e0e;
+      color: #fff;
+      margin: 0;
+      padding: 1rem;
     }
-    nav {
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 15px 20px;
+    .channel {
+      border: 1px solid #333;
+      border-radius: 12px;
+      background-color: #1a1a1a;
+      margin-bottom: 2rem;
+      padding: 1rem;
+      box-shadow: 0 0 10px rgba(255,255,255,0.05);
+    }
+    .channel-header {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
+      margin-bottom: 1rem;
     }
-    nav img {
-      height: 40px;
+    .channel-logo {
+      width: 80px;
+      height: auto;
+      margin-right: 1rem;
     }
-    .nav-links {
-      display: flex;
-      gap: 25px;
-    }
-    .nav-links a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1rem;
-      transition: color 0.3s;
-      cursor: pointer;
-    }
-    .nav-links a:hover {
-      color: #00aaff;
-    }
-    #player-container {
-      max-width: 900px;
-      margin: 30px auto;
-      border-radius: 12px;
-      overflow: hidden;
+    .channel-title {
+      font-size: 1.5rem;
     }
     .video-js {
       width: 100% !important;
-      height: 500px !important;
-      background-color: black;
-    }
-    .canales-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      padding: 20px;
-    }
-    .canal-box {
-      background-color: rgba(0, 0, 0, 0.4);
-      border-radius: 15px;
-      padding: 15px;
-      text-align: center;
-      width: 200px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      transition: transform 0.2s ease;
-    }
-    .canal-box:hover {
-      transform: scale(1.05);
-    }
-    .canal-box img {
-      width: 100%;
-      height: 100px;
-      object-fit: contain;
-      margin-bottom: 10px;
-    }
-    .canal-box h3 {
-      margin: 10px 0;
-    }
-    .canal-box button {
-      padding: 10px 15px;
-      border: none;
+      height: 360px !important;
       border-radius: 8px;
-      background-color: #00aaff;
-      color: white;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .canal-box button:hover {
-      background-color: #0077cc;
     }
   </style>
 </head>
 <body>
 
-  <nav>
-    <a href="/"><img src="logo.png" alt="Logo"></a>
-    <div class="nav-links">
-      <a href="/">Inicio</a>
-      <a href="/peliculas.html">Zona de Películas</a>
-      <a href="/repeticiones.html">Repeticiones</a>
-      <a href="/tv.html">TV</a>
-    </div>
-  </nav>
+  <h1>📺 Canales en Vivo - StreamVerse</h1>
 
-  <div id="player-container">
-    <video id="video-player" class="video-js vjs-default-skin" controls autoplay muted preload="auto">
-      <source src="" type="application/x-mpegURL" />
-    </video>
-  </div>
+  <!-- Aquí insertamos cada canal -->
+  <div id="channels-container"></div>
 
-  <div class="canales-container" id="canales-lista">
-    <!-- Canales se insertan por JS -->
-  </div>
-
+  <!-- Video.js -->
+  <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
   <script>
-    const player = videojs('video-player');
-
-    const canales = [
+    const channels = [
       {
-        nombre: "Wapa Deportes",
+        title: "Wapa Deportes",
         logo: "http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s63739_dark_360w_270h.png",
-        url: "https://teleonce.abcast.live/abr/teleonce/20220719/playlist.m3u8"
+        stream: "https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/371993.m3u8"
       },
       {
-        nombre: "ABC Puerto Rico",
-        logo: "http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s33118_dark_360w_270h.png",
-        url: "https://bcovlive-a.akamaihd.net/r4bc175b5013a44df82e8646d6be69fa9/us-east-1/6240731302001/playlist.m3u8"
+        title: "Wapa TV",
+        logo: "http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s63389_dark_360w_270h.png",
+        stream: "https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/371996.m3u8"
       },
       {
-        nombre: "TeleOnce PR",
-        logo: "https://s3.amazonaws.com/schedulesdirect-api20141201-logos/stationLogos/s134417_dark_360w_270h.png",
-        url: "https://univisionnow02.iad2.stream.mybtv.net/UnivisionNOW02/teleonce/playlist.m3u8"
+        title: "DAZN F1",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/7/70/DAZN_F1_logo.png",
+        stream: "https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/544213.m3u8"
       },
       {
-        nombre: "The Weather Channel",
-        logo: "https://s3.amazonaws.com/schedulesdirect-api20141201-logos/stationLogos/s35431_dark_360w_270h.png",
-        url: "https://weather-lh.akamaihd.net/i/twc_1@92006/master.m3u8"
+        title: "DAZN 1",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/DAZN_1.svg/1280px-DAZN_1.svg.png",
+        stream: "https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/544810.m3u8"
       },
       {
-        nombre: "NotiCentro",
-        logo: "https://seeklogo.com/images/N/noticentro-wapa-tv-logo-F4B8BC3793-seeklogo.com.png",
-        url: "https://wapa-f.akamaihd.net/i/streaming_1@377833/index_150_av-p.m3u8"
+        title: "ESPN (USA)",
+        logo: "http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s10179_dark_360w_270h.png",
+        stream: "https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/840789.m3u8"
       },
       {
-        nombre: "WIPR Canal 6",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/3/38/WIPR_Television_logo_2022.png",
-        url: "https://cdnsecakmi.kaltura.com/hls/p/2288691/sp/228869100/serveFlavor/entryId/1_yljdufyd/v/2/ev/5/flavorId/1_hvks45b2/name/a.mp4/index.m3u8"
+        title: "ESPN 2 (USA)",
+        logo: "http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s12444_dark_360w_270h.png",
+        stream: "https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/896116.m3u8"
+      },
+      {
+        title: "ESPN Deportes",
+        logo: "http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s25595_dark_360w_270h.png",
+        stream: "https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/878936.m3u8"
+      },
+      {
+        title: "Fox Deportes",
+        logo: "http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s15377_dark_360w_270h.png",
+        stream: "https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/878935.m3u8"
       }
+      // Puedes seguir agregando más aquí...
     ];
 
-    function cambiarStream(url) {
-      player.src({ type: 'application/x-mpegURL', src: url });
-      player.play();
-    }
+    const container = document.getElementById('channels-container');
 
-    const contenedor = document.getElementById('canales-lista');
-    canales.forEach(canal => {
-      const box = document.createElement('div');
-      box.className = 'canal-box';
-      box.innerHTML = `
-        <img src="${canal.logo}" alt="${canal.nombre} Logo">
-        <h3>${canal.nombre}</h3>
-        <button onclick="cambiarStream('${canal.url}')">Reproducir</button>
+    channels.forEach((ch, index) => {
+      const channelDiv = document.createElement('div');
+      channelDiv.className = 'channel';
+      channelDiv.innerHTML = `
+        <div class="channel-header">
+          <img src="${ch.logo}" alt="${ch.title}" class="channel-logo">
+          <div class="channel-title">${ch.title}</div>
+        </div>
+        <video
+          id="video_${index}"
+          class="video-js vjs-default-skin"
+          controls
+          preload="auto"
+          data-setup='{}'>
+          <source src="${ch.stream}" type="application/x-mpegURL" />
+        </video>
       `;
-      contenedor.appendChild(box);
+      container.appendChild(channelDiv);
+      videojs(`video_${index}`);
     });
-
-    // Reproduce el primer canal al cargar
-    cambiarStream(canales[0].url);
   </script>
-
 </body>
 </html>
