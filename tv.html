@@ -1,180 +1,376 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Canales en Vivo - Video.js</title>
-
-  <!-- Video.js CSS -->
-  <link href="https://vjs.zencdn.net/7.21.1/video-js.css" rel="stylesheet" />
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
-      color: white;
-      scroll-behavior: smooth;
-    }
-    nav {
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 15px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    nav img {
-      height: 40px;
-    }
-    .nav-links {
-      display: flex;
-      gap: 25px;
-    }
-    .nav-links a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1rem;
-      transition: color 0.3s;
-      cursor: pointer;
-      padding: 5px 0;
-    }
-    .nav-links a[href="/"] {
-      color: #00aaff;
-      border-bottom: 2px solid #00aaff;
-    }
-    .nav-links a:hover {
-      color: #00aaff;
-    }
-
-    #player {
-      width: 100%;
-      max-width: 900px;
-      height: 500px;
-      margin: 30px auto;
-      background-color: black;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,170,255,0.7);
-      position: relative;
-    }
-
-    .canales-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      padding: 20px;
-      max-width: 960px;
-      margin: 0 auto 60px auto;
-    }
-    .canal-box {
-      background-color: rgba(0, 0, 0, 0.4);
-      border-radius: 15px;
-      padding: 15px;
-      text-align: center;
-      width: 200px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      transition: transform 0.2s ease;
-      cursor: pointer;
-    }
-    .canal-box:hover {
-      transform: scale(1.05);
-    }
-    .canal-box img {
-      width: 100%;
-      height: 100px;
-      object-fit: contain;
-      margin-bottom: 10px;
-      pointer-events: none;
-    }
-    .canal-box h3 {
-      margin: 10px 0;
-      pointer-events: none;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Canales en Vivo</title>
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
+            color: white;
+            scroll-behavior: smooth;
+        }
+        nav {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav img {
+            height: 40px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: color 0.3s;
+            cursor: pointer;
+            padding: 5px 0;
+        }
+        .nav-links a[href="/"] {
+            color: #00aaff;
+            border-bottom: 2px solid #00aaff;
+        }
+        .nav-links a:hover {
+            color: #00aaff;
+        }
+        #player-container {
+            width: 100%;
+            max-width: 900px;
+            height: 500px;
+            margin: 30px auto;
+            background-color: black;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,170,255,0.7);
+            position: relative;
+        }
+        /* Style for the video.js player itself */
+        .video-js {
+            border-radius: 12px; /* Apply border-radius to the player */
+        }
+        .canales-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            max-width: 960px;
+            margin: 0 auto 60px auto;
+        }
+        .canal-box {
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            width: 200px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.2s ease;
+            cursor: default;
+            position: relative;
+        }
+        .canal-box:hover {
+            transform: scale(1.05);
+        }
+        .canal-box img {
+            width: 100%;
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+        .canal-box h3 {
+            margin: 10px 0;
+        }
+        .canal-box button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            background-color: #00aaff;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .canal-box button:hover {
+            background-color: #0077cc;
+        }
+    </style>
 </head>
 <body>
 
-  <nav>
-    <a href="/"><img src="logo.png" alt="Logo"></a>
-    <div class="nav-links">
-      <a href="/">Inicio</a>
-      <a href="/peliculas.html">Zona de Películas</a>
-      <a href="/repeticiones.html">Repeticiones</a>
-      <a href="https://mediaformulaiptv.vercel.app/f1zone.html">F1</a>
-      <a href="/noticias.html">Noticias</a>
-      <a href="/tv.html">TV</a>
-    </div>
-  </nav>
+    <nav>
+        <a href="/"><img src="logo.png" alt="Logo"></a>
+        <div class="nav-links">
+            <a href="/">Inicio</a>
+            <a href="/peliculas.html">Zona de Películas</a>
+            <a href="/repeticiones.html">Repeticiones</a>
+            <a href="https://mediaformulaiptv.vercel.app/f1zone.html">F1</a>
+            <a href="/noticias.html">Noticias</a>
+            <a href="/tv.html">TV</a>
+        </div>
+    </nav>
 
-  <div id="player">
-    <video
-      id="video-player"
-      class="video-js vjs-default-skin"
-      controls
-      preload="auto"
-      width="900"
-      height="500"
-      autoplay
-      muted
-      playsinline
-    >
-      <source src="https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/371993.m3u8" type="application/x-mpegURL" />
-      Tu navegador no soporta video en vivo.
-    </video>
-  </div>
-
-  <div class="canales-container">
-
-    <div class="canal-box" data-stream="https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/371993.m3u8">
-      <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s63739_dark_360w_270h.png" alt="Wapa Deportes Logo" />
-      <h3>Wapa Deportes</h3>
+    <div id="player-container">
+        <video id="my-video" class="video-js vjs-default-skin" controls preload="auto" width="100%" height="100%" data-setup='{}'>
+            <source src="" type="application/x-mpegURL">
+        </video>
     </div>
 
-    <div class="canal-box" data-stream="https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/371996.m3u8">
-      <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s63389_dark_360w_270h.png" alt="Wapa TV Logo" />
-      <h3>Wapa TV</h3>
+    <div class="canales-container">
+        <div class="canal-box">
+            <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s63739_dark_360w_270h.png" alt="Wapa Deportes Logo" />
+            <h3>Wapa Deportes</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/371993.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s63389_dark_360w_270h.png" alt="Wapa TV Logo" />
+            <h3>Wapa TV</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/371996.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/70/DAZN_F1_logo.png" alt="DAZN F1 Logo" />
+            <h3>DAZN F1</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/544213.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/DAZN_1.svg/1280px-DAZN_1.svg.png" alt="DAZN 1 Logo" />
+            <h3>DAZN 1</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/544810.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s10179_dark_360w_270h.png" alt="ESPN (USA) Logo" />
+            <h3>ESPN (USA)</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/840789.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s12444_dark_360w_270h.png" alt="ESPN 2 (USA) Logo" />
+            <h3>ESPN 2 (USA)</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/896116.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s25595_dark_360w_270h.png" alt="ESPN Deportes Logo" />
+            <h3>ESPN Deportes</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/878936.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s15377_dark_360w_270h.png" alt="Fox Deportes Logo" />
+            <h3>Fox Deportes</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/878935.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s123582_dark_360w_270h.png" alt="Fox Sports Premium MX Logo" />
+            <h3>Fox Sports Premium MX</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/409436.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/FS2_logo_2015.svg/800px-FS2_logo_2015.svg.png" alt="FS2 Logo" />
+            <h3>FS2</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/775027.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s62081_dark_360w_270h.png" alt="MLB Network Logo" />
+            <h3>MLB Network</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/830401.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s32281_dark_360w_270h.png" alt="NBA TV Logo" />
+            <h3>NBA TV</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/830392.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s63138_dark_360w_270h.png" alt="NBC Sports Bay Area Logo" />
+            <h3>NBC Sports Bay Area</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/775134.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s49198_dark_360w_270h.png" alt="NBC Sports Boston Logo" />
+            <h3>NBC Sports Boston</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/775135.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s44917_dark_360w_270h.png" alt="NBC Sports California Logo" />
+            <h3>NBC Sports California</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/775136.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/NBC_Sports_Chicago_2023.svg/960px-NBC_Sports_Chicago_2023.svg.png" alt="NBC Sports Chicago Logo" />
+            <h3>NBC Sports Chicago</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/775077.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/NBC_Sports_Philadelphia_2023.svg/330px-NBC_Sports_Philadelphia_2023.svg.png" alt="NBC Sports Philadelphia Logo" />
+            <h3>NBC Sports Philadelphia</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/775079.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/NBC_Sports_Washington.png" alt="NBC Sports Washington Logo" />
+            <h3>NBC Sports Washington</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/775080.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/WWE_Logo.svg/640px-WWE_Logo.svg.png" alt="WWE Network Logo" />
+            <h3>WWE Network</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/940203.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s30017_dark_360w_270h.png" alt="YES Network Logo" />
+            <h3>YES Network</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/864765.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="https://cdn.vox-cdn.com/thumbor/yDcDkg5256nShkwb7J5ZelaLf2k=/0x0:1920x1080/1400x1050/filters:focal(960x540:961x541)/cdn.vox-cdn.com/uploads/chorus_asset/file/25357066/Disney__Logo_March_2024.png" alt="Disney+ 1 Logo" />
+            <h3>Disney+ 1</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/662325.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="https://cdn.vox-cdn.com/thumbor/yDcDkg5256nShkwb7J5ZelaLf2k=/0x0:1920x1080/1400x1050/filters:focal(960x540:961x541)/cdn.vox-cdn.com/uploads/chorus_asset/file/25357066/Disney__Logo_March_2024.png" alt="Disney+ 2 Logo" />
+            <h3>Disney+ 2</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/662327.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="https://cdn.vox-cdn.com/thumbor/yDcDkg5256nShkwb7J5ZelaLf2k=/0x0:1920x1080/1400x1050/filters:focal(960x540:961x541)/cdn.vox-cdn.com/uploads/chorus_asset/file/25357066/Disney__Logo_March_2024.png" alt="Disney+ 3 Logo" />
+            <h3>Disney+ 3</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/662328.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="https://cdn.vox-cdn.com/thumbor/yDcDkg5256nShkwb7J5ZelaLf2k=/0x0:1920x1080/1400x1050/filters:focal(960x540:961x541)/cdn.vox-cdn.com/uploads/chorus_asset/file/25357066/Disney__Logo_March_2024.png" alt="Disney+ 4 Logo" />
+            <h3>Disney+ 4</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/662342.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="https://cdn.vox-cdn.com/thumbor/yDcDkg5256nShkwb7J5ZelaLf2k=/0x0:1920x1080/1400x1050/filters:focal(960x540:961x541)/cdn.vox-cdn.com/uploads/chorus_asset/file/25357066/Disney__Logo_March_2024.png" alt="Disney+ 5 Logo" />
+            <h3>Disney+ 5</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/699786.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="https://cdn.vox-cdn.com/thumbor/yDcDkg5256nShkwb7J5ZelaLf2k=/0x0:1920x1080/1400x1050/filters:focal(960x540:961x541)/cdn.vox-cdn.com/uploads/chorus_asset/file/25357066/Disney__Logo_March_2024.png" alt="Disney+ 6 Logo" />
+            <h3>Disney+ 6</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/874816.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="https://cdn.vox-cdn.com/thumbor/yDcDkg5256nShkwb7J5ZelaLf2k=/0x0:1920x1080/1400x1050/filters:focal(960x540:961x541)/cdn.vox-cdn.com/uploads/chorus_asset/file/25357066/Disney__Logo_March_2024.png" alt="Disney+ 7 Logo" />
+            <h3>Disney+ 7</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/874817.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="https://cdn.vox-cdn.com/thumbor/yDcDkg5256nShkwb7J5ZelaLf2k=/0x0:1920x1080/1400x1050/filters:focal(960x540:961x541)/cdn.vox-cdn.com/uploads/chorus_asset/file/25357066/Disney__Logo_March_2024.png" alt="Disney+ 8 Logo" />
+            <h3>Disney+ 8</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/874818.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="https://cdn.vox-cdn.com/thumbor/yDcDkg5256nShkwb7J5ZelaLf2k=/0x0:1920x1080/1400x1050/filters:focal(960x540:961x541)/cdn.vox-cdn.com/uploads/chorus_asset/file/25357066/Disney__Logo_March_2024.png" alt="Disney+ 9 Logo" />
+            <h3>Disney+ 9</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/874819.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="https://images.icon-icons.com/2699/PNG/512/netflix_logo_icon_170919.png" alt="NetFlix Eventos 1 Logo" />
+            <h3>NetFlix Eventos 1</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=https://giatv.bozztv.com/giatv/giatv-PPVDeportes2/PPVDeportes2/playlist.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="https://images.icon-icons.com/2699/PNG/512/netflix_logo_icon_170919.png" alt="NetFlix Eventos 2 Logo" />
+            <h3>NetFlix Eventos 2</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/960232.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="https://images.icon-icons.com/2699/PNG/512/netflix_logo_icon_170919.png" alt="NetFlix Eventos 3 Logo" />
+            <h3>NetFlix Eventos 3</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/960233.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s12468_dark_360w_270h.png" alt="Telemundo PR Logo" />
+            <h3>Telemundo PR</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s43726_dark_360w_270h.png" alt="TeleOnce Logo" />
+            <h3>TeleOnce</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/372002.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s10003_dark_360w_270h.png" alt="ABC 7 Logo" />
+            <h3>ABC 7</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/896411.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s11164_dark_360w_270h.png" alt="TNT Logo" />
+            <h3>TNT</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/939486.m3u8')">Reproducir</button>
+        </div>
+
+        <div class="canal-box">
+            <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s11207_dark_360w_270h.png" alt="USA Network Logo" />
+            <h3>USA Network</h3>
+            <button onclick="cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/939487.m3u8')">Reproducir</button>
+        </div>
     </div>
 
-    <div class="canal-box" data-stream="https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/544213.m3u8">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/7/70/DAZN_F1_logo.png" alt="DAZN F1 Logo" />
-      <h3>DAZN F1</h3>
-    </div>
+    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@videojs/http-streaming@3.9.0/dist/videojs-http-streaming.min.js"></script>
 
-    <div class="canal-box" data-stream="https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/544810.m3u8">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/DAZN_1.svg/1280px-DAZN_1.svg.png" alt="DAZN 1 Logo" />
-      <h3>DAZN 1</h3>
-    </div>
+    <script>
+        let player = videojs('my-video');
 
-    <div class="canal-box" data-stream="https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/840789.m3u8">
-      <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s10179_dark_360w_270h.png" alt="ESPN (USA) Logo" />
-      <h3>ESPN (USA)</h3>
-    </div>
+        // Función para cambiar el stream
+        function cambiarStream(url) {
+            player.src({
+                src: url,
+                type: 'application/x-mpegURL'
+            });
+            player.play();
+        }
 
-    <div class="canal-box" data-stream="https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/896116.m3u8">
-      <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s12444_dark_360w_270h.png" alt="ESPN 2 (USA) Logo" />
-      <h3>ESPN 2 (USA)</h3>
-    </div>
+        // Inicializamos con Wapa Deportes al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/371993.m3u8');
+        });
+    </script>
 
-  </div>
-
-  <!-- Video.js JS -->
-  <script src="https://vjs.zencdn.net/7.21.1/video.min.js"></script>
-  <script>
-    const player = videojs('video-player');
-
-    // Cambiar stream al hacer click en un canal
-    document.querySelectorAll('.canal-box').forEach(box => {
-      box.addEventListener('click', () => {
-        const streamUrl = box.getAttribute('data-stream');
-        player.src({ src: streamUrl, type: 'application/x-mpegURL' });
-        player.play();
-      });
-    });
-  </script>
 </body>
 </html>
