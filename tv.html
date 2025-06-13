@@ -57,25 +57,34 @@
             box-shadow: 0 0 15px rgba(0,170,255,0.7);
             position: relative;
         }
-        /* Style for the video.js player itself */
+        /* Make the video.js player fill its container */
         .video-js {
-            border-radius: 12px; /* Apply border-radius to the player */
+            width: 100% !important; /* Forces the player to take full width */
+            height: 100% !important; /* Forces the player to take full height */
+            border-radius: 12px;
         }
         .canales-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            display: flex; /* Changed from flex-wrap to flex */
+            overflow-x: auto; /* Enable horizontal scrolling */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
             gap: 20px;
             padding: 20px;
             max-width: 960px;
             margin: 0 auto 60px auto;
+            /* Optional: Hide scrollbar for aesthetic purposes, but keep functionality */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* IE and Edge */
+        }
+        .canales-container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
         }
         .canal-box {
+            flex-shrink: 0; /* Prevent items from shrinking */
             background-color: rgba(0, 0, 0, 0.4);
             border-radius: 15px;
             padding: 15px;
             text-align: center;
-            width: 200px;
+            width: 200px; /* Fixed width for consistent horizontal scrolling */
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             transition: transform 0.2s ease;
             cursor: default;
@@ -122,7 +131,7 @@
     </nav>
 
     <div id="player-container">
-        <video id="my-video" class="video-js vjs-default-skin" controls preload="auto" width="100%" height="100%" data-setup='{}'>
+        <video id="my-video" class="video-js vjs-default-skin" controls preload="auto" data-setup='{}'>
             <source src="" type="application/x-mpegURL">
         </video>
     </div>
