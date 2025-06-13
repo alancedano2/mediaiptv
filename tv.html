@@ -12,8 +12,7 @@
             background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
             color: white;
             scroll-behavior: smooth;
-            /* ELIMINADO: display: flex; flex-direction: column; de body */
-            min-height: 100vh; /* Asegura que el body ocupe al menos toda la altura de la vista */
+            min-height: 100vh;
         }
         nav {
             background-color: rgba(0, 0, 0, 0.7);
@@ -54,43 +53,41 @@
         /* Contenedor principal para el reproductor y la lista de canales */
         .main-content-wrapper {
             display: flex;
-            /* flex-grow: 1; Esto ya no es necesario aquí si el body no es flex container */
-            max-width: 1600px; /* Ancho máximo para todo el contenido principal */
-            margin: 30px auto; /* Centrar y darle espacio */
-            gap: 20px; /* Espacio entre el reproductor y la lista de canales */
-            padding: 0 20px; /* Padding a los lados para pantallas más pequeñas */
-            flex-direction: column; /* Por defecto en móvil: reproductor arriba, lista abajo */
-        }
-
-        @media (min-width: 992px) { /* A partir de pantallas de tablet grande/desktop */
-            .main-content-wrapper {
-                flex-direction: row; /* En desktop: reproductor a la izquierda, lista a la derecha */
-                align-items: flex-start; /* Alinea arriba los elementos flex */
-            }
-        }
-
-        /* Contenedor para mantener la relación de aspecto del video */
-        #player-wrapper {
-            flex-grow: 1;
-            position: relative;
-            width: 100%; /* Asegura que el contenedor ocupe el ancho disponible */
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio (9/16 * 100%) */
-            background-color: black;
-            border-radius: 12px;
-            box-shadow: 0 0 15px rgba(0,170,255,0.7);
+            max-width: 1600px;
+            margin: 30px auto;
+            gap: 20px;
+            padding: 0 20px;
+            flex-direction: column;
         }
 
         @media (min-width: 992px) {
-            #player-wrapper {
-                flex-basis: calc(100% - 370px); /* Ocupa el 100% menos el ancho de la sidebar y el gap */
+            .main-content-wrapper {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+        }
+
+        /* REVERTIDO: Estilos para el reproductor como en tu código original */
+        #player-container {
+            flex-grow: 1; /* Ocupa el espacio restante */
+            height: 600px; /* Altura fija para el reproductor */
+            background-color: black;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,170,255,0.7);
+            position: relative; /* Necesario para que el video se posicione correctamente */
+            margin: 0 auto; /* Centrar en móvil si es el único elemento */
+        }
+
+        @media (min-width: 992px) {
+            #player-container {
+                /* Calcular el ancho para que la sidebar también tenga espacio */
+                flex-basis: calc(100% - 370px); /* 100% menos el ancho de la sidebar y el gap */
+                margin: 0; /* Eliminar margen auto en desktop */
             }
         }
 
         /* Make the video.js player fill its container */
         .video-js {
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
             width: 100% !important;
             height: 100% !important;
             border-radius: 12px;
@@ -107,22 +104,14 @@
             padding: 15px;
             overflow-y: auto;
             /* Altura fija en desktop para que coincida visualmente con el reproductor */
-            /* Calculamos la altura basada en el aspect ratio del reproductor + padding */
-            height: calc(100% + 15px); /* Ajuste basado en el padding del player-wrapper */
-            /* La altura de la sidebar puede ser un poco tricky con el padding-bottom hack.
-               Ajustamos la altura para que ocupe el mismo espacio visible que el reproductor.
-               Considerando que el reproductor tiene padding-bottom del 56.25% de su ancho,
-               y queremos que la sidebar tenga una altura similar a la altura final del reproductor.
-               Podemos hacerla coincidir con la altura del reproductor en desktop con un valor fijo
-               si es necesario, o ajustar la altura de `main-content-wrapper` */
-        }
-         @media (min-width: 992px) {
-            .channels-sidebar {
-                /* Para una altura fija de 600px en desktop que coincida con lo que esperamos del reproductor */
-                height: 600px; /* Establece una altura fija si el reproductor tiende a un tamaño particular */
-            }
         }
 
+        @media (min-width: 992px) {
+            .channels-sidebar {
+                width: 350px; /* Fija el ancho en desktop */
+                height: 600px; /* Fija la altura en desktop para que sea igual que el reproductor */
+            }
+        }
 
         .channels-sidebar .canal-box {
             display: flex;
@@ -212,9 +201,8 @@
 
         /* Ajustes para pantallas pequeñas */
         @media (max-width: 991px) {
-            /* En móvil, el player-wrapper usará el padding-bottom para su altura, no una altura fija */
-            #player-wrapper {
-                padding-bottom: 56.25%; /* Mantiene 16:9 */
+            #player-container {
+                height: 300px; /* Reproductor un poco más pequeño en móvil */
             }
             .channels-sidebar {
                 max-height: 400px; /* Altura de la lista de canales en móvil */
@@ -237,7 +225,7 @@
     </nav>
 
     <div class="main-content-wrapper">
-        <div id="player-wrapper">
+        <div id="player-container">
             <video id="my-video" class="video-js vjs-default-skin" controls preload="auto" data-setup='{}'>
                 <source src="" type="application/x-mpegURL">
             </video>
@@ -500,7 +488,7 @@
 
         // Inicializamos con Telemundo PR al cargar la página (o el primer canal en la lista principal)
         document.addEventListener('DOMContentLoaded', () => {
-            cambiarStream('https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8');
+            cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8');
         });
     </script>
 
