@@ -790,11 +790,13 @@
                         const title = titleElement ? titleElement.textContent : 'Título no disponible';
 
                         const formatTime = (timestamp) => {
-                            // Convertir a la hora local del usuario para mostrar
                             const date = new Date(timestamp);
-                            const hours = date.getHours().toString().padStart(2, '0');
+                            let hours = date.getHours();
                             const minutes = date.getMinutes().toString().padStart(2, '0');
-                            return `${hours}:${minutes}`;
+                            const ampm = hours >= 12 ? 'PM' : 'AM';
+                            hours = hours % 12;
+                            hours = hours ? hours : 12; // La hora '0' (medianoche) debe ser '12 AM'
+                            return `${hours}:${minutes} ${ampm}`;
                         };
 
                         return {
