@@ -12,9 +12,9 @@
             background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
             color: white;
             scroll-behavior: smooth;
-            display: flex; /* Usamos flexbox para el cuerpo */
-            flex-direction: column; /* Apila el navbar arriba y el contenido principal abajo */
-            min-height: 100vh; /* Asegura que el body ocupe al menos toda la altura de la vista */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         nav {
             background-color: rgba(0, 0, 0, 0.7);
@@ -26,7 +26,7 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            width: 100%; /* El navbar ocupa todo el ancho */
+            width: 100%;
         }
         nav img {
             height: 40px;
@@ -55,36 +55,39 @@
         /* Contenedor principal para el reproductor y la lista de canales */
         .main-content-wrapper {
             display: flex;
-            flex-grow: 1; /* Permite que este contenedor ocupe el espacio restante */
-            max-width: 1200px; /* Ancho máximo para todo el contenido principal */
-            margin: 30px auto; /* Centrar y darle espacio */
-            gap: 20px; /* Espacio entre el reproductor y la lista de canales */
-            padding: 0 20px; /* Padding a los lados para pantallas más pequeñas */
-            flex-direction: column; /* Por defecto en móvil: reproductor arriba, lista abajo */
+            flex-grow: 1;
+            /* AUMENTADO: Ancho máximo para todo el contenido principal */
+            max-width: 1600px; /* Incrementado para que ocupe más espacio */
+            margin: 30px auto;
+            gap: 20px;
+            padding: 0 20px;
+            flex-direction: column;
         }
 
-        @media (min-width: 992px) { /* A partir de pantallas de tablet grande/desktop */
+        @media (min-width: 992px) {
             .main-content-wrapper {
-                flex-direction: row; /* En desktop: reproductor a la izquierda, lista a la derecha */
-                align-items: flex-start; /* Alinea arriba los elementos flex */
+                flex-direction: row;
+                align-items: flex-start;
             }
         }
 
         #player-container {
-            flex-grow: 1; /* Ocupa todo el espacio posible en el lado izquierdo */
-            min-width: 60%; /* Asegura que el reproductor tenga un tamaño decente */
-            max-width: 900px; /* Máximo ancho para el reproductor */
-            height: 500px; /* Altura fija para el reproductor */
+            flex-grow: 1; /* Ocupa el espacio restante */
+            /* Ajustado: Eliminar min-width o establecerlo a un porcentaje razonable */
+            min-width: 60%; /* Permitir que el reproductor sea grande */
+            height: 600px; /* AUMENTADO: Altura fija para el reproductor */
             background-color: black;
             border-radius: 12px;
             box-shadow: 0 0 15px rgba(0,170,255,0.7);
             position: relative;
-            margin: 0 auto; /* Centrar en móvil */
+            margin: 0 auto;
         }
 
         @media (min-width: 992px) {
             #player-container {
-                margin: 0; /* Deshacer el centrado en desktop */
+                /* Calcular el ancho para que la sidebar también tenga espacio */
+                flex-basis: calc(100% - 370px); /* 100% menos el ancho de la sidebar y el gap */
+                margin: 0;
             }
         }
 
@@ -97,81 +100,86 @@
 
         /* Contenedor de la lista de canales */
         .channels-sidebar {
-            width: 100%; /* Por defecto, ocupa todo el ancho disponible */
+            width: 100%; /* Por defecto, ocupa todo el ancho disponible en móvil */
+            /* AUMENTADO: Ancho fijo para la barra lateral en desktop */
+            min-width: 350px; /* Asegura que la sidebar tenga un ancho mínimo */
             max-width: 350px; /* Ancho fijo para la barra lateral en desktop */
             background-color: rgba(0, 0, 0, 0.4);
             border-radius: 12px;
             box-shadow: 0 0 10px rgba(0,0,0,0.5);
             padding: 15px;
-            overflow-y: auto; /* Permite desplazamiento vertical si hay muchos canales */
-            max-height: 500px; /* Limita la altura para que coincida con el reproductor */
+            overflow-y: auto;
+            /* Ajustado: Altura para que coincida con el reproductor */
+            max-height: 600px; /* Debería coincidir con la altura del reproductor */
+            height: auto; /* Permite que se ajuste en móvil */
         }
 
         @media (min-width: 992px) {
             .channels-sidebar {
                 width: 350px; /* Fija el ancho en desktop */
+                height: 600px; /* Fija la altura en desktop para que sea igual que el reproductor */
             }
         }
 
         .channels-sidebar .canal-box {
             display: flex;
             align-items: center;
-            justify-content: space-between; /* Alinea elementos a los extremos */
-            background-color: rgba(0, 0, 0, 0.6); /* Fondo más oscuro para cada canal en la lista */
+            justify-content: space-between;
+            background-color: rgba(0, 0, 0, 0.6);
             margin-bottom: 10px;
             padding: 10px;
             border-radius: 10px;
-            box-shadow: none; /* Quitamos la sombra extra del box */
+            box-shadow: none;
             transition: background-color 0.2s ease;
-            width: auto; /* Ancho automático para flexbox */
+            width: auto;
         }
 
         .channels-sidebar .canal-box:hover {
             background-color: rgba(0, 0, 0, 0.8);
-            transform: none; /* Quitamos el scale en hover para esta vista */
+            transform: none;
         }
 
         .channels-sidebar .canal-box img {
-            width: 60px; /* Tamaño más pequeño para el logo */
+            width: 60px;
             height: 40px;
             object-fit: contain;
             margin-right: 10px;
-            flex-shrink: 0; /* Evita que el logo se encoja */
+            flex-shrink: 0;
         }
 
         .channels-sidebar .canal-box h3 {
             margin: 0;
-            font-size: 0.9rem; /* Fuente más pequeña para el nombre */
-            flex-grow: 1; /* Permite que el nombre ocupe el espacio restante */
-            text-align: left; /* Alinea el texto a la izquierda */
+            font-size: 0.9rem;
+            flex-grow: 1;
+            text-align: left;
         }
 
         .channels-sidebar .canal-box button {
             padding: 8px 12px;
             font-size: 0.8rem;
-            flex-shrink: 0; /* Evita que el botón se encoja */
+            flex-shrink: 0;
         }
 
         /* Estilos para las secciones desplegables (detalles/summary) */
         .eventos-section {
             background-color: rgba(0, 0, 0, 0.5);
             border-radius: 12px;
-            margin-bottom: 15px; /* Espacio entre secciones */
-            overflow: hidden; /* Para que el contenido interno no se desborde al abrir/cerrar */
+            margin-bottom: 15px;
+            overflow: hidden;
         }
 
         .eventos-section summary {
-            font-size: 1.1rem; /* Un poco más grande para el título del grupo */
+            font-size: 1.1rem;
             font-weight: bold;
             color: #00aaff;
             cursor: pointer;
-            padding: 10px 15px; /* Más padding para el summary */
+            padding: 10px 15px;
             outline: none;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background-color: rgba(0, 0, 0, 0.7); /* Fondo para el summary */
-            border-radius: 12px; /* Bordes redondeados para el summary */
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 12px;
         }
 
         .eventos-section summary::-webkit-details-marker {
@@ -179,7 +187,7 @@
         }
         .eventos-section summary::after {
             content: '+';
-            font-size: 1.5rem; /* Tamaño de la flecha */
+            font-size: 1.5rem;
             transition: transform 0.2s;
         }
         .eventos-section[open] summary::after {
@@ -188,15 +196,15 @@
 
         .eventos-channels-container {
             display: flex;
-            flex-direction: column; /* Canales uno debajo del otro */
-            gap: 10px; /* Espacio entre canales internos */
-            padding: 10px 15px 5px; /* Padding interno */
+            flex-direction: column;
+            gap: 10px;
+            padding: 10px 15px 5px;
         }
 
         .eventos-channels-container .canal-box {
-            background-color: rgba(0, 0, 0, 0.7); /* Fondo para los canales dentro de detalles */
+            background-color: rgba(0, 0, 0, 0.7);
             box-shadow: none;
-            width: auto; /* Ajuste automático de ancho */
+            width: auto;
         }
 
         /* Ajustes para pantallas pequeñas */
