@@ -2,120 +2,178 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>StreamVerse - TV</title>
-  <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Canales en Vivo - Video.js</title>
+
+  <!-- Video.js CSS -->
+  <link href="https://vjs.zencdn.net/7.21.1/video-js.css" rel="stylesheet" />
+
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #0e0e0e;
-      color: #fff;
       margin: 0;
-      padding: 1rem;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
+      color: white;
+      scroll-behavior: smooth;
     }
-    .channel {
-      border: 1px solid #333;
-      border-radius: 12px;
-      background-color: #1a1a1a;
-      margin-bottom: 2rem;
-      padding: 1rem;
-      box-shadow: 0 0 10px rgba(255,255,255,0.05);
-    }
-    .channel-header {
+    nav {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 15px 20px;
       display: flex;
       align-items: center;
-      margin-bottom: 1rem;
+      justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
-    .channel-logo {
-      width: 80px;
-      height: auto;
-      margin-right: 1rem;
+    nav img {
+      height: 40px;
     }
-    .channel-title {
-      font-size: 1.5rem;
+    .nav-links {
+      display: flex;
+      gap: 25px;
     }
-    .video-js {
-      width: 100% !important;
-      height: 360px !important;
-      border-radius: 8px;
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: color 0.3s;
+      cursor: pointer;
+      padding: 5px 0;
+    }
+    .nav-links a[href="/"] {
+      color: #00aaff;
+      border-bottom: 2px solid #00aaff;
+    }
+    .nav-links a:hover {
+      color: #00aaff;
+    }
+
+    #player {
+      width: 100%;
+      max-width: 900px;
+      height: 500px;
+      margin: 30px auto;
+      background-color: black;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,170,255,0.7);
+      position: relative;
+    }
+
+    .canales-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+      max-width: 960px;
+      margin: 0 auto 60px auto;
+    }
+    .canal-box {
+      background-color: rgba(0, 0, 0, 0.4);
+      border-radius: 15px;
+      padding: 15px;
+      text-align: center;
+      width: 200px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease;
+      cursor: pointer;
+    }
+    .canal-box:hover {
+      transform: scale(1.05);
+    }
+    .canal-box img {
+      width: 100%;
+      height: 100px;
+      object-fit: contain;
+      margin-bottom: 10px;
+      pointer-events: none;
+    }
+    .canal-box h3 {
+      margin: 10px 0;
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
 
-  <h1>📺 Canales en Vivo - StreamVerse</h1>
+  <nav>
+    <a href="/"><img src="logo.png" alt="Logo"></a>
+    <div class="nav-links">
+      <a href="/">Inicio</a>
+      <a href="/peliculas.html">Zona de Películas</a>
+      <a href="/repeticiones.html">Repeticiones</a>
+      <a href="https://mediaformulaiptv.vercel.app/f1zone.html">F1</a>
+      <a href="/noticias.html">Noticias</a>
+      <a href="/tv.html">TV</a>
+    </div>
+  </nav>
 
-  <!-- Aquí insertamos cada canal -->
-  <div id="channels-container"></div>
+  <div id="player">
+    <video
+      id="video-player"
+      class="video-js vjs-default-skin"
+      controls
+      preload="auto"
+      width="900"
+      height="500"
+      autoplay
+      muted
+      playsinline
+    >
+      <source src="https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/371993.m3u8" type="application/x-mpegURL" />
+      Tu navegador no soporta video en vivo.
+    </video>
+  </div>
 
-  <!-- Video.js -->
-  <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+  <div class="canales-container">
+
+    <div class="canal-box" data-stream="https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/371993.m3u8">
+      <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s63739_dark_360w_270h.png" alt="Wapa Deportes Logo" />
+      <h3>Wapa Deportes</h3>
+    </div>
+
+    <div class="canal-box" data-stream="https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/371996.m3u8">
+      <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s63389_dark_360w_270h.png" alt="Wapa TV Logo" />
+      <h3>Wapa TV</h3>
+    </div>
+
+    <div class="canal-box" data-stream="https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/544213.m3u8">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/70/DAZN_F1_logo.png" alt="DAZN F1 Logo" />
+      <h3>DAZN F1</h3>
+    </div>
+
+    <div class="canal-box" data-stream="https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/544810.m3u8">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/DAZN_1.svg/1280px-DAZN_1.svg.png" alt="DAZN 1 Logo" />
+      <h3>DAZN 1</h3>
+    </div>
+
+    <div class="canal-box" data-stream="https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/840789.m3u8">
+      <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s10179_dark_360w_270h.png" alt="ESPN (USA) Logo" />
+      <h3>ESPN (USA)</h3>
+    </div>
+
+    <div class="canal-box" data-stream="https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/896116.m3u8">
+      <img src="http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s12444_dark_360w_270h.png" alt="ESPN 2 (USA) Logo" />
+      <h3>ESPN 2 (USA)</h3>
+    </div>
+
+  </div>
+
+  <!-- Video.js JS -->
+  <script src="https://vjs.zencdn.net/7.21.1/video.min.js"></script>
   <script>
-    const channels = [
-      {
-        title: "Wapa Deportes",
-        logo: "http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s63739_dark_360w_270h.png",
-        stream: "https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/371993.m3u8"
-      },
-      {
-        title: "Wapa TV",
-        logo: "http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s63389_dark_360w_270h.png",
-        stream: "https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/371996.m3u8"
-      },
-      {
-        title: "DAZN F1",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/7/70/DAZN_F1_logo.png",
-        stream: "https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/544213.m3u8"
-      },
-      {
-        title: "DAZN 1",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/DAZN_1.svg/1280px-DAZN_1.svg.png",
-        stream: "https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/544810.m3u8"
-      },
-      {
-        title: "ESPN (USA)",
-        logo: "http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s10179_dark_360w_270h.png",
-        stream: "https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/840789.m3u8"
-      },
-      {
-        title: "ESPN 2 (USA)",
-        logo: "http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s12444_dark_360w_270h.png",
-        stream: "https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/896116.m3u8"
-      },
-      {
-        title: "ESPN Deportes",
-        logo: "http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s25595_dark_360w_270h.png",
-        stream: "https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/878936.m3u8"
-      },
-      {
-        title: "Fox Deportes",
-        logo: "http://schedulesdirect-api20141201-logos.s3.dualstack.us-east-1.amazonaws.com/stationLogos/s15377_dark_360w_270h.png",
-        stream: "https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://playtvpremium.xyz:8080/live/595991351780py/090325play/878935.m3u8"
-      }
-      // Puedes seguir agregando más aquí...
-    ];
+    const player = videojs('video-player');
 
-    const container = document.getElementById('channels-container');
-
-    channels.forEach((ch, index) => {
-      const channelDiv = document.createElement('div');
-      channelDiv.className = 'channel';
-      channelDiv.innerHTML = `
-        <div class="channel-header">
-          <img src="${ch.logo}" alt="${ch.title}" class="channel-logo">
-          <div class="channel-title">${ch.title}</div>
-        </div>
-        <video
-          id="video_${index}"
-          class="video-js vjs-default-skin"
-          controls
-          preload="auto"
-          data-setup='{}'>
-          <source src="${ch.stream}" type="application/x-mpegURL" />
-        </video>
-      `;
-      container.appendChild(channelDiv);
-      videojs(`video_${index}`);
+    // Cambiar stream al hacer click en un canal
+    document.querySelectorAll('.canal-box').forEach(box => {
+      box.addEventListener('click', () => {
+        const streamUrl = box.getAttribute('data-stream');
+        player.src({ src: streamUrl, type: 'application/x-mpegURL' });
+        player.play();
+      });
     });
   </script>
 </body>
