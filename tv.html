@@ -170,11 +170,34 @@
             text-align: left;
         }
 
+        /* ESTILOS DEL BOTÓN REPRODUCIR (NUEVOS O MODIFICADOS) */
         .channels-sidebar .canal-box button {
-            padding: 8px 12px;
-            font-size: 0.8rem;
-            flex-shrink: 0;
+            padding: 8px 15px; /* Más padding para un mejor toque */
+            font-size: 0.85rem; /* Un poco más grande la fuente */
+            font-weight: bold; /* Texto en negrita */
+            color: #ffffff; /* Texto blanco */
+            background: linear-gradient(90deg, #00aaff, #0077cc); /* Degradado azul */
+            border: none; /* Sin borde por defecto */
+            border-radius: 8px; /* Bordes más redondeados */
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 170, 255, 0.4); /* Sombra con color del tema */
+            transition: all 0.3s ease; /* Transición suave para los efectos hover */
+            flex-shrink: 0; /* Asegura que el botón no se encoja */
+            margin-left: 10px; /* Un poco de espacio a la izquierda */
         }
+
+        .channels-sidebar .canal-box button:hover {
+            background: linear-gradient(90deg, #0077cc, #00aaff); /* Invierte el degradado al pasar el ratón */
+            box-shadow: 0 6px 12px rgba(0, 170, 255, 0.6); /* Sombra más pronunciada */
+            transform: translateY(-2px); /* Un ligero levantamiento */
+        }
+
+        .channels-sidebar .canal-box button:active {
+            background: #0055aa; /* Color sólido al hacer clic */
+            box-shadow: 0 2px 4px rgba(0, 170, 255, 0.4);
+            transform: translateY(0); /* Vuelve a la posición original */
+        }
+        /* FIN ESTILOS DEL BOTÓN REPRODUCIR */
 
         /* Estilos para el cuadro EPG */
         .epg-info {
