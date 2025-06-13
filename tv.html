@@ -64,27 +64,29 @@
             border-radius: 12px;
         }
         .canales-container {
-            display: flex; /* Changed from flex-wrap to flex */
-            overflow-x: auto; /* Enable horizontal scrolling */
-            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            display: flex;
+            flex-wrap: wrap; /* Cambiado de 'no-wrap' a 'wrap' para que los canales salten de línea */
+            justify-content: center; /* Centra los elementos en la línea actual */
             gap: 20px;
             padding: 20px;
             max-width: 960px;
             margin: 0 auto 60px auto;
-            /* Optional: Hide scrollbar for aesthetic purposes, but keep functionality */
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none;  /* IE and Edge */
+            /* Se eliminan las propiedades de scroll horizontal */
+            overflow-x: unset;
+            -webkit-overflow-scrolling: unset;
+            scrollbar-width: auto;
+            -ms-overflow-style: auto;
         }
         .canales-container::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
+            display: auto;
         }
         .canal-box {
-            flex-shrink: 0; /* Prevent items from shrinking */
+            flex-shrink: 0; /* Mantenemos esto para que no se encojan si hay poco espacio */
             background-color: rgba(0, 0, 0, 0.4);
             border-radius: 15px;
             padding: 15px;
             text-align: center;
-            width: 200px; /* Fixed width for consistent horizontal scrolling */
+            width: 200px; /* Mantenemos el ancho fijo para cada caja de canal */
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             transition: transform 0.2s ease;
             cursor: default;
