@@ -93,7 +93,7 @@
             height: 100%;
         }
 
-        /* Custom Player Controls (basic example) */
+        /* NEW: Basic Custom Player Controls */
         #player-controls {
             text-align: center;
             margin-top: 10px;
@@ -109,13 +109,11 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 1em;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            transition: background-color 0.3s ease; /* Only background for simplicity */
         }
         #player-controls button:hover {
             background-color: #0056b3;
-            transform: scale(1.05);
         }
-
 
         /* Sidebar */
         .channels-sidebar {
@@ -146,7 +144,7 @@
             display: none; /* También para navegadores Webkit */
         }
 
-        /* Search Input */
+        /* NEW: Search Input */
         .channels-sidebar input[type="text"] {
             width: calc(100% - 20px); /* Adjust for padding */
             padding: 8px;
@@ -197,12 +195,11 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 0.9em;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            transition: background-color 0.3s ease;
             margin-top: auto;
         }
         .canal-box button:hover {
             background-color: #0056b3;
-            transform: scale(1.05); /* Slightly enlarge the button on hover */
         }
 
         /* EPG Info */
@@ -222,18 +219,6 @@
         .epg-program-time {
             font-style: italic;
         }
-
-        /* EPG Loading Animation */
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.6; }
-            100% { opacity: 1; }
-        }
-        .epg-program-title.loading,
-        .epg-program-time.loading {
-            animation: pulse 1.5s infinite ease-in-out;
-        }
-
 
         /* Main Content Channels (FanDuel, etc.) */
         .main-content-channels {
@@ -300,7 +285,9 @@
             flex-shrink: 0; /* Prevents button from shrinking */
         }
         .eventos-channels-container .epg-info {
-            display: none; /* Hide EPG for these compact event channels if not needed */
+            /* Keep EPG info hidden for these compact event channels if not needed, as in original. */
+            /* If you want to show it, remove or comment this display: none */
+            display: none;
         }
 
         /* Responsive Adjustments */
@@ -342,7 +329,7 @@
             }
         }
 
-        /* Popup Styles */
+        /* NEW: Popup Styles */
         #overlay {
             position: fixed;
             top: 0;
@@ -364,12 +351,12 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background-color: #1b263b;
-            padding: 20px; /* Adjusted padding slightly for image */
+            padding: 20px;
             border-radius: 10px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
             z-index: 1002; /* Above the overlay */
             width: 80%;
-            max-width: 600px; /* Increased max-width for the image */
+            max-width: 600px;
             text-align: center;
             opacity: 0;
             visibility: hidden;
@@ -383,9 +370,13 @@
             visibility: visible;
         }
 
-        .hidden {
-            display: none; /* Initially hide them. Will be removed by JS, then `visible` class added. */
+        /* Initially hide them. Will be removed by JS, then `visible` class added. */
+        /* IMPORTANT: This ensures they don't take up space until JS makes them visible */
+        #overlay.hidden,
+        #newsPopup.hidden {
+            display: none;
         }
+
 
         .popup-image {
             max-width: 100%; /* Ensures image fits within the popup width */
@@ -446,7 +437,8 @@
         <div class="channels-sidebar">
             <div class="sidebar-section">
                 <h2>Canales en Vivo</h2>
-                <input type="text" id="channelSearch" placeholder="Buscar canal..." onkeyup="filterChannels()">
+                <input type="text" id="channelSearch" placeholder="Buscar canal..." onkeyup="filterChannels()"
+                    style="width: calc(100% - 20px); padding: 8px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #415a77; background-color: #0d1b2a; color: white;">
 
                 <div class="canal-box" data-channel-id="NBCUniversalLocal(PuertoRico).us">
                     <img src="https://nbcnews.bynder.com/images/images/1/NBCUniversal_Logo_Primary_A-v2.png" alt="NBC Telemundo Puerto Rico Logo" />
@@ -605,12 +597,10 @@
         // Función para cargar y parsear el EPG
         async function fetchAndParseEPG() {
             try {
-                // Set loading state for all EPG info
+                // Set loading state for all EPG info (no animation, just text)
                 document.querySelectorAll('.epg-program-title').forEach(el => {
                     el.textContent = 'Cargando programación...';
-                    el.classList.add('loading');
                     el.nextElementSibling.textContent = '';
-                    el.nextElementSibling.classList.add('loading');
                 });
 
                 const response = await fetch('https://iptv-org.github.io/epg/guides/us/nbc.com.json'); // Tu URL de EPG
@@ -631,9 +621,7 @@
                 console.error("Error al cargar o parsear el EPG:", error);
                 document.querySelectorAll('.epg-program-title').forEach(el => {
                     el.textContent = 'Error al cargar EPG';
-                    el.classList.remove('loading');
                     el.nextElementSibling.textContent = '';
-                    el.nextElementSibling.classList.remove('loading');
                 });
             }
         }
@@ -672,14 +660,10 @@
                     const program = getProgramForChannel(channelId);
                     titleElement.textContent = program.title;
                     timeElement.textContent = program.time;
-                    titleElement.classList.remove('loading'); // Remove loading class
-                    timeElement.classList.remove('loading'); // Remove loading class
                 } else if (!channelId && titleElement) {
                     console.warn("Canal-box sin data-channel-id:", box);
                     titleElement.textContent = 'ID de canal no definido';
                     timeElement.textContent = '';
-                    titleElement.classList.remove('loading');
-                    timeElement.classList.remove('loading');
                 }
             });
         }
@@ -710,8 +694,6 @@
         function toggleMute() {
             if (player) {
                 player.muted(!player.muted()); // Toggles mute state
-                // Optional: Update button text/icon based on mute state
-                // e.g., document.getElementById('muteButton').textContent = player.muted() ? 'Unmute' : 'Mute';
             }
         }
 
@@ -732,8 +714,8 @@
             const hasSeenPopup = localStorage.getItem('hasSeenNewsPopup');
 
             if (!hasSeenPopup) {
-                overlay.classList.remove('hidden'); // Remove hidden to allow transition
-                newsPopup.classList.remove('hidden'); // Remove hidden to allow transition
+                overlay.classList.remove('hidden'); // Remove hidden class for transition
+                newsPopup.classList.remove('hidden'); // Remove hidden class for transition
                 setTimeout(() => {
                     overlay.classList.add('visible');
                     newsPopup.classList.add('visible');
