@@ -323,7 +323,7 @@
         console.error("Error del reproductor:", error);
         loadingSpinner.style.display = 'none'; // Ocultar spinner
         // Puedes mostrar un mensaje de error dentro del playerContainer si lo deseas
-        playerContainer.innerHTML = '<p style="text-align: center; color: red; padding-top: 50px;">El stream no está disponible o ha ocurrido un error.</p>' + loadingSpinner.outerHTML; // Vuelve a insertar el spinner HTML
+        playerContainer.innerHTML = '<p style="text-align: center; color: red; padding-top: 50px;">Estamos fuera del aire.</p>' + loadingSpinner.outerHTML; // Vuelve a insertar el spinner HTML
         // Re-obtener la referencia al spinner si el innerHTML fue modificado
         // loadingSpinner = document.getElementById('loading-spinner');
       });
