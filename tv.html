@@ -6,13 +6,21 @@
     <title>Canales en Vivo</title>
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     <style>
-        body {
+        /* ADDED: Ensure html and body take full viewport height and width */
+        html, body {
+            height: 100%;
+            width: 100%;
             margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Prevent horizontal scrollbar from overflow */
+        }
+
+        body {
             font-family: Arial, sans-serif;
             background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
             color: white;
             scroll-behavior: smooth;
-            min-height: 100vh;
+            min-height: 100vh; /* min-height should still be present for content that scrolls */
         }
 
         /* NAVBAR FIX */
@@ -118,8 +126,6 @@
         /* Contenedor de la lista de canales (sidebar) */
         .channels-sidebar {
             width: 100%; /* Ocupa todo el ancho en móvil */
-            /* min-width: 350px; REMOVIDO */
-            /* max-width: 350px; REMOVIDO */
             background-color: rgba(0, 0, 0, 0.4);
             border-radius: 12px;
             box-shadow: 0 0 10px rgba(0,0,0,0.5);
@@ -138,7 +144,7 @@
             }
         }
 
-        /* NEW: Search Input Field Styling */
+        /* Search Input Field Styling */
         #channelSearch {
             width: calc(100% - 20px); /* Account for padding */
             padding: 10px;
@@ -197,7 +203,7 @@
             color: #ffffff;
             background: linear-gradient(90deg, #00aaff, #0077cc);
             border: none;
-            border-radius: 8px;
+            border-radius: 8plx;
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(0, 170, 255, 0.4);
             transition: all 0.3s ease;
@@ -306,7 +312,7 @@
             }
         }
 
-        /* NEW: Player Controls */
+        /* Player Controls */
         #player-controls {
             display: flex;
             justify-content: center;
@@ -342,17 +348,17 @@
             transform: translateY(0);
         }
 
-        /* NEW: Popup Styles */
+        /* UPDATED: Popup Styles to cover full screen */
         #overlay {
-            position: fixed;
+            position: fixed; /* Ensures it covers the entire viewport */
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100%;    /* Cover full width */
+            height: 100%;   /* Cover full height */
             background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
             backdrop-filter: blur(8px); /* Apply blur effect */
             -webkit-backdrop-filter: blur(8px); /* For Safari */
-            z-index: 1001; /* Above everything else */
+            z-index: 1001; /* Above everything else, but below popup */
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.5s ease, visibility 0.5s ease;
@@ -958,7 +964,7 @@
             cambiarStream('https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8');
         });
 
-        // NEW: Function to filter channels based on search input
+        // Function to filter channels based on search input
         function filterChannels() {
             const input = document.getElementById('channelSearch');
             const filter = input.value.toUpperCase();
@@ -982,7 +988,7 @@
             });
         }
 
-        // NEW: Basic Custom Control (Toggle Mute)
+        // Basic Custom Control (Toggle Mute)
         function toggleMute() {
             if (player) {
                 player.muted(!player.muted()); // Toggles mute state
@@ -1138,7 +1144,7 @@
             // Actualiza el EPG cada 5 minutos (300000 milisegundos)
             setInterval(updateAllChannelEPG, 300000);
 
-            // NEW: Show news popup on page load
+            // Show news popup on page load
             const overlay = document.getElementById('overlay');
             const newsPopup = document.getElementById('newsPopup');
             const closePopupButton = document.getElementById('closePopup');
