@@ -9,9 +9,6 @@
       margin: 0; font-family: Arial, sans-serif;
       background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
       color: white;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
     }
 
     nav {
@@ -24,83 +21,87 @@
       position: sticky;
       top: 0;
       z-index: 1000;
-      flex-shrink: 0;
     }
 
-    nav img {
-      height: 40px;
-    }
+    nav img { height: 40px; }
+    nav .nav-links a { color: white; text-decoration: none; font-weight: bold; font-size: 1rem; margin-left: 20px; transition: color 0.3s; }
+    nav .nav-links a:hover { color: #00aaff; }
 
-    nav .nav-links a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1rem;
-      margin-left: 20px;
-      transition: color 0.3s;
-      cursor: pointer;
-    }
+    .main-title { text-align: center; font-size: 2rem; font-weight: bold; margin: 40px 0; }
 
-    nav .nav-links a:hover {
-      color: #00aaff;
-    }
-
-    .main-title {
-      text-align: center;
-      font-size: 2rem;
-      font-weight: bold;
-      margin: 20px 0;
-      flex-shrink: 0;
-    }
-
-    /* --- NUEVOS ESTILOS PARA LA TARJETA DE PLEX --- */
     .launch-container {
-      flex-grow: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-
-    .plex-card {
-      background-color: rgba(255,255,255,0.05);
-      border-radius: 15px;
-      padding: 40px;
       text-align: center;
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
-      max-width: 500px;
+      padding: 40px 20px;
     }
 
-    .plex-card img {
-      height: 80px; /* Logo más grande */
-      margin-bottom: 20px;
-    }
-
-    .plex-card h3 {
-      font-size: 1.5rem;
-      margin-bottom: 15px;
-    }
-    
-    .plex-card p {
-      color: #ccc;
-      margin-bottom: 25px;
-    }
-
-    .plex-card button {
-      background-color: #e5a00d; /* Color amarillo de Plex */
+    .launch-button {
+      background-color: #e5a00d;
       color: white;
-      padding: 12px 25px;
+      padding: 15px 30px;
       border: none;
       border-radius: 8px;
       font-weight: bold;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    .launch-button:hover {
+        background-color: #c48a0b;
+        transform: scale(1.05);
     }
 
-    .plex-card button:hover {
-      background-color: #c48a0b; /* Un poco más oscuro al pasar el ratón */
+    /* --- ESTILOS DEL MODAL --- */
+    .modal-overlay {
+      display: none; /* Oculto por defecto */
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.7); /* Fondo oscuro semitransparente */
+      animation: fadeIn 0.3s;
     }
+
+    .modal-content {
+      background: linear-gradient(180deg, #1b263b, #415a77);
+      margin: 15% auto;
+      padding: 40px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 15px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+      transform: scale(0.9);
+      animation: zoomIn 0.3s forwards;
+    }
+
+    .modal-close {
+      color: #aaa;
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      font-size: 28px;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+    .modal-close:hover, .modal-close:focus {
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .modal-content img { height: 70px; margin-bottom: 20px; }
+    .modal-content h3 { font-size: 1.8rem; margin-bottom: 15px; }
+    .modal-content p { color: #ccc; margin-bottom: 30px; line-height: 1.5; }
+    
+    @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+    @keyframes zoomIn { from {transform: scale(0.9);} to {transform: scale(1);} }
+
   </style>
 </head>
 <body>
@@ -120,13 +121,40 @@
 <h1 class="main-title">Zona de Películas</h1>
 
 <div class="launch-container">
-  <div class="plex-card">
+    <button class="launch-button" onclick="openModal()">▶ Acceder a la Biblioteca</button>
+</div>
+
+<div id="plexModal" class="modal-overlay">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal()">&times;</span>
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Plex_logo_2022.svg/1200px-Plex_logo_2022.svg.png" alt="Plex Logo" />
-    <h3>Acceder a Plex</h3>
-    <p>Debido a las políticas de seguridad, Plex debe abrirse en su propia pestaña. Haz clic en el botón para lanzar la aplicación web.</p>
-    <button onclick="window.open('https://app.plex.tv/desktop/#!/', '_blank')">Abrir Plex Web</button>
+    <h3>Estás entrando a Plex</h3>
+    <p>Nuestra biblioteca de películas y series se gestiona en la aplicación web de Plex para una mejor experiencia. Serás dirigido en una nueva pestaña.</p>
+    <button class="launch-button" onclick="window.open('https://app.plex.tv/desktop/#!/', '_blank')">Continuar a Plex</button>
   </div>
 </div>
+
+<script>
+// Obtener el modal
+var modal = document.getElementById("plexModal");
+
+// Función para abrir el modal
+function openModal() {
+  modal.style.display = "block";
+}
+
+// Función para cerrar el modal
+function closeModal() {
+  modal.style.display = "none";
+}
+
+// Cerrar el modal si el usuario hace clic fuera de la ventana del modal
+window.onclick = function(event) {
+  if (event.target == modal) {
+    closeModal();
+  }
+}
+</script>
 
 </body>
 </html>
