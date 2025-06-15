@@ -9,9 +9,9 @@
       margin: 0; font-family: Arial, sans-serif;
       background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
       color: white;
+      height: 100vh;
       display: flex;
       flex-direction: column;
-      height: 100vh; /* Ocupa toda la altura de la ventana */
     }
 
     nav {
@@ -24,7 +24,7 @@
       position: sticky;
       top: 0;
       z-index: 1000;
-      flex-shrink: 0; /* Evita que la barra de navegación se encoja */
+      flex-shrink: 0;
     }
 
     nav img {
@@ -49,24 +49,57 @@
       text-align: center;
       font-size: 2rem;
       font-weight: bold;
-      margin-top: 20px; /* Reducido el margen superior */
-      margin-bottom: 20px; /* Añadido margen inferior */
+      margin: 20px 0;
       flex-shrink: 0;
     }
 
-    .iframe-container {
-      flex-grow: 1; /* Permite que el contenedor del iframe crezca y ocupe el espacio disponible */
-      padding: 0 20px 20px 20px; /* Añade algo de padding alrededor */
-      box-sizing: border-box;
+    /* --- NUEVOS ESTILOS PARA LA TARJETA DE PLEX --- */
+    .launch-container {
+      flex-grow: 1;
       display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
     }
 
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      border-radius: 15px; /* Bordes redondeados para el iframe */
+    .plex-card {
+      background-color: rgba(255,255,255,0.05);
+      border-radius: 15px;
+      padding: 40px;
+      text-align: center;
       box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      max-width: 500px;
+    }
+
+    .plex-card img {
+      height: 80px; /* Logo más grande */
+      margin-bottom: 20px;
+    }
+
+    .plex-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+    
+    .plex-card p {
+      color: #ccc;
+      margin-bottom: 25px;
+    }
+
+    .plex-card button {
+      background-color: #e5a00d; /* Color amarillo de Plex */
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .plex-card button:hover {
+      background-color: #c48a0b; /* Un poco más oscuro al pasar el ratón */
     }
   </style>
 </head>
@@ -86,8 +119,13 @@
 
 <h1 class="main-title">Zona de Películas</h1>
 
-<div class="iframe-container">
-  <iframe src="https://app.plex.tv/desktop/#!/" title="Plex Content"></iframe>
+<div class="launch-container">
+  <div class="plex-card">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Plex_logo_2022.svg/1200px-Plex_logo_2022.svg.png" alt="Plex Logo" />
+    <h3>Acceder a Plex</h3>
+    <p>Debido a las políticas de seguridad, Plex debe abrirse en su propia pestaña. Haz clic en el botón para lanzar la aplicación web.</p>
+    <button onclick="window.open('https://app.plex.tv/desktop/#!/', '_blank')">Abrir Plex Web</button>
+  </div>
 </div>
 
 </body>
