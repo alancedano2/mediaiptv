@@ -9,6 +9,9 @@
       margin: 0; font-family: Arial, sans-serif;
       background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
       color: white;
+      display: flex;
+      flex-direction: column;
+      height: 100vh; /* Ocupa toda la altura de la ventana */
     }
 
     nav {
@@ -21,87 +24,50 @@
       position: sticky;
       top: 0;
       z-index: 1000;
+      flex-shrink: 0; /* Evita que la barra de navegación se encoja */
     }
 
-    nav img { height: 40px; }
-    nav .nav-links a { color: white; text-decoration: none; font-weight: bold; font-size: 1rem; margin-left: 20px; transition: color 0.3s; }
-    nav .nav-links a:hover { color: #00aaff; }
-
-    .main-title { text-align: center; font-size: 2rem; font-weight: bold; margin: 40px 0; }
-
-    .launch-container {
-      text-align: center;
-      padding: 40px 20px;
+    nav img {
+      height: 40px;
     }
 
-    .launch-button {
-      background-color: #e5a00d;
-      color: white;
-      padding: 15px 30px;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 1.2rem;
-      cursor: pointer;
-      transition: all 0.3s;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-    .launch-button:hover {
-        background-color: #c48a0b;
-        transform: scale(1.05);
-    }
-
-    /* --- ESTILOS DEL MODAL --- */
-    .modal-overlay {
-      display: none; /* Oculto por defecto */
-      position: fixed;
-      z-index: 2000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.7); /* Fondo oscuro semitransparente */
-      animation: fadeIn 0.3s;
-    }
-
-    .modal-content {
-      background: linear-gradient(180deg, #1b263b, #415a77);
-      margin: 15% auto;
-      padding: 40px;
-      border: 1px solid #888;
-      width: 80%;
-      max-width: 500px;
-      border-radius: 15px;
-      text-align: center;
-      position: relative;
-      box-shadow: 0 5px 25px rgba(0,0,0,0.5);
-      transform: scale(0.9);
-      animation: zoomIn 0.3s forwards;
-    }
-
-    .modal-close {
-      color: #aaa;
-      position: absolute;
-      top: 15px;
-      right: 25px;
-      font-size: 28px;
-      font-weight: bold;
-      transition: color 0.3s;
-    }
-    .modal-close:hover, .modal-close:focus {
+    nav .nav-links a {
       color: white;
       text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+      margin-left: 20px;
+      transition: color 0.3s;
       cursor: pointer;
     }
 
-    .modal-content img { height: 70px; margin-bottom: 20px; }
-    .modal-content h3 { font-size: 1.8rem; margin-bottom: 15px; }
-    .modal-content p { color: #ccc; margin-bottom: 30px; line-height: 1.5; }
-    
-    @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
-    @keyframes zoomIn { from {transform: scale(0.9);} to {transform: scale(1);} }
+    nav .nav-links a:hover {
+      color: #00aaff;
+    }
 
+    .main-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+      margin-top: 20px; /* Reducido el margen superior */
+      margin-bottom: 20px; /* Añadido margen inferior */
+      flex-shrink: 0;
+    }
+
+    .iframe-container {
+      flex-grow: 1; /* Permite que el contenedor del iframe crezca y ocupe el espacio disponible */
+      padding: 0 20px 20px 20px; /* Añade algo de padding alrededor */
+      box-sizing: border-box;
+      display: flex;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 15px; /* Bordes redondeados para el iframe */
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
   </style>
 </head>
 <body>
@@ -120,41 +86,9 @@
 
 <h1 class="main-title">Zona de Películas</h1>
 
-<div class="launch-container">
-    <button class="launch-button" onclick="openModal()">▶ Acceder a la Biblioteca</button>
+<div class="iframe-container">
+  <iframe src="https://drive.google.com/file/d/1O36eyGVt-VIKlCu05Epdl0Whz3mTsGU0/preview" title="Plex Content"></iframe>
 </div>
-
-<div id="plexModal" class="modal-overlay">
-  <div class="modal-content">
-    <span class="modal-close" onclick="closeModal()">&times;</span>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Plex_logo_2022.svg/1200px-Plex_logo_2022.svg.png" alt="Plex Logo" />
-    <h3>Estás entrando a Plex</h3>
-    <p>Nuestra biblioteca de películas y series se gestiona en la aplicación web de Plex para una mejor experiencia. Serás dirigido en una nueva pestaña.</p>
-    <button class="launch-button" onclick="window.open('https://app.plex.tv/desktop/#!/', '_blank')">Continuar a Plex</button>
-  </div>
-</div>
-
-<script>
-// Obtener el modal
-var modal = document.getElementById("plexModal");
-
-// Función para abrir el modal
-function openModal() {
-  modal.style.display = "block";
-}
-
-// Función para cerrar el modal
-function closeModal() {
-  modal.style.display = "none";
-}
-
-// Cerrar el modal si el usuario hace clic fuera de la ventana del modal
-window.onclick = function(event) {
-  if (event.target == modal) {
-    closeModal();
-  }
-}
-</script>
 
 </body>
 </html>
