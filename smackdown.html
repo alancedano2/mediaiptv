@@ -57,6 +57,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 20px;
+      text-align: center;
     }
 
     .video-player iframe {
@@ -118,23 +120,40 @@
 </nav>
 
 <div class="container">
-  <div class="video-player">
+  <div class="video-player" id="videoContainer">
     <iframe id="videoFrame" src="https://ok.ru/videoembed/10602722232913" allowfullscreen></iframe>
   </div>
 
   <div class="playlist">
     <h3>Lista de Repeticiones</h3>
     <div id="playlistItems">
-      <div class="playlist-item active" onclick="loadVideo('https://ok.ru/videoembed/10602722232913')">
+      <div class="playlist-item active" onclick="loadVideo('https://ok.ru/videoembed/10602722232913', true)">
         WWE SmackDown - 13 de junio del 2025
+      </div>
+      <div class="playlist-item" onclick="loadVideo('', false)">
+        WWE SmackDown - 20 de junio del 2025
+      </div>
+      <div class="playlist-item" onclick="loadVideo('', false)">
+        WWE SmackDown - 27 de junio del 2025
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  function loadVideo(url) {
-    document.getElementById('videoFrame').src = url;
+  function loadVideo(url, available) {
+    const container = document.getElementById('videoContainer');
+    const frame = document.getElementById('videoFrame');
+
+    if (available && url) {
+      frame.src = url;
+      frame.style.display = 'block';
+      container.innerHTML = '';
+      container.appendChild(frame);
+    } else {
+      container.innerHTML = "<p style='font-size: 1.2rem;'>No se ha emitido o se está grabando la repetición.</p>";
+    }
+
     document.querySelectorAll('.playlist-item').forEach(el => el.classList.remove('active'));
     event.target.classList.add('active');
   }
