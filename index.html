@@ -49,16 +49,14 @@
     }
     #player {
       width: 100%;
-      /* --- MODIFICADO: Reproductor más grande --- */
       max-width: 1200px; 
-      height: 675px; /* Mantiene una proporción de 16:9 con el nuevo ancho */
-      margin: 40px auto; /* Aumentado el margen superior */
+      height: 675px;
+      margin: 40px auto;
       background-color: black;
       border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,170,255,0.8); /* Sombra más pronunciada */
+      box-shadow: 0 0 20px rgba(0,170,255,0.8);
       position: relative;
     }
-
   </style>
 </head>
 <body>
@@ -75,20 +73,19 @@
     </div>
   </nav>
 
-
+  <div id="player"></div>
 
   <script>
     const playerContainer = document.getElementById('player');
-    const loadingSpinner = document.getElementById('loading-spinner');
+    // MODIFICADO: Se eliminó la constante 'loadingSpinner'
     let player = null;
 
-    // Función simplificada para crear y reproducir el stream
     function crearPlayer(url) {
       if(player) {
         player.destroy();
       }
 
-      loadingSpinner.style.display = 'flex';
+      // MODIFICADO: Se eliminó la línea que mostraba el spinner
 
       player = new Clappr.Player({
         parent: playerContainer,
@@ -100,21 +97,19 @@
         mediacontrol: { seekbar: "#00aaff" },
         playback: { hlsjsConfig: { maxBufferLength: 30 } },
       });
-
+      
+      // MODIFICADO: Se eliminó la lógica que ocultaba el spinner
       player.on(Clappr.Events.PLAYER_PLAYING, function() {
-        loadingSpinner.style.display = 'none';
+        console.log("Player is playing.");
       });
 
       player.on(Clappr.Events.PLAYER_ERROR, function(error) {
         console.error("Error del reproductor:", error);
-        loadingSpinner.style.display = 'none';
         playerContainer.innerHTML = `<div style="display: flex; justify-content: center; align-items: center; height: 100%; color: red; font-size: 1.2rem; text-align: center;">El canal no está disponible en este momento.</div>`;
       });
     }
 
-    // Inicializamos al cargar la página con el stream específico
     document.addEventListener('DOMContentLoaded', () => {
-        // --- MODIFICADO: Carga el stream solicitado directamente ---
         const streamUrl = 'https://prospectivetoday.fun/hls/cr7star001.m3u8';
         crearPlayer(streamUrl);
     });
