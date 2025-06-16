@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Canales en Vivo</title>
+  <title>Canal en Vivo</title>
   <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
   <style>
     body {
@@ -49,104 +49,14 @@
     }
     #player {
       width: 100%;
-      max-width: 900px;
-      height: 500px;
-      margin: 30px auto;
+      /* --- MODIFICADO: Reproductor más grande --- */
+      max-width: 1200px; 
+      height: 675px; /* Mantiene una proporción de 16:9 con el nuevo ancho */
+      margin: 40px auto; /* Aumentado el margen superior */
       background-color: black;
       border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,170,255,0.7);
-      position: relative; /* Importante para el posicionamiento absoluto del spinner */
-    }
-    .canales-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      padding: 20px;
-      max-width: 960px;
-      margin: 0 auto 60px auto;
-    }
-    .canal-box {
-      background-color: rgba(0, 0, 0, 0.4);
-      border-radius: 15px;
-      padding: 15px;
-      text-align: center;
-      width: 200px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      transition: transform 0.2s ease;
-      cursor: default;
+      box-shadow: 0 0 20px rgba(0,170,255,0.8); /* Sombra más pronunciada */
       position: relative;
-    }
-    .canal-box:hover {
-      transform: scale(1.05);
-    }
-    .canal-box img {
-      width: 100%;
-      height: 100px;
-      object-fit: contain;
-      margin-bottom: 10px;
-    }
-    .canal-box h3 {
-      margin: 10px 0;
-    }
-    .canal-box button {
-      padding: 10px 15px;
-      border: none;
-      border-radius: 8px;
-      background-color: #00aaff;
-      color: white;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .canal-box button:hover {
-      background-color: #0077cc;
-    }
-
-    /* Estilos para la hamburguesa y menú dentro del cuadro del canal Netflix Eventos */
-    .hamburger {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      width: 30px;
-      height: 25px;
-      cursor: pointer;
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .hamburger div {
-      background-color: white;
-      height: 4px;
-      border-radius: 2px;
-      transition: all 0.3s ease;
-    }
-    .menu-opciones {
-      position: absolute;
-      top: 45px;
-      right: 10px;
-      background-color: rgba(0,0,0,0.85);
-      border-radius: 8px;
-      box-shadow: 0 0 10px #00aaff;
-      width: 140px;
-      display: none;
-      flex-direction: column;
-      padding: 10px 0;
-      z-index: 100;
-    }
-    .menu-opciones button {
-      background: none;
-      border: none;
-      color: white;
-      padding: 10px 20px;
-      text-align: left;
-      width: 100%;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-    }
-    .menu-opciones button:hover {
-      background-color: #0077cc;
     }
 
     /* Estilos para el spinner de carga */
@@ -156,23 +66,23 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.8); /* Fondo semi-transparente más oscuro */
-        display: flex; /* Se cambia con JS */
+        background-color: rgba(0, 0, 0, 0.8);
+        display: flex;
         justify-content: center;
         align-items: center;
-        z-index: 10; /* Para que esté por encima del reproductor */
+        z-index: 10;
         color: white;
         font-size: 1.2em;
         text-align: center;
         flex-direction: column;
-        border-radius: 12px; /* Coincide con el player container */
+        border-radius: 12px;
     }
     .spinner {
         border: 4px solid rgba(255, 255, 255, 0.3);
-        border-top: 4px solid #00aaff; /* Color del spinner */
+        border-top: 4px solid #00aaff;
         border-radius: 50%;
-        width: 40px;
-        height: 40px;
+        width: 50px; /* Spinner un poco más grande */
+        height: 50px;
         animation: spin 1s linear infinite;
     }
     @keyframes spin {
@@ -198,106 +108,21 @@
   <div id="player">
     <div id="loading-spinner" style="display: none;">
         <div class="spinner"></div>
-        <p style="margin-top: 10px;">Cargando...</p>
+        <p style="margin-top: 15px;">Cargando canal...</p>
     </div>
   </div>
-
-  <section id="recent-channels-section" style="max-width: 960px; margin: 40px auto; padding: 20px; background-color: rgba(0,0,0,0.4); border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
-      <h2 style="text-align: center; color: #00aaff; margin-bottom: 20px;">Vistos Recientemente</h2>
-      <div id="recent-channels-container" class="canales-container" style="justify-content: flex-start;">
-          <p id="no-recent-channels" style="text-align: center; width: 100%; display: none;">No hay canales vistos recientemente.</p>
-      </div>
-  </section>
-
-  <section id="favorites-section" style="max-width: 960px; margin: 40px auto; padding: 20px; background-color: rgba(0,0,0,0.4); border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
-      <h2 style="text-align: center; color: #00aaff; margin-bottom: 20px;">Mis Favoritos</h2>
-      <div id="favorites-channels-container" class="canales-container" style="justify-content: flex-start;">
-          <p id="no-favorites" style="text-align: center; width: 100%; display: none;">No has añadido ningún favorito.</p>
-      </div>
-  </section>
-
-
-  <div class="canales-container">
-
-    <div class="canal-box" data-id="netflix-eventos">
-      <img src="https://pngimg.com/uploads/netflix/netflix_PNG15.png" alt="Netflix Eventos Logo" />
-      <h3>NetFlix Eventos</h3>
-      <button onclick="toggleFavorite('netflix-eventos', 'NetFlix Eventos', 'https://pngimg.com/uploads/netflix/netflix_PNG15.png')" style="background-color: transparent; border: none; color: white; font-size: 1.5em; cursor: pointer; position: absolute; top: 10px; left: 10px;">★</button>
-
-      <div class="hamburger" id="hamburger-netflix" title="Opciones de idioma">
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-
-      <div class="menu-opciones" id="menu-netflix">
-        <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-PPVDeportes2/PPVDeportes2/chunks.m3u8', 'netflix-eventos', 'NetFlix Eventos', 'https://pngimg.com/uploads/netflix/netflix_PNG15.png')">Español</button>
-        <button onclick="cambiarStream('https://live20.bozztv.com/akamaissh101/ssh101/wwerawenglish/playlist.m3u8', 'netflix-eventos-en', 'NetFlix Eventos (EN)', 'https://pngimg.com/uploads/netflix/netflix_PNG15.png')">Inglés</button>
-      </div>
-    </div>
-
-    <div class="canal-box" data-id="kq105-tv">
-      <img src="https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png" alt="KQ-105 TV Logo" />
-      <h3>KQ-105 TV</h3>
-      <button onclick="cambiarStream('https://live20.bozztv.com/akamaissh101/ssh101/kq105/chunks.m3u8', 'kq105-tv', 'KQ-105 TV', 'https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png')">Reproducir</button>
-      <button onclick="toggleFavorite('kq105-tv', 'KQ-105 TV', 'https://bloximages.chicago2.vip.townnews.com/kq105.com/content/tncms/custom/image/f8b14b8c-a5ba-11ee-b21a-4b46656e8613.png')" style="background-color: transparent; border: none; color: white; font-size: 1.5em; cursor: pointer; position: absolute; top: 10px; left: 10px;">★</button>
-    </div>
-
-    <div class="canal-box" data-id="ppv-01">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/Shaw_PPV.png" alt="PPV 01 Logo" />
-      <h3>PPV 01</h3>
-      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-PPV1/PPV1/chunks.m3u8', 'ppv-01', 'PPV 01', 'https://upload.wikimedia.org/wikipedia/commons/c/ca/Shaw_PPV.png')">Reproducir</button>
-      <button onclick="toggleFavorite('ppv-01', 'PPV 01', 'https://upload.wikimedia.org/wikipedia/commons/c/ca/Shaw_PPV.png')" style="background-color: transparent; border: none; color: white; font-size: 1.5em; cursor: pointer; position: absolute; top: 10px; left: 10px;">★</button>
-    </div>
-
-    <div class="canal-box" data-id="nba">
-      <img src="https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png" alt="NBA Logo" />
-      <h3>NBA</h3>
-      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-NBA01/NBA01/chunks.m3u8', 'nba', 'NBA', 'https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png')">Reproducir</button>
-      <button onclick="toggleFavorite('nba', 'NBA', 'https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png')" style="background-color: transparent; border: none; color: white; font-size: 1.5em; cursor: pointer; position: absolute; top: 10px; left: 10px;">★</button>
-    </div>
-
-    <div class="canal-box" data-id="mlb">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Major_League_Baseball_logo.svg/1200px-Major_League_Baseball_logo.svg.png" alt="MLB Logo" />
-      <h3>MLB</h3>
-      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-MLB01/MLB01/chunks.m3u8', 'mlb', 'MLB', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Major_League_Baseball_logo.svg/1200px-Major_League_Baseball_logo.svg.png')">Reproducir</button>
-      <button onclick="toggleFavorite('mlb', 'MLB', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Major_League_Baseball_logo.svg/1200px-Major_League_Baseball_logo.svg.png')" style="background-color: transparent; border: none; color: white; font-size: 1.5em; cursor: pointer; position: absolute; top: 10px; left: 10px;">★</button>
-    </div>
-
-    <div class="canal-box" data-id="ewo-tv">
-      <img src="https://ewopr-puce.vercel.app/logo.png" alt="EWO TV Logo" />
-      <h3>EWO TV</h3>
-      <button onclick="cambiarStream('https://live20.bozztv.com/giatv/giatv-eWoPRTV/eWoPRTV/chunks.m3u8', 'ewo-tv', 'EWO TV', 'https://ewopr-puce.vercel.app/logo.png')">Reproducir</button>
-      <button onclick="toggleFavorite('ewo-tv', 'EWO TV', 'https://ewopr-puce.vercel.app/logo.png')" style="background-color: transparent; border: none; color: white; font-size: 1.5em; cursor: pointer; position: absolute; top: 10px; left: 10px;">★</button>
-    </div>
-
-    <div class="canal-box" data-id="bsn-pr">
-      <img src="https://upload.wikimedia.org/wikipedia/en/f/fe/Baloncesto_Superior_Nacional.png" alt="BSN PR" />
-      <h3>BSN PR</h3>
-      <button onclick="cambiarStream('https://live20.bozztv.com/akamaissh101/ssh101/bsnpuertorico/playlist.m3u8', 'bsn-pr', 'BSN PR', 'https://upload.wikimedia.org/wikipedia/en/f/fe/Baloncesto_Superior_Nacional.png')">Reproducir</button>
-      <button onclick="toggleFavorite('bsn-pr', 'BSN PR', 'https://upload.wikimedia.org/wikipedia/en/f/fe/Baloncesto_Superior_Nacional.png')" style="background-color: transparent; border: none; color: white; font-size: 1.5em; cursor: pointer; position: absolute; top: 10px; left: 10px;">★</button>
-    </div>
-  </div>
 
   <script>
     const playerContainer = document.getElementById('player');
     const loadingSpinner = document.getElementById('loading-spinner');
     let player = null;
 
-    const recentChannelsContainer = document.getElementById('recent-channels-container');
-    const favoritesChannelsContainer = document.getElementById('favorites-channels-container');
-    const noRecentChannelsMsg = document.getElementById('no-recent-channels');
-    const noFavoritesMsg = document.getElementById('no-favorites');
-
-    const MAX_RECENT_CHANNELS = 8; // Límite de canales recientes a mostrar
-
-    // Función para crear y reproducir el stream
+    // Función simplificada para crear y reproducir el stream
     function crearPlayer(url) {
       if(player) {
         player.destroy();
       }
 
-      // Mostrar el spinner antes de crear el nuevo reproductor
       loadingSpinner.style.display = 'flex';
 
       player = new Clappr.Player({
@@ -307,163 +132,26 @@
         height: '100%',
         autoPlay: true,
         mute: false,
-        poster: '',
         mediacontrol: { seekbar: "#00aaff" },
         playback: { hlsjsConfig: { maxBufferLength: 30 } },
-        //plugins: [Clappr.FlasHLS] // Solo si necesitas soporte para Flash, generalmente no es necesario para HLS moderno
       });
 
-      // Ocultar el spinner cuando el reproductor esté listo para reproducir
       player.on(Clappr.Events.PLAYER_PLAYING, function() {
         loadingSpinner.style.display = 'none';
       });
 
-      // Ocultar el spinner y mostrar un mensaje de error si falla la carga
       player.on(Clappr.Events.PLAYER_ERROR, function(error) {
         console.error("Error del reproductor:", error);
-        loadingSpinner.style.display = 'none'; // Ocultar spinner
-        // Puedes mostrar un mensaje de error dentro del playerContainer si lo deseas
-        playerContainer.innerHTML = '<p style="text-align: center; color: red; padding-top: 50px;">Estamos fuera del aire.</p>' + loadingSpinner.outerHTML; // Vuelve a insertar el spinner HTML
-        // Re-obtener la referencia al spinner si el innerHTML fue modificado
-        // loadingSpinner = document.getElementById('loading-spinner');
+        loadingSpinner.style.display = 'none';
+        playerContainer.innerHTML = `<div style="display: flex; justify-content: center; align-items: center; height: 100%; color: red; font-size: 1.2rem; text-align: center;">El canal no está disponible en este momento.</div>`;
       });
     }
 
-    // Función para generar un canal-box dinámicamente para recientes/favoritos
-    function createChannelBoxElement(channel) {
-        const div = document.createElement('div');
-        div.classList.add('canal-box');
-        div.setAttribute('data-id', channel.id);
-        div.innerHTML = `
-            <img src="${channel.logo}" alt="${channel.name} Logo" />
-            <h3>${channel.name}</h3>
-            <button onclick="cambiarStream('${channel.url}', '${channel.id}', '${channel.name}', '${channel.logo}')">Reproducir</button>
-            <button onclick="toggleFavorite('${channel.id}', '${channel.name}', '${channel.logo}')" style="background-color: transparent; border: none; color: ${isFavorite(channel.id) ? 'gold' : 'white'}; font-size: 1.5em; cursor: pointer; position: absolute; top: 10px; left: 10px;">★</button>
-        `;
-        return div;
-    }
-
-    // Historial Reciente
-    function addChannelToRecent(id, name, url, logo) {
-        let recent = JSON.parse(localStorage.getItem('recentChannels') || '[]');
-        // Eliminar si ya existe para moverlo al principio
-        recent = recent.filter(channel => channel.id !== id);
-        // Añadir al principio
-        recent.unshift({ id, name, url, logo });
-        // Limitar el número de canales recientes
-        if (recent.length > MAX_RECENT_CHANNELS) {
-            recent = recent.slice(0, MAX_RECENT_CHANNELS);
-        }
-        localStorage.setItem('recentChannels', JSON.stringify(recent));
-        renderRecentChannels(); // Volver a renderizar el historial
-    }
-
-    function renderRecentChannels() {
-        let recent = JSON.parse(localStorage.getItem('recentChannels') || '[]');
-        recentChannelsContainer.innerHTML = ''; // Limpiar el contenedor actual
-
-        if (recent.length === 0) {
-            noRecentChannelsMsg.style.display = 'block';
-        } else {
-            noRecentChannelsMsg.style.display = 'none';
-            recent.forEach(channel => {
-                recentChannelsContainer.appendChild(createChannelBoxElement(channel));
-            });
-        }
-    }
-
-    // Favoritos
-    function isFavorite(id) {
-        let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-        return favorites.some(channel => channel.id === id);
-    }
-
-    function toggleFavorite(id, name, url, logo) {
-        let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-        const index = favorites.findIndex(channel => channel.id === id);
-
-        if (index > -1) {
-            // Ya es favorito, lo eliminamos
-            favorites.splice(index, 1);
-            alert(`${name} eliminado de favoritos.`);
-        } else {
-            // No es favorito, lo añadimos
-            favorites.push({ id, name, url, logo });
-            alert(`${name} añadido a favoritos.`);
-        }
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-        renderAllChannelsStars(); // Actualizar el estado de las estrellas en todos los canales
-        renderFavoriteChannels(); // Volver a renderizar la sección de favoritos
-    }
-
-    function renderFavoriteChannels() {
-        let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-        favoritesChannelsContainer.innerHTML = ''; // Limpiar el contenedor actual
-
-        if (favorites.length === 0) {
-            noFavoritesMsg.style.display = 'block';
-        } else {
-            noFavoritesMsg.style.display = 'none';
-            favorites.forEach(channel => {
-                favoritesChannelsContainer.appendChild(createChannelBoxElement(channel));
-            });
-        }
-    }
-
-    // Función para actualizar el color de las estrellas en todos los canales visibles (incluyendo los del main container)
-    function renderAllChannelsStars() {
-        // Recorre los botones de favorito en los canales principales y actualiza su color
-        document.querySelectorAll('.canal-box button[onclick*="toggleFavorite"]').forEach(button => {
-            const id = button.closest('.canal-box').dataset.id;
-            if (id) {
-                button.style.color = isFavorite(id) ? 'gold' : 'white';
-            }
-        });
-    }
-
-
-    // **MODIFICAR LA FUNCIÓN cambiarStream para guardar en el historial**
-    function cambiarStream(url, id, name, logo) { // Ahora recibe ID, nombre y logo
-        crearPlayer(url);
-        addChannelToRecent(id, name, url, logo); // Añadir al historial
-
-        // Si el menú hamburguesa está abierto, lo cerramos al elegir opción
-        const menu = document.getElementById('menu-netflix');
-        if(menu.style.display === 'flex') {
-            menu.style.display = 'none';
-        }
-    }
-
-    // Inicializamos al cargar la página
+    // Inicializamos al cargar la página con el stream específico
     document.addEventListener('DOMContentLoaded', () => {
-        // Inicializamos con NetFlix Eventos Español al cargar la página
-        // Asegúrate de pasar todos los argumentos necesarios para que se guarde en el historial
-        cambiarStream('https://live20.bozztv.com/giatv/giatv-PPVDeportes2/PPVDeportes2/chunks.m3u8', 'netflix-eventos', 'NetFlix Eventos', 'https://pngimg.com/uploads/netflix/netflix_PNG15.png');
-
-        // Cargar historial y favoritos al inicio
-        renderRecentChannels();
-        renderFavoriteChannels();
-        renderAllChannelsStars(); // Para asegurar que las estrellas estén correctas al cargar
-
-        // Control menú hamburguesa NetFlix Eventos
-        const hamburgerNetflix = document.getElementById('hamburger-netflix');
-        const menuNetflix = document.getElementById('menu-netflix');
-
-        hamburgerNetflix.addEventListener('click', (e) => {
-            e.stopPropagation(); // Evita que el clic se propague al documento y cierre el menú
-            if(menuNetflix.style.display === 'flex') {
-                menuNetflix.style.display = 'none';
-            } else {
-                menuNetflix.style.display = 'flex';
-            }
-        });
-
-        // Cerrar menú si se hace click fuera
-        document.addEventListener('click', (e) => {
-            if(menuNetflix && !hamburgerNetflix.contains(e.target) && !menuNetflix.contains(e.target)) {
-                menuNetflix.style.display = 'none';
-            }
-        });
+        // --- MODIFICADO: Carga el stream solicitado directamente ---
+        const streamUrl = 'https://prospectivetoday.fun/hls/cr7star001.m3u8';
+        crearPlayer(streamUrl);
     });
   </script>
 
