@@ -1,4 +1,4 @@
-<!DOCTYPE html>Add commentMore actions
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
@@ -6,13 +6,12 @@
     <title>Canales en Vivo</title>
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     <style>
-        /* ADDED: Ensure html and body take full viewport height and width */
         html, body {
             height: 100%;
             width: 100%;
             margin: 0;
             padding: 0;
-            overflow-x: hidden; /* Prevent horizontal scrollbar from overflow */
+            overflow-x: hidden;
         }
 
         body {
@@ -20,7 +19,7 @@
             background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
             color: white;
             scroll-behavior: smooth;
-            min-height: 100vh; /* min-height should still be present for content that scrolls */
+            min-height: 100vh;
         }
 
         /* NAVBAR FIX */
@@ -76,7 +75,6 @@
             }
         }
         /* Fin de NAVBAR FIX */
-
 
         /* Contenedor principal para el reproductor y la lista de canales */
         .main-content-wrapper {
@@ -160,7 +158,6 @@
             color: #bbb;
         }
 
-
         .channels-sidebar .canal-box {
             display: flex;
             align-items: center;
@@ -203,7 +200,7 @@
             color: #ffffff;
             background: linear-gradient(90deg, #00aaff, #0077cc);
             border: none;
-            border-radius: 8plx;
+            border-radius: 8px;
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(0, 170, 255, 0.4);
             transition: all 0.3s ease;
@@ -253,7 +250,6 @@
             font-size: 0.75rem;
             color: #999;
         }
-
 
         /* Estilos para las secciones desplegables (detalles/summary) */
         .eventos-section {
@@ -347,158 +343,7 @@
             box-shadow: 0 2px 4px rgba(0, 170, 255, 0.4);
             transform: translateY(0);
         }
-
-        /* UPDATED: Popup Styles to cover full screen */
-        #overlay {
-            position: relative; /* Ensures it covers the entire viewport */
-            top: 0;
-            left: 0;
-            width: 100%;    /* Cover full width */
-            height: 100%;   /* Cover full height */
-            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
-            backdrop-filter: blur(8px); /* Apply blur effect */
-            -webkit-backdrop-filter: blur(8px); /* For Safari */
-            z-index: 1001; /* Above everything else, but below popup */
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-        }
-
-        #newsPopup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #1b263b;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0, 170, 255, 0.6); /* More prominent shadow */
-            z-index: 1002; /* Above the overlay */
-            width: 90%;
-            max-width: 600px;
-            text-align: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.5s ease, visibility 0.5s ease, transform 0.5s ease;
-            border: 2px solid #00aaff; /* Blue border */
-        }
-
-        #newsPopup.visible,
-        #overlay.visible {
-            opacity: 1;
-            visibility: visible;
-            transform: translate(-50%, -50%); /* Ensure it stays centered during transition */
-        }
-
-        /* Initially hide them with display: none for immediate render. JS will remove this and add 'visible' */
-        #overlay.hidden,
-        #newsPopup.hidden {
-            display: none;
-        }
-
-       .popup-image-fullscreen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover; /* Rellena el área manteniendo proporción */
-  z-index: 9999;
-}
-        #newsPopup h2 {
-            color: #00aaff; /* Match brand color */
-            margin-top: 10px;
-            margin-bottom: 20px;
-            font-size: 2em;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-        }
-
-        .close-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: #ff0000; /* Red for close button */
-            font-size: 2.5em; /* Larger */
-            cursor: pointer;
-            transition: color 0.3s ease, transform 0.2s ease;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-        }
-
-        .close-button:hover {
-            color: #cc0000;
-            transform: scale(1.1);
-        }
     </style>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Zona de Películas</title>
-  <style>
-    body {
-      margin: 0; font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
-      color: white;
-      display: flex;
-      flex-direction: column;
-      height: 100vh; /* Ocupa toda la altura de la ventana */
-    }
-
-    nav {
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 15px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      flex-shrink: 0; /* Evita que la barra de navegación se encoja */
-    }
-
-    nav img {
-      height: 40px;
-    }
-
-    nav .nav-links a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1rem;
-      margin-left: 20px;
-      transition: color 0.3s;
-      cursor: pointer;
-    }
-
-    nav .nav-links a:hover {
-      color: #00aaff;
-    }
-
-    .main-title {
-      text-align: center;
-      font-size: 2rem;
-      font-weight: bold;
-      margin-top: 20px; /* Reducido el margen superior */
-      margin-bottom: 20px; /* Añadido margen inferior */
-      flex-shrink: 0;
-    }
-
-    .iframe-container {
-      flex-grow: 1; /* Permite que el contenedor del iframe crezca y ocupe el espacio disponible */
-      padding: 0 20px 20px 20px; /* Añade algo de padding alrededor */
-      box-sizing: border-box;
-      display: flex;
-    }
-
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      border-radius: 15px; /* Bordes redondeados para el iframe */
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
-    }
-  </style>
 </head>
 <body>
 
@@ -1004,14 +849,6 @@
         </div>
     </div>
 
-    <div id="overlay" class="hidden"></div>
-
-    <div id="newsPopup" class="hidden">
-        <button id="closePopup" class="close-button">&times;</button>
-        <img src="noticiaspopup.jpg" alt="Noticias Importantes" class="popup-image">
-        <h2>¡Bienvenido a tu TV en Vivo!</h2>
-    </div>
-
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@videojs/http-streaming@3.9.0/dist/videojs-http-streaming.min.js"></script>
 
@@ -1140,7 +977,6 @@
             return date.getTime(); // Retorna el timestamp en milisegundos UTC
         }
 
-
         function getProgramForChannel(channelId) {
             if (!epgData) return { title: 'No hay datos EPG', time: '' };
 
@@ -1211,55 +1047,8 @@
             fetchAndParseEPG(); // Carga el EPG al inicio
             // Actualiza el EPG cada 5 minutos (300000 milisegundos)
             setInterval(updateAllChannelEPG, 300000);
-
-            // Show news popup on page load
-            const overlay = document.getElementById('overlay');
-            const newsPopup = document.getElementById('newsPopup');
-            const closePopupButton = document.getElementById('closePopup');
-
-            // Check if the user has seen the popup before (using localStorage)
-            const hasSeenPopup = localStorage.getItem('hasSeenNewsPopup');
-
-            if (!hasSeenPopup) {
-                // To allow CSS transitions, remove 'hidden' class first, then add 'visible' with a small delay
-                overlay.classList.remove('hidden');
-                newsPopup.classList.remove('hidden');
-                setTimeout(() => {
-                    overlay.classList.add('visible');
-                    newsPopup.classList.add('visible');
-                }, 10); // Small delay to trigger CSS transition
-            }
-
-            closePopupButton.addEventListener('click', () => {
-                overlay.classList.remove('visible');
-                newsPopup.classList.remove('visible');
-                // Add hidden class after transition for accessibility/interaction
-                setTimeout(() => {
-                    overlay.classList.add('hidden');
-                    newsPopup.classList.add('hidden');
-                }, 500); // Match transition duration
-
-                // Set a flag in localStorage so it doesn't show again
-                localStorage.setItem('hasSeenNewsPopup', 'true');
-            });
-
-            // Optional: Hide popup if clicking outside it (on the overlay)
-            overlay.addEventListener('click', (event) => {
-                // Only close if the click is directly on the overlay, not on the popup itself
-                if (event.target === overlay && newsPopup.classList.contains('visible')) {
-                    closePopupButton.click(); // Simulate click on close button
-                }
-            });
         });
     </script>
-<nav>
-  <a href="/"><img src="logo.png" alt="Logo"></a>
-  <div class="nav-links">
-    <a href="/">Inicio</a>
-    <a href="/peliculas.html">Zona de Películas</a>
-    <a href="/repeticiones.html">Repeticiones</a>
-    <a href="https://mediaformulaiptv.vercel.app/f1zone.html">F1</a>
-    <a href="/noticias.html">Noticias</a>
-    <a href="/tv.html">TV</a>
-  </div>
-</nav>
+
+</body>
+</html>
