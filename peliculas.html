@@ -137,29 +137,26 @@
       background-color: #0088cc;
     }
 
-    /* Estilos para el Modal (la ventana del video) */
+    /* --- ESTILOS MODIFICADOS PARA EL MODAL --- */
     .modal-overlay {
-      position: fixed; /* Cubre toda la pantalla */
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.85); /* Fondo oscuro semitransparente */
-      display: none; /* Oculto por defecto */
+      background-color: rgba(0, 0, 0, 0.85);
+      display: none;
       justify-content: center;
       align-items: center;
-      z-index: 2000; /* Siempre encima de todo */
+      z-index: 2000;
+      padding: 20px; /* Añade espacio para que no se pegue a los bordes en pantallas pequeñas */
+      box-sizing: border-box;
     }
     
     .modal-content {
       position: relative;
-      background-color: #0d1b2a;
-      padding: 20px;
-      border-radius: 10px;
-      width: 80%;
-      height: 80%;
-      max-width: 900px;
-      box-shadow: 0 0 25px rgba(0,0,0,0.5);
+      width: 90%; /* Ancho responsivo */
+      max-width: 960px; /* Ancho máximo para el video */
     }
 
     .close-btn {
@@ -176,14 +173,27 @@
       text-align: center;
       line-height: 35px;
       cursor: pointer;
-      border: 2px solid #0d1b2a;
+      z-index: 10; /* Asegura que esté sobre el video */
     }
     
+    /* --- Contenedor para la proporción 16:9 --- */
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%; /* Proporción 16:9 (9 / 16 = 0.5625) */
+      height: 0;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.5);
+      background-color: #000; /* Fondo negro mientras carga el video */
+    }
+
     #video-iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       border: none;
-      border-radius: 5px;
     }
 
   </style>
@@ -219,7 +229,7 @@
             <button class="play-btn" data-video-src="https://drive.google.com/file/d/1qIhR7k-BD87Pvip4SG0JrT4j9_Oa2aSD/preview">Reproducir</button>
         </div>
         <div class="movie-card">
-            <img src="https://laforja.canzionfilms.com/images/about-poster.jpg" alt="Poster La Forja">
+            <img src="https://m.media-amazon.com/images/M/MV5BNGJiNjZiNDItZWFiZS00Y2NlLTg5ZWUtZDJhYjYwMmI2YTMxXkEyXkFqcGdeQXVyMTU3NDU4NDA2._V1_FMjpg_UX1000_.jpg" alt="Poster La Forja">
             <h3>La Forja (2024)</h3>
             <button class="play-btn" data-video-src="https://drive.google.com/file/d/1O36eyGVt-VIKlCu05Epdl0Whz3mTsGU0/preview">Reproducir</button>
         </div>
@@ -234,22 +244,20 @@
 <div id="video-modal" class="modal-overlay">
   <div class="modal-content">
     <span class="close-btn" id="close-modal-btn">&times;</span>
-    <iframe id="video-iframe" src="" title="Reproductor de Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div class="video-wrapper">
+      <iframe id="video-iframe" src="" title="Reproductor de Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
   </div>
 </div>
 
 <script>
   // --- LÓGICA PARA CAMBIAR DE CATEGORÍA ---
   function showCategory(categoryId) {
-    // Ocultar todas las categorías
     document.querySelectorAll('.content-category').forEach(function(category) {
       category.style.display = 'none';
     });
-
-    // Mostrar la categoría seleccionada
     const activeCategory = document.getElementById(categoryId);
     if (activeCategory) {
-      // Usamos flex para que los elementos internos (las tarjetas) se organicen
       activeCategory.style.display = 'flex'; 
     }
   }
@@ -259,32 +267,27 @@
   const videoIframe = document.getElementById('video-iframe');
   const closeModalBtn = document.getElementById('close-modal-btn');
 
-  // Asignar evento de clic a todos los botones de "Reproducir"
   document.querySelectorAll('.play-btn').forEach(button => {
     button.addEventListener('click', function() {
       const videoSrc = this.getAttribute('data-video-src');
       videoIframe.src = videoSrc;
-      videoModal.style.display = 'flex'; // Usamos flex para centrar el contenido
+      videoModal.style.display = 'flex';
     });
   });
 
-  // Función para cerrar el modal
   function closeModal() {
       videoModal.style.display = 'none';
-      videoIframe.src = ''; // IMPORTANTE: Limpiar el src para detener el video
+      videoIframe.src = '';
   }
 
-  // Evento para cerrar el modal al hacer clic en la "X"
   closeModalBtn.addEventListener('click', closeModal);
   
-  // Opcional: Cerrar el modal al hacer clic fuera del contenido del video
   videoModal.addEventListener('click', function(event) {
       if (event.target === videoModal) {
           closeModal();
       }
   });
 
-  // Mostrar la categoría de películas por defecto al cargar la página
   document.addEventListener('DOMContentLoaded', function() {
       showCategory('peliculas-container');
   });
