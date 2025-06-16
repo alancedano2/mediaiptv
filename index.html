@@ -111,14 +111,22 @@
             font-size: 0.9rem;
             color: #ccc;
         }
-        .countdown {
-            font-size: 1.2rem;
+        /* New styles for the countdown box */
+        .countdown-box {
+            background-color: #00aaff; /* Blue background */
+            color: #0d1b2a; /* Dark text for contrast */
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 1.1rem; /* Slightly smaller to fit */
             font-weight: bold;
-            color: #00aaff;
-            text-align: right;
+            min-width: 100px; /* Ensure a consistent width */
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            white-space: nowrap; /* Prevent text wrapping */
         }
-        .countdown.finished {
-            color: #ff4d4d;
+        .countdown-box.finished {
+            background-color: #ff4d4d; /* Red for finished */
+            color: white;
         }
     </style>
 </head>
@@ -139,7 +147,7 @@
     <div class="content-container">
         <div id="player"></div>
         <div class="events-box">
-            <h2>Próximos Eventos de Lucha Libre</h2>
+            <h2>Próximos Eventos</h2>
             <div id="events-list">
                 </div>
         </div>
@@ -185,6 +193,14 @@
 
         const daysOfWeek = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
+        function formatTimeTo12Hour(hours, minutes) {
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            const strMinutes = String(minutes).padStart(2, '0');
+            return `${hours}:${strMinutes} ${ampm}`;
+        }
+
         function updateCountdowns() {
             const now = new Date();
             const eventsListContainer = document.getElementById('events-list');
@@ -225,30 +241,31 @@
                 eventDetails.className = 'event-details';
                 eventDetails.innerHTML = `
                     <h3>${event.name}</h3>
-                    <p>${event.day} a las ${event.time} PM</p>
+                    <p>${event.day} a las ${formatTimeTo12Hour(hours, minutes)}</p>
                 `;
                 eventItem.appendChild(eventDetails);
 
-                const countdownSpan = document.createElement('span');
-                countdownSpan.className = 'countdown';
+                const countdownBox = document.createElement('div'); // Changed from span to div for better styling
+                countdownBox.className = 'countdown-box';
 
                 if (timeDiff > 0) {
-                    const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-                    const hoursRemaining = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const minutesRemaining = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-                    const secondsRemaining = Math.floor((timeDiff % (1000 * 60)) / 1000);
+                    const totalSeconds = Math.floor(timeDiff / 1000);
+                    const days = Math.floor(totalSeconds / (60 * 60 * 24));
+                    const hoursRemaining = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
+                    const minutesRemaining = Math.floor((totalSeconds % (60 * 60)) / 60);
+                    const secondsRemaining = totalSeconds % 60;
 
                     let countdownText = '';
                     if (days > 0) {
                         countdownText += `${days}d `;
                     }
                     countdownText += `${String(hoursRemaining).padStart(2, '0')}:${String(minutesRemaining).padStart(2, '0')}:${String(secondsRemaining).padStart(2, '0')}`;
-                    countdownSpan.textContent = countdownText;
+                    countdownBox.textContent = countdownText;
                 } else {
-                    countdownSpan.textContent = '¡Finalizado!';
-                    countdownSpan.classList.add('finished');
+                    countdownBox.textContent = '¡Finalizado!';
+                    countdownBox.classList.add('finished');
                 }
-                eventItem.appendChild(countdownSpan);
+                eventItem.appendChild(countdownBox);
                 eventsListContainer.appendChild(eventItem);
             });
         }
