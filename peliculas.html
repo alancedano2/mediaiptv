@@ -5,13 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Zona de Películas</title>
   <style>
+    /* Estilos base (los tuyos) */
     body {
-      margin: 0; font-family: Arial, sans-serif;
+      margin: 0;
+      font-family: Arial, sans-serif;
       background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
       color: white;
       display: flex;
       flex-direction: column;
-      height: 100vh; /* Ocupa toda la altura de la ventana */
+      min-height: 100vh;
     }
 
     nav {
@@ -24,7 +26,7 @@
       position: sticky;
       top: 0;
       z-index: 1000;
-      flex-shrink: 0; /* Evita que la barra de navegación se encoja */
+      flex-shrink: 0;
     }
 
     nav img {
@@ -45,29 +47,145 @@
       color: #00aaff;
     }
 
-    .main-title {
-      text-align: center;
-      font-size: 2rem;
-      font-weight: bold;
-      margin-top: 20px; /* Reducido el margen superior */
-      margin-bottom: 20px; /* Añadido margen inferior */
-      flex-shrink: 0;
-    }
-
-    .iframe-container {
-      flex-grow: 1; /* Permite que el contenedor del iframe crezca y ocupe el espacio disponible */
-      padding: 0 20px 20px 20px; /* Añade algo de padding alrededor */
-      box-sizing: border-box;
+    /* Nueva estructura del contenido principal */
+    .main-container {
       display: flex;
+      flex-grow: 1; /* Ocupa el espacio restante */
+      padding: 20px;
     }
 
-    iframe {
+    .sidebar {
+      flex: 0 0 200px; /* Ancho fijo de 200px, no se encoge ni crece */
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      border-radius: 10px;
+      margin-right: 20px;
+    }
+
+    .sidebar h2 {
+      margin-top: 0;
+      border-bottom: 2px solid #415a77;
+      padding-bottom: 10px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar ul li a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 12px 15px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      font-weight: bold;
+    }
+
+    .sidebar ul li a:hover {
+      background-color: #415a77;
+    }
+
+    .content-area {
+      flex-grow: 1; /* Ocupa el resto del espacio */
+      display: flex;
+      flex-wrap: wrap; /* Permite que las tarjetas se ajusten en varias líneas */
+      gap: 20px; /* Espacio entre las tarjetas */
+      align-content: flex-start; /* Alinea las tarjetas al inicio */
+    }
+
+    /* Estilos de las tarjetas de películas */
+    .movie-card {
+      background-color: #1b263b;
+      border: 1px solid #415a77;
+      border-radius: 15px;
+      overflow: hidden; /* Para que la imagen se ajuste a los bordes redondeados */
+      width: 220px; /* Ancho fijo para cada tarjeta */
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .movie-card img {
+      width: 100%;
+      height: 300px; /* Altura fija para los pósters */
+      object-fit: cover; /* Asegura que la imagen cubra el espacio sin deformarse */
+    }
+
+    .movie-card h3 {
+      font-size: 1rem;
+      margin: 15px 10px;
+      flex-grow: 1; /* Empuja el botón hacia abajo */
+    }
+    
+    .play-btn {
+      background-color: #00aaff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 20px 20px 20px; /* Margen inferior para separarlo del borde */
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .play-btn:hover {
+      background-color: #0088cc;
+    }
+
+    /* Estilos para el Modal (la ventana del video) */
+    .modal-overlay {
+      position: fixed; /* Cubre toda la pantalla */
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85); /* Fondo oscuro semitransparente */
+      display: none; /* Oculto por defecto */
+      justify-content: center;
+      align-items: center;
+      z-index: 2000; /* Siempre encima de todo */
+    }
+    
+    .modal-content {
+      position: relative;
+      background-color: #0d1b2a;
+      padding: 20px;
+      border-radius: 10px;
+      width: 80%;
+      height: 80%;
+      max-width: 900px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.5);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: -15px;
+      right: -15px;
+      background: white;
+      color: black;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      line-height: 35px;
+      cursor: pointer;
+      border: 2px solid #0d1b2a;
+    }
+    
+    #video-iframe {
       width: 100%;
       height: 100%;
       border: none;
-      border-radius: 15px; /* Bordes redondeados para el iframe */
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      border-radius: 5px;
     }
+
   </style>
 </head>
 <body>
@@ -84,11 +202,94 @@
   </div>
 </nav>
 
-<h1 class="main-title">Zona de Películas</h1>
+<div class="main-container">
+  <aside class="sidebar">
+    <h2>Categorías</h2>
+    <ul>
+      <li><a href="#" onclick="showCategory('peliculas-container')">Películas</a></li>
+      <li><a href="#" onclick="showCategory('series-container')">Series</a></li>
+    </ul>
+  </aside>
 
-<div class="iframe-container">
-  <iframe src="https://drive.google.com/file/d/1O36eyGVt-VIKlCu05Epdl0Whz3mTsGU0/preview" title="Plex Content"></iframe>
+  <main class="content-area">
+    <div id="peliculas-container" class="content-category" style="display: flex; flex-wrap: wrap; gap: 20px;">
+        <div class="movie-card">
+            <img src="https://upload.wikimedia.org/wikipedia/en/5/56/Lilo_%26_Stitch_2025_Theatrical_Poster.jpg" alt="Poster Lilo and Stitch">
+            <h3>Lilo and Stitch (2025)</h3>
+            <button class="play-btn" data-video-src="https://drive.google.com/file/d/1qIhR7k-BD87Pvip4SG0JrT4j9_Oa2aSD/preview">Reproducir</button>
+        </div>
+        <div class="movie-card">
+            <img src="https://m.media-amazon.com/images/M/MV5BNGJiNjZiNDItZWFiZS00Y2NlLTg5ZWUtZDJhYjYwMmI2YTMxXkEyXkFqcGdeQXVyMTU3NDU4NDA2._V1_FMjpg_UX1000_.jpg" alt="Poster La Forja">
+            <h3>La Forja (2024)</h3>
+            <button class="play-btn" data-video-src="https://drive.google.com/file/d/1O36eyGVt-VIKlCu05Epdl0Whz3mTsGU0/preview">Reproducir</button>
+        </div>
+    </div>
+    
+    <div id="series-container" class="content-category" style="display: none;">
+      <p>Próximamente: Contenido de series.</p>
+    </div>
+  </main>
 </div>
+
+<div id="video-modal" class="modal-overlay">
+  <div class="modal-content">
+    <span class="close-btn" id="close-modal-btn">&times;</span>
+    <iframe id="video-iframe" src="" title="Reproductor de Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+</div>
+
+<script>
+  // --- LÓGICA PARA CAMBIAR DE CATEGORÍA ---
+  function showCategory(categoryId) {
+    // Ocultar todas las categorías
+    document.querySelectorAll('.content-category').forEach(function(category) {
+      category.style.display = 'none';
+    });
+
+    // Mostrar la categoría seleccionada
+    const activeCategory = document.getElementById(categoryId);
+    if (activeCategory) {
+      // Usamos flex para que los elementos internos (las tarjetas) se organicen
+      activeCategory.style.display = 'flex'; 
+    }
+  }
+
+  // --- LÓGICA PARA EL MODAL DE VIDEO ---
+  const videoModal = document.getElementById('video-modal');
+  const videoIframe = document.getElementById('video-iframe');
+  const closeModalBtn = document.getElementById('close-modal-btn');
+
+  // Asignar evento de clic a todos los botones de "Reproducir"
+  document.querySelectorAll('.play-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const videoSrc = this.getAttribute('data-video-src');
+      videoIframe.src = videoSrc;
+      videoModal.style.display = 'flex'; // Usamos flex para centrar el contenido
+    });
+  });
+
+  // Función para cerrar el modal
+  function closeModal() {
+      videoModal.style.display = 'none';
+      videoIframe.src = ''; // IMPORTANTE: Limpiar el src para detener el video
+  }
+
+  // Evento para cerrar el modal al hacer clic en la "X"
+  closeModalBtn.addEventListener('click', closeModal);
+  
+  // Opcional: Cerrar el modal al hacer clic fuera del contenido del video
+  videoModal.addEventListener('click', function(event) {
+      if (event.target === videoModal) {
+          closeModal();
+      }
+  });
+
+  // Mostrar la categoría de películas por defecto al cargar la página
+  document.addEventListener('DOMContentLoaded', function() {
+      showCategory('peliculas-container');
+  });
+
+</script>
 
 </body>
 </html>
