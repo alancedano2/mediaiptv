@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>WWE Repeticiones</title>
+  <title>WWE - Repeticiones</title>
   <style>
     body {
       margin: 0; font-family: Arial, sans-serif;
       background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
       color: white;
     }
+
     nav {
       background-color: rgba(0, 0, 0, 0.7);
       padding: 15px 20px;
@@ -21,7 +22,11 @@
       top: 0;
       z-index: 1000;
     }
-    nav img { height: 40px; }
+
+    nav img {
+      height: 40px;
+    }
+
     nav .nav-links a {
       color: white;
       text-decoration: none;
@@ -29,15 +34,22 @@
       font-size: 1rem;
       margin-left: 20px;
       transition: color 0.3s;
+      cursor: pointer;
     }
-    nav .nav-links a:hover { color: #00aaff; }
+
+    nav .nav-links a:hover {
+      color: #00aaff;
+    }
+
     .container {
       display: flex;
       flex-direction: row;
-      max-width: 1400px;
+      max-width: 1200px;
       margin: 40px auto;
       gap: 20px;
+      padding: 0 15px; /* Added padding for smaller screens */
     }
+
     .video-player {
       flex: 3;
       background-color: rgba(0,0,0,0.4);
@@ -48,7 +60,9 @@
       align-items: center;
       padding: 20px;
       text-align: center;
+      min-height: 450px; /* Set a minimum height */
     }
+
     .video-player iframe {
       width: 100%;
       aspect-ratio: 16 / 9;
@@ -56,39 +70,65 @@
       border-radius: 12px;
       box-shadow: 0 0 15px rgba(0,170,255,0.7);
     }
+
     .playlist {
       flex: 1;
       background-color: rgba(0,0,0,0.4);
       padding: 15px;
       border-radius: 15px;
-      max-height: 100vh;
+      max-height: 60vh; /* Set a max height */
       overflow-y: auto;
     }
-    .section-title {
-      font-size: 1.2rem;
-      margin: 20px 0 10px;
-      border-bottom: 1px solid #ccc;
-      padding-bottom: 5px;
-      cursor: pointer;
+
+    .playlist h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      text-align: center;
     }
-    .playlist-content { display: none; }
-    .playlist-content.active { display: block; }
-    .playlist-item {
+    
+    .playlist h4 {
+      background-color: rgba(0, 170, 255, 0.2);
       padding: 8px;
+      border-radius: 6px;
+      margin-top: 15px;
+      margin-bottom: 10px;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+
+    .playlist h4:first-child {
+        margin-top: 0;
+    }
+
+    .playlist-item {
+      padding: 10px;
       margin-bottom: 8px;
       border-radius: 8px;
       background-color: rgba(255,255,255,0.1);
       cursor: pointer;
       transition: background-color 0.3s;
+      font-size: 0.9rem;
     }
+
     .playlist-item:hover {
       background-color: #00aaff;
       color: black;
     }
+
     .playlist-item.active {
       background-color: #0077cc;
       color: white;
       font-weight: bold;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+      .playlist {
+        max-height: 300px;
+      }
     }
   </style>
 </head>
@@ -111,65 +151,83 @@
     <iframe id="videoFrame" src="https://ok.ru/videoembed/10591296555601" allowfullscreen></iframe>
   </div>
 
-  <div class="playlist" id="playlistItems">
-    <h3 class="section-title" onclick="toggleSection('raw')">WWE Raw</h3>
-    <div id="raw" class="playlist-content active">
-      <div class="playlist-item active" onclick="loadVideo('https://ok.ru/videoembed/10591296555601', true, event)">WWE Raw - 9 de junio del 2025</div>
-    </div>
+  <div class="playlist">
+    <h3>Lista de Repeticiones</h3>
+    <div id="playlistItems">
+      
+      <h4>WWE Raw</h4>
+      <div class="playlist-item active" onclick="loadVideo('https://ok.ru/videoembed/10591296555601', true, this)">
+        WWE Raw - 9 de junio del 2025
+      </div>
 
-    <h3 class="section-title" onclick="toggleSection('nxt')">WWE NXT</h3>
-    <div id="nxt" class="playlist-content">
-      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10594028489297', true, event)">WWE NXT - 10 de junio del 2025</div>
-    </div>
+      <h4>WWE NXT</h4>
+      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10594028489297', true, this)">
+        WWE NXT - 10 de junio del 2025
+      </div>
 
-    <h3 class="section-title" onclick="toggleSection('smackdown')">WWE SmackDown</h3>
-    <div id="smackdown" class="playlist-content">
-      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10602722232913', true, event)">WWE SmackDown - 13 de junio del 2024</div>
-    </div>
+      <h4>WWE SmackDown</h4>
+      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10602722232913', true, this)">
+        WWE SmackDown - 13 de junio del 2025
+      </div>
 
-    <h3 class="section-title" onclick="toggleSection('ppv')">PPV</h3>
-    <div id="ppv" class="playlist-content">
-      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10156053039697', true, event)">WWE Royal Rumble 2025 - 1 de febrero del 2025</div>
-      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10205241543249', true, event)">WWE NXT Vengeance Day 2025 - 15 de febrero del 2025</div>
-      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10253549701713', true, event)">WWE Elimination Chamber 2025 - 1 de marzo del 2025</div>
-      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10427006978641', true, event)">WWE NXT Stand & Deliver 2025 - 19 de abril del 2025</div>
-      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10427643071057', true, event)">WWE WrestleMania 41 Sábado - 19 de abril del 2025</div>
-      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10431873419857', true, event)">WWE WrestleMania 41 Domingo - 20 de abril del 2025</div>
-      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10501339744849', true, event)">WWE Backlash 2025 - 10 de mayo del 2025</div>
-      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10543333902929', true, event)">WWE Saturday Nights Main Event - 24 de mayo del 2025</div>
-      <div class="playlist-item" onclick="loadVideo('', false, event)">WWE NXT Battleground 2025 - 25 de mayo del 2025</div>
-      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10584570858065', true, event)">WWE Worlds Collide - 7 de junio del 2025</div>
-      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10588118714961', true, event)">WWE Money in the Bank 2025 - 7 de junio del 2025</div>
+      <h4>PPV</h4>
+      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10156053039697', true, this)">
+        WWE Royal Rumble 2025 - 1 de febrero del 2025
+      </div>
+      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10205241543249', true, this)">
+        WWE NXT Vengeance Day 2025 - 15 de febrero del 2025
+      </div>
+      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10253549701713', true, this)">
+        WWE Elimination Chamber 2025 - 1 de marzo del 2025
+      </div>
+      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10427006978641', true, this)">
+        WWE NXT Stand & Deliver 2025 - 19 de abril del 2025
+      </div>
+      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10427643071057', true, this)">
+        WWE WrestleMania 41 Sabado - 19 de abril del 2025
+      </div>
+      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10431873419857', true, this)">
+        WWE WrestleMania 41 Domingo - 20 de abril del 2025
+      </div>
+      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10501339744849', true, this)">
+        WWE Backlash 2025 - 10 de mayo del 2025
+      </div>
+      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10543333902929', true, this)">
+        WWE Saturday Nights Main Event - 24 de mayo del 2025
+      </div>
+      <div class="playlist-item" onclick="loadVideo('', false, this)">
+        WWE NXT Battleground 2025 - 25 de mayo del 2025
+      </div>
+      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10584570858065', true, this)">
+        WWE Worlds Collide - 7 de junio del 2025
+      </div>
+      <div class="playlist-item" onclick="loadVideo('https://ok.ru/videoembed/10588118714961', true, this)">
+        WWE Money in the Bank 2025 - 7 de junio del 2025
+      </div>
+
     </div>
   </div>
 </div>
 
 <script>
-  function loadVideo(url, available, e) {
+  function loadVideo(url, available, element) {
     const container = document.getElementById('videoContainer');
-    const frame = document.getElementById('videoFrame');
+    // Re-create the iframe to ensure it loads correctly
+    let newFrame = document.createElement('iframe');
+    newFrame.id = 'videoFrame';
+    newFrame.setAttribute('allowfullscreen', '');
 
     if (available && url) {
-      frame.src = url;
-      frame.style.display = 'block';
-      container.innerHTML = '';
-      container.appendChild(frame);
+      newFrame.src = url;
+      container.innerHTML = ''; // Clear the container
+      container.appendChild(newFrame); // Add the new iframe
     } else {
-      container.innerHTML = "<p style='font-size: 1.2rem;'>Este evento no está disponible por el momento.</p>";
+      container.innerHTML = "<p style='font-size: 1.2rem; padding: 20px;'>No está disponible por el momento.</p>";
     }
 
+    // Update active class
     document.querySelectorAll('.playlist-item').forEach(el => el.classList.remove('active'));
-    e.target.classList.add('active');
-  }
-
-  function toggleSection(id) {
-    document.querySelectorAll('.playlist-content').forEach(section => {
-      if (section.id === id) {
-        section.classList.toggle('active');
-      } else {
-        section.classList.remove('active');
-      }
-    });
+    element.classList.add('active');
   }
 </script>
 
