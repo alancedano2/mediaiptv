@@ -1,119 +1,265 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Canal en Vivo</title>
-  <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
-      color: white;
-      scroll-behavior: smooth;
-    }
-    nav {
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 15px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    nav img {
-      height: 40px;
-    }
-    .nav-links {
-      display: flex;
-      gap: 25px;
-    }
-    .nav-links a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1rem;
-      transition: color 0.3s;
-      cursor: pointer;
-      padding: 5px 0;
-    }
-    .nav-links a[href="/"] {
-      color: #00aaff;
-      border-bottom: 2px solid #00aaff;
-    }
-    .nav-links a:hover {
-      color: #00aaff;
-    }
-    #player {
-      width: 100%;
-      max-width: 1200px; 
-      height: 675px;
-      margin: 40px auto;
-      background-color: black;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,170,255,0.8);
-      position: relative;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Canal en Vivo</title>
+    <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
+            color: white;
+            scroll-behavior: smooth;
+        }
+        nav {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav img {
+            height: 40px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: color 0.3s;
+            cursor: pointer;
+            padding: 5px 0;
+        }
+        .nav-links a[href="/"] {
+            color: #00aaff;
+            border-bottom: 2px solid #00aaff;
+        }
+        .nav-links a:hover {
+            color: #00aaff;
+        }
+        .content-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px; /* Space between player and events */
+            margin: 40px auto;
+            max-width: 1600px; /* Increased max-width to accommodate both */
+            padding: 0 20px;
+        }
+        #player {
+            width: 100%;
+            max-width: 1200px;
+            height: 675px;
+            background-color: black;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,170,255,0.8);
+            position: relative;
+        }
+        .events-box {
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
+            padding: 20px;
+            width: 350px; /* Fixed width for the events box */
+            max-height: 675px; /* Match player height */
+            overflow-y: auto; /* Enable scrolling if too many events */
+        }
+        .events-box h2 {
+            text-align: center;
+            color: #00aaff;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        .event-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 15px;
+        }
+        .event-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .event-item img {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+            border-radius: 8px;
+            object-fit: contain;
+        }
+        .event-details {
+            flex-grow: 1;
+        }
+        .event-details h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+        .event-details p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        .countdown {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #00aaff;
+            text-align: right;
+        }
+        .countdown.finished {
+            color: #ff4d4d;
+        }
+    </style>
 </head>
 <body>
 
-  <nav>
-    <a href="/"><img src="logo.png" alt="Logo"></a>
-    <div class="nav-links">
-      <a href="/">Inicio</a>
-      <a href="/peliculas.html">Zona de Películas</a>
-      <a href="/repeticiones.html">Repeticiones</a>
-      <a href="https://mediaformulaiptv.vercel.app/f1zone.html">F1</a>
-      <a href="/noticias.html">Noticias</a>
-      <a href="/tv.html">TV</a>
+    <nav>
+        <a href="/"><img src="logo.png" alt="Logo"></a>
+        <div class="nav-links">
+            <a href="/">Inicio</a>
+            <a href="/peliculas.html">Zona de Películas</a>
+            <a href="/repeticiones.html">Repeticiones</a>
+            <a href="https://mediaformulaiptv.vercel.app/f1zone.html">F1</a>
+            <a href="/noticias.html">Noticias</a>
+            <a href="/tv.html">TV</a>
+        </div>
+    </nav>
+
+    <div class="content-container">
+        <div id="player"></div>
+        <div class="events-box">
+            <h2>Próximos Eventos de Lucha Libre</h2>
+            <div id="events-list">
+                </div>
+        </div>
     </div>
-  </nav>
 
-  <div id="player"></div>
+    <script>
+        const playerContainer = document.getElementById('player');
+        let player = null;
 
-  <script>
-    const playerContainer = document.getElementById('player');
-    // MODIFICADO: Se eliminó la constante 'loadingSpinner'
-    let player = null;
+        function crearPlayer(url) {
+            if(player) {
+                player.destroy();
+            }
 
-    function crearPlayer(url) {
-      if(player) {
-        player.destroy();
-      }
+            player = new Clappr.Player({
+                parent: playerContainer,
+                source: url,
+                width: '100%',
+                height: '100%',
+                autoPlay: true,
+                mute: false,
+                mediacontrol: { seekbar: "#00aaff" },
+                playback: { hlsjsConfig: { maxBufferLength: 30 } },
+            });
+            
+            player.on(Clappr.Events.PLAYER_PLAYING, function() {
+                console.log("Player is playing.");
+            });
 
-      // MODIFICADO: Se eliminó la línea que mostraba el spinner
+            player.on(Clappr.Events.PLAYER_ERROR, function(error) {
+                console.error("Error del reproductor:", error);
+                playerContainer.innerHTML = `<div style="display: flex; justify-content: center; align-items: center; height: 100%; color: red; font-size: 1.2rem; text-align: center;">El canal no está disponible en este momento.</div>`;
+            });
+        }
 
-      player = new Clappr.Player({
-        parent: playerContainer,
-        source: url,
-        width: '100%',
-        height: '100%',
-        autoPlay: true,
-        mute: false,
-        mediacontrol: { seekbar: "#00aaff" },
-        playback: { hlsjsConfig: { maxBufferLength: 30 } },
-      });
-      
-      // MODIFICADO: Se eliminó la lógica que ocultaba el spinner
-      player.on(Clappr.Events.PLAYER_PLAYING, function() {
-        console.log("Player is playing.");
-      });
+        const events = [
+            { name: 'WWE RAW', day: 'Lunes', time: '20:00', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/WWE_Raw_Logo_2023.svg/1200px-WWE_Raw_Logo_2023.svg.png' },
+            { name: 'WWE NXT', day: 'Martes', time: '20:00', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/NXT_logo.svg/1200px-NXT_logo.svg.png' },
+            { name: 'AEW Dynamite', day: 'Miércoles', time: '20:00', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/f/f6/AEW_Dynamite_logo.png/250px-AEW_Dynamite_logo.png' },
+            { name: 'WWE SmackDown', day: 'Viernes', time: '20:00', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/c/c5/WWE_SmackDown_logo.svg/1200px-WWE_SmackDown_logo.svg.png' },
+            { name: 'AEW Collision', day: 'Sábado', time: '20:00', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/9/90/AEW_Collision_logo.svg/1200px-AEW_Collision_logo.svg.png' }
+        ];
 
-      player.on(Clappr.Events.PLAYER_ERROR, function(error) {
-        console.error("Error del reproductor:", error);
-        playerContainer.innerHTML = `<div style="display: flex; justify-content: center; align-items: center; height: 100%; color: red; font-size: 1.2rem; text-align: center;">El canal no está disponible en este momento.</div>`;
-      });
-    }
+        const daysOfWeek = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const streamUrl = 'https://prospectivetoday.fun/hls/cr7star001.m3u8';
-        crearPlayer(streamUrl);
-    });
-  </script>
+        function updateCountdowns() {
+            const now = new Date();
+            const eventsListContainer = document.getElementById('events-list');
+            eventsListContainer.innerHTML = ''; // Clear previous events
+
+            events.forEach(event => {
+                const eventDate = new Date();
+                const [hours, minutes] = event.time.split(':').map(Number);
+
+                // Find the next upcoming day for the event
+                let dayIndex = daysOfWeek.indexOf(event.day);
+                let currentDayIndex = now.getDay();
+
+                let daysToAdd = dayIndex - currentDayIndex;
+                if (daysToAdd < 0) {
+                    daysToAdd += 7; // Go to next week
+                } else if (daysToAdd === 0) {
+                    // If it's today, check if the time has passed
+                    if (now.getHours() > hours || (now.getHours() === hours && now.getMinutes() >= minutes)) {
+                        daysToAdd += 7; // Event already passed today, so next week
+                    }
+                }
+                
+                eventDate.setDate(now.getDate() + daysToAdd);
+                eventDate.setHours(hours, minutes, 0, 0);
+
+                const timeDiff = eventDate.getTime() - now.getTime();
+
+                const eventItem = document.createElement('div');
+                eventItem.className = 'event-item';
+
+                const logoImg = document.createElement('img');
+                logoImg.src = event.logo;
+                logoImg.alt = `${event.name} Logo`;
+                eventItem.appendChild(logoImg);
+
+                const eventDetails = document.createElement('div');
+                eventDetails.className = 'event-details';
+                eventDetails.innerHTML = `
+                    <h3>${event.name}</h3>
+                    <p>${event.day} a las ${event.time} PM</p>
+                `;
+                eventItem.appendChild(eventDetails);
+
+                const countdownSpan = document.createElement('span');
+                countdownSpan.className = 'countdown';
+
+                if (timeDiff > 0) {
+                    const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                    const hoursRemaining = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutesRemaining = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+                    const secondsRemaining = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+                    let countdownText = '';
+                    if (days > 0) {
+                        countdownText += `${days}d `;
+                    }
+                    countdownText += `${String(hoursRemaining).padStart(2, '0')}:${String(minutesRemaining).padStart(2, '0')}:${String(secondsRemaining).padStart(2, '0')}`;
+                    countdownSpan.textContent = countdownText;
+                } else {
+                    countdownSpan.textContent = '¡Finalizado!';
+                    countdownSpan.classList.add('finished');
+                }
+                eventItem.appendChild(countdownSpan);
+                eventsListContainer.appendChild(eventItem);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const streamUrl = 'https://prospectivetoday.fun/hls/cr7star001.m3u8';
+            crearPlayer(streamUrl);
+            updateCountdowns(); // Initial update
+            setInterval(updateCountdowns, 1000); // Update every second
+        });
+    </script>
 
 </body>
 </html>
