@@ -56,8 +56,7 @@
             max-width: 1600px;
             padding: 0 20px;
         }
-        /* --- NUEVO Contenedor para el player y el banner --- */
-        .player-container {
+        .main-content {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -73,7 +72,6 @@
             box-shadow: 0 0 20px rgba(0,170,255,0.8);
             position: relative;
         }
-        /* --- NUEVO Contenedor para el banner --- */
         #banner-container {
             width: 970px;
             height: 250px;
@@ -93,19 +91,28 @@
             object-fit: cover; /* Ensures the image covers the area without distortion */
             transition: opacity 0.5s ease-in-out; /* Smooth fade transition */
         }
+        
+        /* --- MODIFICADO: Contenedor para ambas cajas de eventos --- */
+        .sidebar-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px; /* Espacio entre la caja de eventos y la de PPV */
+            width: 350px;
+            flex-shrink: 0;
+        }
         .events-box {
             background-color: rgba(0, 0, 0, 0.6);
             border-radius: 12px;
             box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
             padding: 20px;
-            width: 350px;
-            max-height: 675px;
+            /* Se quita el width fijo para que lo controle el sidebar-container */
+            max-height: 400px; /* Altura máxima para cada caja */
             overflow-y: auto;
-            flex-shrink: 0; /* Prevent the events box from shrinking */
         }
         .events-box h2 {
             text-align: center;
             color: #00aaff;
+            margin-top: 0;
             margin-bottom: 20px;
             font-size: 1.5rem;
         }
@@ -174,7 +181,7 @@
     </nav>
 
     <div class="content-container">
-        <div class="player-container">
+        <div class="main-content">
             <div id="player"></div>
             <div id="banner-container">
                 <a id="banner-link" href="#" target="_blank" rel="noopener noreferrer">
@@ -183,10 +190,18 @@
             </div>
         </div>
         
-        <div class="events-box">
-            <h2>Próximos Eventos</h2>
-            <div id="events-list">
-                </div>
+        <div class="sidebar-container">
+            <div class="events-box">
+                <h2>Próximos Eventos</h2>
+                <div id="events-list">
+                    </div>
+            </div>
+
+            <div class="events-box">
+                <h2>Próximos PPV</h2>
+                <div id="ppv-list">
+                    </div>
+            </div>
         </div>
     </div>
 
@@ -219,7 +234,15 @@
                 });
             }
 
-            // Lógica de Eventos y Countdown
+            function formatTimeTo12Hour(hours, minutes) {
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+                const strMinutes = String(minutes).padStart(2, '0');
+                return `${hours}:${strMinutes} ${ampm}`;
+            }
+
+            // --- Lógica de Eventos Semanales ---
             const events = [
                 { name: 'WWE RAW', day: 'Lunes', time: '20:00', logo: 'https://upload.wikimedia.org/wikipedia/commons/8/86/WWE_RAW_Logo_2025.svg' },
                 { name: 'WWE NXT', day: 'Martes', time: '20:00', logo: 'https://1000marcas.net/wp-content/uploads/2022/10/WWE-NXT-Logo.png' },
@@ -229,15 +252,7 @@
             ];
             const daysOfWeek = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
-            function formatTimeTo12Hour(hours, minutes) {
-                const ampm = hours >= 12 ? 'PM' : 'AM';
-                hours = hours % 12;
-                hours = hours ? hours : 12;
-                const strMinutes = String(minutes).padStart(2, '0');
-                return `${hours}:${strMinutes} ${ampm}`;
-            }
-
-            function updateCountdowns() {
+            function updateWeeklyCountdowns() {
                 const now = new Date();
                 const eventsListContainer = document.getElementById('events-list');
                 eventsListContainer.innerHTML = '';
@@ -282,56 +297,107 @@
                     eventsListContainer.appendChild(eventItem);
                 });
             }
+            
+            // --- NUEVO: Lógica para Eventos PPV ---
+            const ppvs = [
+                // Rellena aquí con los datos del PPV. Formato de fecha: 'YYYY-MM-DD'
+                // Ejemplo: { name: 'Royal Rumble', date: '2025-01-25', time: '20:00', logo: 'url_del_logo.png' },
+                { name: 'Cubs vs Marines', date: '2025-06-20', time: '14:20', logo: 'https://images.seeklogo.com/logo-png/25/2/mlb-logo-png_seeklogo-250501.png' },
+                { name: 'Yankees vs Orioles', date: '2025-06-20', time: '19:05', logo: 'https://images.seeklogo.com/logo-png/25/2/mlb-logo-png_seeklogo-250501.png' },
+                { name: '', date: '', time: '', logo: '' },
+                { name: '', date: '', time: '', logo: '' },
+                { name: 'Pacers vs Thunders', date: '2025-06-22', time: '20:00', logo: 'https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png' }
+            ];
+
+            function updatePPVCountdowns() {
+                const now = new Date();
+                const ppvListContainer = document.getElementById('ppv-list');
+                ppvListContainer.innerHTML = '';
+
+                ppvs.forEach(ppv => {
+                    // Si el nombre del PPV está vacío, no lo mostramos.
+                    if (!ppv.name) return; 
+
+                    const [hours, minutes] = ppv.time.split(':').map(Number);
+                    const eventDate = new Date(`${ppv.date}T${ppv.time}`);
+                    
+                    const timeDiff = eventDate.getTime() - now.getTime();
+
+                    const eventItem = document.createElement('div');
+                    eventItem.className = 'event-item';
+                    eventItem.innerHTML = `
+                        <img src="${ppv.logo}" alt="${ppv.name} Logo">
+                        <div class="event-details">
+                            <h3>${ppv.name}</h3>
+                            <p>${new Date(eventDate).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                        </div>
+                        <div class="countdown-box"></div>
+                    `;
+                    const countdownBox = eventItem.querySelector('.countdown-box');
+                     if (timeDiff > 0) {
+                        const totalSeconds = Math.floor(timeDiff / 1000);
+                        const days = Math.floor(totalSeconds / (60 * 60 * 24));
+                        const hoursRemaining = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
+                        const minutesRemaining = Math.floor((totalSeconds % (60 * 60)) / 60);
+                        const secondsRemaining = totalSeconds % 60;
+                        let countdownText = '';
+                        if (days > 0) countdownText += `${days}d `;
+                        countdownText += `${String(hoursRemaining).padStart(2, '0')}:${String(minutesRemaining).padStart(2, '0')}:${String(secondsRemaining).padStart(2, '0')}`;
+                        countdownBox.textContent = countdownText;
+                    } else if (timeDiff > - (3 * 60 * 60 * 1000)) { // Si ha pasado menos de 3 horas
+                        countdownBox.textContent = '¡En Vivo!';
+                        countdownBox.classList.add('finished');
+                    }
+                     else {
+                        countdownBox.textContent = '¡Finalizado!';
+                        countdownBox.classList.add('finished');
+                    }
+                    ppvListContainer.appendChild(eventItem);
+                });
+            }
+
 
             // --- LÓGICA PARA EL BANNER ---
             const banners = [
                 { image: 'banner_kq105.jpg', link: 'https://kq105.com' },
                 { image: 'banner_discord.jpg', link: 'https://discord.gg/5Xcs9v62jp' },
-                { image: 'banner_wwe_raw.jpg', link: null }, // null significa que no hay enlace
-                { image: 'banner_smackdown.jpg', link: null }, // Nuevo banner
-                { image: 'banner_wwe_nxt.jpg', link: null } // Nuevo banner
+                { image: 'banner_wwe_raw.jpg', link: null },
+                { image: 'banner_smackdown.jpg', link: null },
+                { image: 'banner_wwe_nxt.jpg', link: null }
             ];
             let currentBannerIndex = 0;
             const bannerLink = document.getElementById('banner-link');
             const bannerImage = document.getElementById('banner-image');
 
             function updateBanner() {
-                // Fade out
                 bannerImage.style.opacity = '0';
-
-                // Wait for the fade-out transition to complete
                 setTimeout(() => {
                     const currentBanner = banners[currentBannerIndex];
-                    
-                    // Update the image source
                     bannerImage.src = currentBanner.image;
-
-                    // Update the link
                     if (currentBanner.link) {
                         bannerLink.href = currentBanner.link;
-                        bannerLink.style.cursor = 'pointer'; // Make it look clickable
+                        bannerLink.style.cursor = 'pointer';
                     } else {
-                        bannerLink.removeAttribute('href'); // Remove link if none
-                        bannerLink.style.cursor = 'default'; // Make it look non-clickable
+                        bannerLink.removeAttribute('href');
+                        bannerLink.style.cursor = 'default';
                     }
-
-                    // Move to the next banner index, looping back to the start if necessary
                     currentBannerIndex = (currentBannerIndex + 1) % banners.length;
-
-                    // Fade in the new image
                     bannerImage.style.opacity = '1';
-                }, 500); // This duration should match the CSS transition time
+                }, 500);
             }
 
             // Iniciar todo
             const streamUrl = 'https://prospectivetoday.fun/hls/cr7star001.m3u8';
             crearPlayer(streamUrl);
             
-            updateCountdowns();
-            setInterval(updateCountdowns, 1000);
+            updateWeeklyCountdowns();
+            setInterval(updateWeeklyCountdowns, 1000);
 
-            updateBanner(); // Show the first banner immediately
-            setInterval(updateBanner, 5000); // Change banner every 5 seconds
+            updatePPVCountdowns();
+            setInterval(updatePPVCountdowns, 1000);
+
+            updateBanner();
+            setInterval(updateBanner, 5000);
         });
     </script>
 
