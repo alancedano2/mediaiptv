@@ -181,7 +181,7 @@
         <div class="main-content">
             <div id="player">
                 <iframe 
-                    src="/api/video"
+                    src="https://4135-2607-f00-9-b7fe-b9f2-ea2b-2692-b001.ngrok-free.app/embed/video/"
                     style="width: 100%; height: 100%; border: none;"
                     allow="autoplay; encrypted-media; fullscreen"
                     allowfullscreen>
@@ -209,8 +209,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            
-            // Ya no necesitamos la función crearPlayer
+            // Toda la lógica del reproductor se ha eliminado.
+            // Solo se mantiene la lógica para las barras laterales y el banner.
 
             function formatTimeTo12Hour(hours, minutes) {
                 const ampm = hours >= 12 ? 'PM' : 'AM';
