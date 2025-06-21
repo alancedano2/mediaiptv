@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>StreamVerse - Inicio</title>
-    <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
     <style>
         body {
             margin: 0;
@@ -71,6 +70,8 @@
             border-radius: 12px;
             box-shadow: 0 0 20px rgba(0,170,255,0.8);
             position: relative;
+            /* Se añade overflow para que el iframe respete los bordes redondeados */
+            overflow: hidden;
         }
         #banner-container {
             width: 970px;
@@ -182,7 +183,14 @@
 
     <div class="content-container">
         <div class="main-content">
-            <div id="player"></div>
+            <div id="player">
+                <iframe 
+                    src="https://4135-2607-f00-9-b7fe-b9f2-ea2b-2692-b001.ngrok-free.app/embed/video/"
+                    style="width: 100%; height: 100%; border: none;"
+                    allow="autoplay; encrypted-media; fullscreen"
+                    allowfullscreen>
+                </iframe>
+            </div>
             <div id="banner-container">
                 <a id="banner-link" href="#" target="_blank" rel="noopener noreferrer">
                     <img id="banner-image" src="" alt="Publicidad">
@@ -207,32 +215,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const playerContainer = document.getElementById('player');
-            let player = null;
-
-            function crearPlayer(url) {
-                if(player) {
-                    player.destroy();
-                }
-                player = new Clappr.Player({
-                    parent: playerContainer,
-                    source: url,
-                    width: '100%',
-                    height: '100%',
-                    autoPlay: true,
-                    mute: false,
-                    mediacontrol: { seekbar: "#00aaff" },
-                    playback: { hlsjsConfig: { maxBufferLength: 30 } },
-                });
-                
-                player.on(Clappr.Events.PLAYER_PLAYING, function() {
-                    console.log("Player is playing.");
-                });
-                player.on(Clappr.Events.PLAYER_ERROR, function(error) {
-                    console.error("Error del reproductor:", error);
-                    playerContainer.innerHTML = `<div style="display: flex; justify-content: center; align-items: center; height: 100%; color: red; font-size: 1.2rem; text-align: center;">El canal no está disponible en este momento.</div>`;
-                });
-            }
+            
+            // --- SE ELIMINÓ LA FUNCIÓN crearPlayer() Y SUS LLAMADAS ---
 
             function formatTimeTo12Hour(hours, minutes) {
                 const ampm = hours >= 12 ? 'PM' : 'AM';
@@ -387,9 +371,6 @@
             }
 
             // Iniciar todo
-            const streamUrl = 'https://4135-2607-f00-9-b7fe-b9f2-ea2b-2692-b001.ngrok-free.app/hls/0/stream.m3u8?cachebust=d335c5';
-            crearPlayer(streamUrl);
-            
             updateWeeklyCountdowns();
             setInterval(updateWeeklyCountdowns, 1000);
 
