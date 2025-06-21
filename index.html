@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>StreamVerse - Inicio</title>
-    <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
     <style>
         body {
             margin: 0;
@@ -50,7 +49,7 @@
         .content-container {
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Align items to the top */
+            align-items: flex-start;
             gap: 30px;
             margin: 40px auto;
             max-width: 1600px;
@@ -60,8 +59,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 30px; /* Space between player and banner */
-            flex-grow: 1; /* Allow it to take up space */
+            gap: 30px;
+            flex-grow: 1;
         }
         #player {
             width: 100%;
@@ -71,6 +70,7 @@
             border-radius: 12px;
             box-shadow: 0 0 20px rgba(0,170,255,0.8);
             position: relative;
+            overflow: hidden; /* Para que el iframe respete los bordes */
         }
         #banner-container {
             width: 970px;
@@ -78,7 +78,7 @@
             background-color: #000;
             border-radius: 12px;
             box-shadow: 0 0 15px rgba(0,170,255,0.5);
-            overflow: hidden; /* Ensures the image fits within the rounded corners */
+            overflow: hidden;
         }
         #banner-container a {
             display: block;
@@ -88,14 +88,13 @@
         #banner-image {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Ensures the image covers the area without distortion */
-            transition: opacity 0.5s ease-in-out; /* Smooth fade transition */
+            object-fit: cover;
+            transition: opacity 0.5s ease-in-out;
         }
-        
         .sidebar-container {
             display: flex;
             flex-direction: column;
-            gap: 30px; /* Espacio entre la caja de eventos y la de PPV */
+            gap: 30px;
             width: 350px;
             flex-shrink: 0;
         }
@@ -104,7 +103,7 @@
             border-radius: 12px;
             box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
             padding: 20px;
-            max-height: 400px; /* Altura máxima para cada caja */
+            max-height: 400px;
             overflow-y: auto;
         }
         .events-box h2 {
@@ -180,7 +179,14 @@
 
     <div class="content-container">
         <div class="main-content">
-            <div id="player"></div>
+            <div id="player">
+                <iframe 
+                    src="/api/video"
+                    style="width: 100%; height: 100%; border: none;"
+                    allow="autoplay; encrypted-media; fullscreen"
+                    allowfullscreen>
+                </iframe>
+            </div>
             <div id="banner-container">
                 <a id="banner-link" href="#" target="_blank" rel="noopener noreferrer">
                     <img id="banner-image" src="" alt="Publicidad">
@@ -191,14 +197,12 @@
         <div class="sidebar-container">
             <div class="events-box">
                 <h2>Próximos Eventos</h2>
-                <div id="events-list">
-                    </div>
+                <div id="events-list"></div>
             </div>
 
             <div class="events-box">
                 <h2>Próximos PPV</h2>
-                <div id="ppv-list">
-                    </div>
+                <div id="ppv-list"></div>
             </div>
         </div>
     </div>
@@ -206,33 +210,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            // AÑADIDO: La lógica para crear el reproductor
-            const playerContainer = document.getElementById('player');
-            let player = null;
-
-            function crearPlayer(url) {
-                if(player) {
-                    player.destroy();
-                }
-                player = new Clappr.Player({
-                    parent: playerContainer,
-                    source: url,
-                    width: '100%',
-                    height: '100%',
-                    autoPlay: true,
-                    mute: false,
-                    mediacontrol: { seekbar: "#00aaff" },
-                    playback: { hlsjsConfig: { maxBufferLength: 30 } },
-                });
-                
-                player.on(Clappr.Events.PLAYER_PLAYING, function() {
-                    console.log("Player is playing.");
-                });
-                player.on(Clappr.Events.PLAYER_ERROR, function(error) {
-                    console.error("Error del reproductor:", error);
-                    playerContainer.innerHTML = `<div style="display: flex; justify-content: center; align-items: center; height: 100%; color: red; font-size: 1.2rem; text-align: center;">El canal no está disponible en este momento.</div>`;
-                });
-            }
+            // Ya no necesitamos la función crearPlayer
 
             function formatTimeTo12Hour(hours, minutes) {
                 const ampm = hours >= 12 ? 'PM' : 'AM';
@@ -242,7 +220,6 @@
                 return `${hours}:${strMinutes} ${ampm}`;
             }
 
-            // --- Lógica de Eventos Semanales ---
             const events = [
                 { name: 'WWE RAW', day: 'Lunes', time: '20:00', logo: 'https://upload.wikimedia.org/wikipedia/commons/8/86/WWE_RAW_Logo_2025.svg' },
                 { name: 'WWE NXT', day: 'Martes', time: '20:00', logo: 'https://1000marcas.net/wp-content/uploads/2022/10/WWE-NXT-Logo.png' },
@@ -256,7 +233,6 @@
                 const now = new Date();
                 const eventsListContainer = document.getElementById('events-list');
                 eventsListContainer.innerHTML = '';
-
                 events.forEach(event => {
                     const eventDate = new Date();
                     const [hours, minutes] = event.time.split(':').map(Number);
@@ -271,20 +247,13 @@
                     const timeDiff = eventDate.getTime() - now.getTime();
                     const eventItem = document.createElement('div');
                     eventItem.className = 'event-item';
-                    eventItem.innerHTML = `
-                        <img src="${event.logo}" alt="${event.name} Logo">
-                        <div class="event-details">
-                            <h3>${event.name}</h3>
-                            <p>${event.day} a las ${formatTimeTo12Hour(hours, minutes)}</p>
-                        </div>
-                        <div class="countdown-box"></div>
-                    `;
+                    eventItem.innerHTML = `<img src="${event.logo}" alt="${event.name} Logo"><div class="event-details"><h3>${event.name}</h3><p>${event.day} a las ${formatTimeTo12Hour(hours, minutes)}</p></div><div class="countdown-box"></div>`;
                     const countdownBox = eventItem.querySelector('.countdown-box');
                     if (timeDiff > 0) {
                         const totalSeconds = Math.floor(timeDiff / 1000);
-                        const days = Math.floor(totalSeconds / (60 * 60 * 24));
-                        const hoursRemaining = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
-                        const minutesRemaining = Math.floor((totalSeconds % (60 * 60)) / 60);
+                        const days = Math.floor(totalSeconds / (3600 * 24));
+                        const hoursRemaining = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+                        const minutesRemaining = Math.floor((totalSeconds % 3600) / 60);
                         const secondsRemaining = totalSeconds % 60;
                         let countdownText = '';
                         if (days > 0) countdownText += `${days}d `;
@@ -297,8 +266,7 @@
                     eventsListContainer.appendChild(eventItem);
                 });
             }
-            
-            // --- Lógica para Eventos PPV ---
+
             const ppvs = [
                 { name: 'Cubs vs Marines', date: '2025-06-20', time: '14:20', logo: 'https://images.seeklogo.com/logo-png/25/2/mlb-logo-png_seeklogo-250501.png' },
                 { name: 'Yankees vs Orioles', date: '2025-06-20', time: '19:05', logo: 'https://images.seeklogo.com/logo-png/25/2/mlb-logo-png_seeklogo-250501.png' },
@@ -311,41 +279,28 @@
                 const now = new Date();
                 const ppvListContainer = document.getElementById('ppv-list');
                 ppvListContainer.innerHTML = '';
-
                 ppvs.forEach(ppv => {
-                    if (!ppv.name) return; 
-
-                    const [hours, minutes] = ppv.time.split(':').map(Number);
+                    if (!ppv.name) return;
                     const eventDate = new Date(`${ppv.date}T${ppv.time}`);
-                    
                     const timeDiff = eventDate.getTime() - now.getTime();
-
                     const eventItem = document.createElement('div');
                     eventItem.className = 'event-item';
-                    eventItem.innerHTML = `
-                        <img src="${ppv.logo}" alt="${ppv.name} Logo">
-                        <div class="event-details">
-                            <h3>${ppv.name}</h3>
-                            <p>${new Date(eventDate).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                        </div>
-                        <div class="countdown-box"></div>
-                    `;
+                    eventItem.innerHTML = `<img src="${ppv.logo}" alt="${ppv.name} Logo"><div class="event-details"><h3>${ppv.name}</h3><p>${new Date(eventDate).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p></div><div class="countdown-box"></div>`;
                     const countdownBox = eventItem.querySelector('.countdown-box');
-                     if (timeDiff > 0) {
+                    if (timeDiff > 0) {
                         const totalSeconds = Math.floor(timeDiff / 1000);
-                        const days = Math.floor(totalSeconds / (60 * 60 * 24));
-                        const hoursRemaining = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
-                        const minutesRemaining = Math.floor((totalSeconds % (60 * 60)) / 60);
+                        const days = Math.floor(totalSeconds / (3600 * 24));
+                        const hoursRemaining = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+                        const minutesRemaining = Math.floor((totalSeconds % 3600) / 60);
                         const secondsRemaining = totalSeconds % 60;
                         let countdownText = '';
                         if (days > 0) countdownText += `${days}d `;
                         countdownText += `${String(hoursRemaining).padStart(2, '0')}:${String(minutesRemaining).padStart(2, '0')}:${String(secondsRemaining).padStart(2, '0')}`;
                         countdownBox.textContent = countdownText;
-                    } else if (timeDiff > - (3 * 60 * 60 * 1000)) { // Si ha pasado menos de 3 horas
+                    } else if (timeDiff > -10800000) {
                         countdownBox.textContent = '¡En Vivo!';
                         countdownBox.classList.add('finished');
-                    }
-                     else {
+                    } else {
                         countdownBox.textContent = '¡Finalizado!';
                         countdownBox.classList.add('finished');
                     }
@@ -353,7 +308,6 @@
                 });
             }
 
-            // --- LÓGICA PARA EL BANNER ---
             const banners = [
                 { image: 'banner_kq105.jpg', link: 'https://kq105.com' },
                 { image: 'banner_discord.jpg', link: 'https://discord.gg/5Xcs9v62jp' },
@@ -382,16 +336,10 @@
                 }, 500);
             }
 
-            // Iniciar todo
-            // CAMBIADO: Llamamos a nuestra función para crear el reproductor
-            crearPlayer('/api/stream');
-
             updateWeeklyCountdowns();
             setInterval(updateWeeklyCountdowns, 1000);
-
             updatePPVCountdowns();
             setInterval(updatePPVCountdowns, 1000);
-
             updateBanner();
             setInterval(updateBanner, 5000);
         });
