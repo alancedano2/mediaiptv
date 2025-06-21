@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>StreamVerse - Inicio</title>
+    <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
     <style>
         body {
             margin: 0;
@@ -70,8 +71,6 @@
             border-radius: 12px;
             box-shadow: 0 0 20px rgba(0,170,255,0.8);
             position: relative;
-            /* Se añade overflow para que el iframe respete los bordes redondeados */
-            overflow: hidden;
         }
         #banner-container {
             width: 970px;
@@ -93,7 +92,6 @@
             transition: opacity 0.5s ease-in-out; /* Smooth fade transition */
         }
         
-        /* --- MODIFICADO: Contenedor para ambas cajas de eventos --- */
         .sidebar-container {
             display: flex;
             flex-direction: column;
@@ -106,7 +104,6 @@
             border-radius: 12px;
             box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
             padding: 20px;
-            /* Se quita el width fijo para que lo controle el sidebar-container */
             max-height: 400px; /* Altura máxima para cada caja */
             overflow-y: auto;
         }
@@ -183,14 +180,7 @@
 
     <div class="content-container">
         <div class="main-content">
-            <div id="player">
-                <iframe 
-                    src="https://4135-2607-f00-9-b7fe-b9f2-ea2b-2692-b001.ngrok-free.app/embed/video/"
-                    style="width: 100%; height: 100%; border: none;"
-                    allow="autoplay; encrypted-media; fullscreen"
-                    allowfullscreen>
-                </iframe>
-            </div>
+            <div id="player"></div>
             <div id="banner-container">
                 <a id="banner-link" href="#" target="_blank" rel="noopener noreferrer">
                     <img id="banner-image" src="" alt="Publicidad">
@@ -216,7 +206,33 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            // --- SE ELIMINÓ LA FUNCIÓN crearPlayer() Y SUS LLAMADAS ---
+            // AÑADIDO: La lógica para crear el reproductor
+            const playerContainer = document.getElementById('player');
+            let player = null;
+
+            function crearPlayer(url) {
+                if(player) {
+                    player.destroy();
+                }
+                player = new Clappr.Player({
+                    parent: playerContainer,
+                    source: url,
+                    width: '100%',
+                    height: '100%',
+                    autoPlay: true,
+                    mute: false,
+                    mediacontrol: { seekbar: "#00aaff" },
+                    playback: { hlsjsConfig: { maxBufferLength: 30 } },
+                });
+                
+                player.on(Clappr.Events.PLAYER_PLAYING, function() {
+                    console.log("Player is playing.");
+                });
+                player.on(Clappr.Events.PLAYER_ERROR, function(error) {
+                    console.error("Error del reproductor:", error);
+                    playerContainer.innerHTML = `<div style="display: flex; justify-content: center; align-items: center; height: 100%; color: red; font-size: 1.2rem; text-align: center;">El canal no está disponible en este momento.</div>`;
+                });
+            }
 
             function formatTimeTo12Hour(hours, minutes) {
                 const ampm = hours >= 12 ? 'PM' : 'AM';
@@ -282,10 +298,8 @@
                 });
             }
             
-            // --- NUEVO: Lógica para Eventos PPV ---
+            // --- Lógica para Eventos PPV ---
             const ppvs = [
-                // Rellena aquí con los datos del PPV. Formato de fecha: 'YYYY-MM-DD'
-                // Ejemplo: { name: 'Royal Rumble', date: '2025-01-25', time: '20:00', logo: 'url_del_logo.png' },
                 { name: 'Cubs vs Marines', date: '2025-06-20', time: '14:20', logo: 'https://images.seeklogo.com/logo-png/25/2/mlb-logo-png_seeklogo-250501.png' },
                 { name: 'Yankees vs Orioles', date: '2025-06-20', time: '19:05', logo: 'https://images.seeklogo.com/logo-png/25/2/mlb-logo-png_seeklogo-250501.png' },
                 { name: '', date: '', time: '', logo: '' },
@@ -299,7 +313,6 @@
                 ppvListContainer.innerHTML = '';
 
                 ppvs.forEach(ppv => {
-                    // Si el nombre del PPV está vacío, no lo mostramos.
                     if (!ppv.name) return; 
 
                     const [hours, minutes] = ppv.time.split(':').map(Number);
@@ -340,7 +353,6 @@
                 });
             }
 
-
             // --- LÓGICA PARA EL BANNER ---
             const banners = [
                 { image: 'banner_kq105.jpg', link: 'https://kq105.com' },
@@ -371,6 +383,9 @@
             }
 
             // Iniciar todo
+            // CAMBIADO: Llamamos a nuestra función para crear el reproductor
+            crearPlayer('/api/stream');
+
             updateWeeklyCountdowns();
             setInterval(updateWeeklyCountdowns, 1000);
 
