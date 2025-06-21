@@ -70,8 +70,16 @@
             border-radius: 12px;
             box-shadow: 0 0 20px rgba(0,170,255,0.8);
             position: relative;
-            overflow: hidden; /* Para que el iframe respete los bordes */
+            overflow: hidden; 
         }
+        
+        /* --- ESTILO AÑADIDO --- */
+        #player iframe {
+            width: 100%;
+            height: 100%;
+            border: none; /* Asegura que no tenga ningún borde propio */
+        }
+        
         #banner-container {
             width: 970px;
             height: 250px;
@@ -182,7 +190,6 @@
             <div id="player">
                 <iframe 
                     src="https://4135-2607-f00-9-b7fe-b9f2-ea2b-2692-b001.ngrok-free.app/embed/video/"
-                    style="width: 100%; height: 100%; border: none;"
                     allow="autoplay; encrypted-media; fullscreen"
                     allowfullscreen>
                 </iframe>
@@ -209,9 +216,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Toda la lógica del reproductor se ha eliminado.
-            // Solo se mantiene la lógica para las barras laterales y el banner.
-
             function formatTimeTo12Hour(hours, minutes) {
                 const ampm = hours >= 12 ? 'PM' : 'AM';
                 hours = hours % 12;
