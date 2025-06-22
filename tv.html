@@ -32,7 +32,14 @@
         .event-item:last-child { margin-bottom: 0; }
         .event-item img { width: 50px; height: 50px; margin-right: 15px; border-radius: 8px; object-fit: contain; flex-shrink: 0; }
         .event-details { flex-grow: 1; overflow: hidden; }
-        .event-details h3 { margin: 0 0 5px 0; font-size: 1rem; color: #fff; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+        /* --- CSS CORREGIDO AQUÍ --- */
+        .event-details h3 {
+            margin: 0 0 5px 0;
+            font-size: 1rem;
+            color: #fff;
+            white-space: normal; /* Permite que el texto salte a la siguiente línea */
+            overflow-wrap: break-word; /* Asegura que palabras muy largas no se salgan del contenedor */
+        }
         .event-details p { margin: 0; font-size: 0.8rem; color: #ccc; }
         .event-actions { display: flex; flex-direction: column; align-items: center; gap: 5px; margin-left: 10px; }
         .event-actions button { padding: 8px 12px; font-size: 0.8rem; font-weight: bold; color: #ffffff; background: linear-gradient(90deg, #00aaff, #0077cc); border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; }
@@ -88,7 +95,6 @@
                 return;
             }
             
-            // La URL se carga directamente, sin proxy
             const finalUrl = sourceUrl;
 
             if (playerType === 'videojs') {
@@ -111,8 +117,6 @@
         }
 
         const ppvs = [
-            { name: '', date: '', time: '', logo: '', streamUrl: '', playerType: 'videojs' },
-            { name: '', date: '', time: '', logo: '', streamUrl: '', playerType: 'clappr'},
             { name: 'NBA: Pacers vs Thunders', date: '2025-06-22', time: '20:00', logo: 'https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png', streamUrl: 'https://nflarcadia.xyz/bRtT37sn3w/Sx5q6YTgCs/11.m3u8', playerType: 'clappr' }
         ];
 
