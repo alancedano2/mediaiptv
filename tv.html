@@ -73,9 +73,9 @@
     <script>
         let currentPlayer = null;
 
-        // --- URL DE TU NUEVO PROXY DE CLOUDFLARE ---
-        // !!! REEMPLAZA ESTO CON LA URL DE TU WORKER !!!
-        const PROXY_URL = "https://tu-worker.tu-dominio.workers.dev"; 
+        // --- URL DE TU PROXY DE CLOUDFLARE ---
+        // CORREGIDO: He puesto la URL real de tu worker
+        const PROXY_URL = "https://mediaiptvproxy.fraelvillegasplay9.workers.dev"; 
 
         function loadPlayer(playerType, sourceUrl) {
             if (currentPlayer) {
@@ -92,7 +92,6 @@
                 return;
             }
             
-            // Construir la URL final usando el proxy de Cloudflare
             const finalUrl = `${PROXY_URL}/?url=${encodeURIComponent(sourceUrl)}`;
 
             if (playerType === 'videojs') {
