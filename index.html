@@ -3,110 +3,232 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>StreamVerse - ÚLTIMA HORA</title>
+    <title>StreamVerse - Inicio</title>
     
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
 
     <style>
-        body { margin: 0; font-family: Arial, sans-serif; background: #1a0000; color: white; }
-        .breaking-news-banner { background-color: #d00; color: white; padding: 12px 20px; text-align: center; font-size: 1.2rem; font-weight: bold; border-bottom: 4px solid #ffc400; text-transform: uppercase; }
-        .main-container { max-width: 1300px; margin: 30px auto; padding: 0 20px; }
-        .player-section { background-color: #333; border: 1px solid #555; border-radius: 12px; padding: 25px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
-        .player-section h1 { text-align: center; margin-top: 0; color: #ffc400; font-size: 2.2rem; }
-        .channel-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; }
-        .channel-buttons button { background-color: #555; color: white; border: 2px solid #777; border-radius: 8px; padding: 10px 20px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: all 0.3s ease; }
-        .channel-buttons button:hover { background-color: #ffc400; border-color: #ffc400; color: #1a0000; }
-        .channel-buttons button.active { background-color: #ffc400; border-color: #fff; color: #1a0000; box-shadow: 0 0 10px rgba(255,196,0,0.7); }
-        #player-container { width: 100%; height: 600px; background-color: black; border-radius: 8px; overflow: hidden; }
-        /* Estilos para que Video.js ocupe el 100% del contenedor */
-        .video-js { width: 100%; height: 100%; }
-        .news-grid-section h2 { text-align: center; font-size: 2.5rem; color: #ffc400; border-bottom: 2px solid #555; padding-bottom: 10px; margin-bottom: 30px; }
-        .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
-        .news-card { background-color: #333; border: 1px solid #555; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.4); display: flex; flex-direction: column; }
-        .news-card-content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
-        .news-card-content .source { font-size: 0.8rem; color: #aaa; margin-bottom: 5px; text-transform: uppercase; }
-        .news-card-content h3 { margin: 0 0 10px 0; font-size: 1.3rem; }
-        .news-card-content p { margin: 0 0 20px 0; color: #ddd; flex-grow: 1; }
-        .news-card-content a { background-color: #ffc400; color: #1a0000; text-decoration: none; padding: 12px; border-radius: 5px; text-align: center; font-weight: bold; transition: background-color 0.3s; }
-        .news-card-content a:hover { background-color: #fff; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
+            color: white;
+            scroll-behavior: smooth;
+        }
+        nav {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav img {
+            height: 40px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: color 0.3s;
+            cursor: pointer;
+            padding: 5px 0;
+        }
+        .nav-links a[href="/"] {
+            color: #00aaff;
+            border-bottom: 2px solid #00aaff;
+        }
+        .nav-links a:hover {
+            color: #00aaff;
+        }
+        
+        /* Contenedor principal */
+        .page-container {
+            max-width: 1600px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+        
+        /* Columna Izquierda: Reproductor */
+        .main-content {
+            flex: 3; /* Ocupa más espacio */
+        }
+
+        /* Columna Derecha: Noticias */
+        .sidebar-content {
+            flex: 1; /* Ocupa menos espacio */
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* --- SECCIÓN DEL REPRODUCTOR --- */
+        .player-section {
+            background-color: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .channel-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .channel-buttons button {
+            background-color: #415a77;
+            color: white;
+            border: 2px solid #415a77;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .channel-buttons button:hover {
+            background-color: #00aaff;
+            border-color: #00aaff;
+        }
+        .channel-buttons button.active {
+            background-color: #00aaff;
+            border-color: #fff;
+            box-shadow: 0 0 10px rgba(0,170,255,0.7);
+        }
+        #player-container {
+            width: 100%;
+            height: 655px; /* Altura original */
+            background-color: black;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,170,255,0.8);
+            overflow: hidden;
+        }
+        .video-js { /* Para que Video.js ocupe el 100% */
+            width: 100%; 
+            height: 100%;
+        }
+
+        /* --- SECCIÓN DE NOTICIAS --- */
+        .news-card {
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
+            padding: 20px;
+        }
+        .news-card .source {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+        .news-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.1rem;
+            color: #00aaff;
+        }
+        .news-card p {
+            margin: 0 0 15px 0;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        .news-card a {
+            color: #ffc400;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .news-card a:hover {
+            text-decoration: underline;
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="breaking-news-banner">
+    <nav>
+        <a href="/"><img src="logo.png" alt="Logo"></a>
+        <div class="nav-links">
+            <a href="/" class="active">Inicio</a>
+            <a href="/peliculas.html">Zona de Películas</a>
+            <a href="/repeticiones.html">Repeticiones</a>
+            <a href="https://mediaformulaiptv.vercel.app/f1zone.html">F1</a>
+            <a href="/noticias.html">Noticias</a>
+            <a href="/tv.html">TV</a>
+        </div>
+    </nav>
+    
+    <div class="breaking-news-banner" style="background-color:#c00; padding:10px; text-align:center; font-weight:bold;">
         ÚLTIMA HORA: EE.UU. ataca sitios nucleares en Irán, según confirma el Presidente Trump
     </div>
 
-    <div class="main-container">
-        <section class="player-section">
-            <h1>Cobertura en Vivo</h1>
-            <div class="channel-buttons">
-                <button class="channel-btn" data-player="videojs" data-src="https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://hidra.live:80/live/eufTQNgNXv/ojxBLcjY/319478.m3u8">Fox News</button>
-                <button class="channel-btn" data-player="clappr" data-src="https://nbcu-nbcnewyorknews-firetv.amagi.tv/playlist.m3u8">NBC</button>
-                <button class="channel-btn" data-player="clappr" data-src="https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8">Telemundo PR</button>
-            </div>
-            <div id="player-container"></div>
-        </section>
+    <div class="page-container">
 
-        <section class="news-grid-section">
-            <h2>Desarrollo de la Noticia</h2>
-            <div class="news-grid">
-                <div class="news-card">
-                    <div class="news-card-content">
-                        <span class="source">Associated Press</span>
-                        <h3>EE.UU. ataca 3 sitios nucleares iraníes, uniéndose a la campaña aérea israelí</h3>
-                        <p>El Presidente Donald Trump afirmó que el ejército de EE.UU. atacó tres sitios en Irán, incluyendo las instalaciones fortificadas de Fordow, en una arriesgada maniobra para desmantelar el programa nuclear del país.</p>
-                        <a href="https://apnews.com/article/israel-iran-war-nuclear-talks-geneva-news-06-21-2025-a7b0cdaba28b5817467ccf712d214579" target="_blank">Leer más</a>
-                    </div>
+        <main class="main-content">
+            <section class="player-section">
+                <div class="channel-buttons">
+                    <button class="channel-btn" data-player="videojs" data-src="https://iptv-proxystreamverse.fraelvillegasplay9.workers.dev/?url=http://hidra.live:80/live/eufTQNgNXv/ojxBLcjY/319478.m3u8">Fox News</button>
+                    <button class="channel-btn" data-player="clappr" data-src="https://nbcu-nbcnewyorknews-firetv.amagi.tv/playlist.m3u8">NBC</button>
+                    <button class="channel-btn" data-player="clappr" data-src="https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8">Telemundo PR</button>
                 </div>
-                <div class="news-card">
-                    <div class="news-card-content">
-                        <span class="source">Fox News</span>
-                        <h3>Trump anuncia ataque 'muy exitoso' al programa nuclear de Irán</h3>
-                        <p>El presidente anunció en redes sociales que se lanzó una "carga completa de BOMBAS" sobre el sitio primario de Fordow y que todos los aviones están regresando a salvo. Declaró que "AHORA ES EL MOMENTO PARA LA PAZ".</p>
-                        <a href="https://www.foxnews.com/politics/trump-declares-very-successful-attack-irans-nuclear-program-us-forces-strike-3-key-sites" target="_blank">Leer más</a>
+                <div id="player-container">
                     </div>
-                </div>
-                <div class="news-card">
-                    <div class="news-card-content">
-                        <span class="source">Politico</span>
-                        <h3>La intervención directa de EE.UU. sigue a la presión israelí</h3>
-                        <p>La decisión de intervenir se produce después de que Israel solicitara a EE.UU. el uso de sus bombas "bunker-buster" GBU-57, capaces de destruir la planta de enriquecimiento de Fordo, enterrada profundamente en una montaña.</p>
-                        <a href="https://www.politico.com/news/2025/06/21/us-bombed-3-iranian-nuclear-sites-trump-says-00416403" target="_blank">Leer más</a>
-                    </div>
-                </div>
+            </section>
+        </main>
+
+        <aside class="sidebar-content">
+            <div class="news-card">
+                <span class="source">Associated Press</span>
+                <h3>EE.UU. ataca 3 sitios nucleares iraníes</h3>
+                <p>El Presidente Donald Trump afirmó que el ejército de EE.UU. atacó tres sitios en Irán, incluyendo las instalaciones fortificadas de Fordow, para desmantelar el programa nuclear del país.</p>
+                <a href="https://apnews.com/article/israel-iran-war-nuclear-talks-geneva-news-06-21-2025-a7b0cdaba28b5817467ccf712d214579" target="_blank">Leer más...</a>
             </div>
-        </section>
+            <div class="news-card">
+                <span class="source">Fox News</span>
+                <h3>Trump anuncia ataque 'muy exitoso'</h3>
+                <p>El presidente declaró que se lanzó una "carga completa de BOMBAS" sobre el sitio de Fordow y que todos los aviones regresaron a salvo.</p>
+                <a href="https://www.foxnews.com/politics/trump-declares-very-successful-attack-irans-nuclear-program-us-forces-strike-3-key-sites" target="_blank">Leer más...</a>
+            </div>
+             <div class="news-card">
+                <span class="source">Politico</span>
+                <h3>Intervención sigue a presión israelí</h3>
+                <p>La decisión de intervenir se produce después de que Israel solicitara a EE.UU. el uso de sus bombas "bunker-buster" GBU-57, capaces de destruir la planta de enriquecimiento.</p>
+                <a href="https://www.politico.com/news/2025/06/21/us-bombed-3-iranian-nuclear-sites-trump-says-00416403" target="_blank">Leer más...</a>
+            </div>
+        </aside>
+
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const buttons = document.querySelectorAll('.channel-btn');
             const playerContainer = document.getElementById('player-container');
-            let currentPlayer = null; // Variable para guardar la instancia del reproductor actual
+            let currentPlayer = null;
 
-            // --- Función principal para cambiar de canal y de reproductor ---
             function switchChannel(playerType, sourceUrl) {
-                // 1. Destruir el reproductor anterior si existe
                 if (currentPlayer) {
-                    // Video.js tiene un método 'dispose', Clappr tiene 'destroy'
-                    if (typeof currentPlayer.dispose === 'function') {
+                    if (typeof currentPlayer.dispose === 'function') { // Video.js
                         currentPlayer.dispose();
-                    } else if (typeof currentPlayer.destroy === 'function') {
+                    } else if (typeof currentPlayer.destroy === 'function') { // Clappr
                         currentPlayer.destroy();
                     }
                     currentPlayer = null;
                 }
                 
-                // 2. Limpiar el contenedor
                 playerContainer.innerHTML = '';
 
-                // 3. Crear el nuevo reproductor según el tipo
                 if (playerType === 'videojs') {
-                    // Video.js necesita una estructura de etiquetas <video>
                     const videoElement = document.createElement('video');
                     videoElement.id = 'video-player';
                     videoElement.className = 'video-js vjs-default-skin';
@@ -121,17 +243,11 @@
                     
                     playerContainer.appendChild(videoElement);
                     
-                    // Iniciar Video.js
                     currentPlayer = videojs('video-player', {
-                        html5: {
-                            vhs: {
-                                overrideNative: true
-                            }
-                        }
+                        html5: { vhs: { overrideNative: true } }
                     });
 
                 } else if (playerType === 'clappr') {
-                    // Clappr se crea directamente sobre el contenedor
                     currentPlayer = new Clappr.Player({
                         parent: playerContainer,
                         source: sourceUrl,
@@ -142,10 +258,8 @@
                 }
             }
 
-            // --- Evento para los botones ---
             buttons.forEach(button => {
                 button.addEventListener('click', (e) => {
-                    // Marcar el botón como activo
                     buttons.forEach(btn => btn.classList.remove('active'));
                     e.currentTarget.classList.add('active');
                     
@@ -156,13 +270,10 @@
                 });
             });
 
-            // --- Cargar el primer canal por defecto al iniciar la página ---
+            // Cargar el primer canal por defecto
             const firstButton = buttons[0];
             if (firstButton) {
-                firstButton.classList.add('active');
-                const defaultPlayer = firstButton.dataset.player;
-                const defaultSrc = firstButton.dataset.src;
-                switchChannel(defaultPlayer, defaultSrc);
+                firstButton.click();
             }
         });
     </script>
