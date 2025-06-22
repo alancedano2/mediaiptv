@@ -110,7 +110,8 @@
             border-radius: 12px;
             box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
             padding: 20px;
-            max-height: 400px;
+            /* Se ajusta la altura máxima ya que ahora hay un solo elemento */
+            max-height: 850px; 
             overflow-y: auto;
         }
         .events-box h2 {
@@ -204,12 +205,8 @@
                 <h2>Próximos Eventos</h2>
                 <div id="events-list"></div>
             </div>
-
-            <div class="events-box">
-                <h2>Próximos PPV</h2>
-                <div id="ppv-list"></div>
+            
             </div>
-        </div>
     </div>
 
     <script>
@@ -269,46 +266,7 @@
                 });
             }
 
-            const ppvs = [
-                { name: 'Cubs vs Marines', date: '2025-06-20', time: '14:20', logo: 'https://images.seeklogo.com/logo-png/25/2/mlb-logo-png_seeklogo-250501.png' },
-                { name: 'Yankees vs Orioles', date: '2025-06-20', time: '19:05', logo: 'https://images.seeklogo.com/logo-png/25/2/mlb-logo-png_seeklogo-250501.png' },
-                { name: '', date: '', time: '', logo: '' },
-                { name: '', date: '', time: '', logo: '' },
-                { name: 'Pacers vs Thunders', date: '2025-06-22', time: '20:00', logo: 'https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png' }
-            ];
-
-            function updatePPVCountdowns() {
-                const now = new Date();
-                const ppvListContainer = document.getElementById('ppv-list');
-                ppvListContainer.innerHTML = '';
-                ppvs.forEach(ppv => {
-                    if (!ppv.name) return;
-                    const eventDate = new Date(`${ppv.date}T${ppv.time}`);
-                    const timeDiff = eventDate.getTime() - now.getTime();
-                    const eventItem = document.createElement('div');
-                    eventItem.className = 'event-item';
-                    eventItem.innerHTML = `<img src="${ppv.logo}" alt="${ppv.name} Logo"><div class="event-details"><h3>${ppv.name}</h3><p>${new Date(eventDate).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p></div><div class="countdown-box"></div>`;
-                    const countdownBox = eventItem.querySelector('.countdown-box');
-                    if (timeDiff > 0) {
-                        const totalSeconds = Math.floor(timeDiff / 1000);
-                        const days = Math.floor(totalSeconds / (3600 * 24));
-                        const hoursRemaining = Math.floor((totalSeconds % (3600 * 24)) / 3600);
-                        const minutesRemaining = Math.floor((totalSeconds % 3600) / 60);
-                        const secondsRemaining = totalSeconds % 60;
-                        let countdownText = '';
-                        if (days > 0) countdownText += `${days}d `;
-                        countdownText += `${String(hoursRemaining).padStart(2, '0')}:${String(minutesRemaining).padStart(2, '0')}:${String(secondsRemaining).padStart(2, '0')}`;
-                        countdownBox.textContent = countdownText;
-                    } else if (timeDiff > -10800000) {
-                        countdownBox.textContent = '¡En Vivo!';
-                        countdownBox.classList.add('finished');
-                    } else {
-                        countdownBox.textContent = '¡Finalizado!';
-                        countdownBox.classList.add('finished');
-                    }
-                    ppvListContainer.appendChild(eventItem);
-                });
-            }
+            // LÓGICA DE PPV ELIMINADA
 
             const banners = [
                 { image: 'banner_kq105.jpg', link: 'https://kq105.com' },
@@ -340,8 +298,9 @@
 
             updateWeeklyCountdowns();
             setInterval(updateWeeklyCountdowns, 1000);
-            updatePPVCountdowns();
-            setInterval(updatePPVCountdowns, 1000);
+
+            // LLAMADA A LA FUNCIÓN DE PPV ELIMINADA
+
             updateBanner();
             setInterval(updateBanner, 5000);
         });
