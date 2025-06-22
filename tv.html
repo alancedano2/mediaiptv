@@ -62,7 +62,6 @@
         <div id="player-container">
             <div id="player"></div>
         </div>
-
         <div class="channels-sidebar">
             <div class="events-box">
                 <h2>Próximos PPV</h2>
@@ -74,9 +73,13 @@
     <script>
         let currentPlayer = null;
 
-        function loadPlayer(playerType, sourceUrl, useProxy) {
+        // --- URL DE TU NUEVO PROXY DE CLOUDFLARE ---
+        // !!! REEMPLAZA ESTO CON LA URL DE TU WORKER !!!
+        const PROXY_URL = "https://tu-worker.tu-dominio.workers.dev"; 
+
+        function loadPlayer(playerType, sourceUrl) {
             if (currentPlayer) {
-                if (typeof currentPlayer.dispose === 'function') { currentPlayer.dispose(); } 
+                if (typeof currentPlayer.dispose === 'function') { currentPlayer.dispose(); }
                 else if (typeof currentPlayer.destroy === 'function') { currentPlayer.destroy(); }
                 currentPlayer = null;
             }
@@ -89,10 +92,8 @@
                 return;
             }
             
-            // Construir la URL final: usar el proxy si se especifica
-            const finalUrl = useProxy 
-                ? `/api/proxy?url=${encodeURIComponent(sourceUrl)}` 
-                : sourceUrl;
+            // Construir la URL final usando el proxy de Cloudflare
+            const finalUrl = `${PROXY_URL}/?url=${encodeURIComponent(sourceUrl)}`;
 
             if (playerType === 'videojs') {
                 const videoElement = document.createElement('video');
@@ -104,7 +105,6 @@
                     controls: true, autoplay: true, preload: 'auto',
                     sources: [{ src: finalUrl, type: 'application/x-mpegURL' }]
                 });
-
             } else if (playerType === 'clappr') {
                 currentPlayer = new Clappr.Player({
                     parent: playerContainer, source: finalUrl,
@@ -114,72 +114,44 @@
         }
 
         const ppvs = [
-            // MODIFICADO: Se usa la URL real y se añade 'useProxy: true'
-            { name: 'MLB: Yankees vs Orioles', date: '2025-06-22', time: '11:35', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Major_League_Baseball_logo.svg/1280px-Major_League_Baseball_logo.svg.png', streamUrl: 'http://my.blerdvn.com:83/live/BigBillV/4930586271/824036.m3u8', playerType: 'videojs', useProxy: true },
-            { name: '', date: '', time: '', logo: '', streamUrl: '', playerType: '' },
-            { name: '', date: '', time: '', logo: '', streamUrl: '', playerType: '' },
-            { name: '', date: '', time: '', logo: '', streamUrl: '', playerType: '' },
-            // El stream de NBA no usa proxy
-            { name: 'NBA: Pacers vs Thunders', date: '2025-06-22', time: '20:00', logo: 'https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png', streamUrl: 'https://nflarcadia.xyz/bRtT37sn3w/Sx5q6YTgCs/11.m3u8', playerType: 'clappr', useProxy: false }
+            { name: 'MLB: Yankees vs Orioles', date: '2025-06-22', time: '11:35', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Major_League_Baseball_logo.svg/1280px-Major_League_Baseball_logo.svg.png', streamUrl: 'https://proxystreamverse.fraelvillegasplay8.workers.dev/?url=http://my.blerdvn.com:83/live/BigBillV/4930586271/824036.m3u8', playerType: 'videojs' },
+            { name: '', date: '', time: '', logo: '', streamUrl: '', playerType: 'clappr'},
+            { name: 'NBA: Pacers vs Thunders', date: '2025-06-22', time: '20:00', logo: 'https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png', streamUrl: 'https://nflarcadia.xyz/bRtT37sn3w/Sx5q6YTgCs/11.m3u8', playerType: 'clappr' }
         ];
 
         function updatePPVCountdowns() {
             const now = new Date();
             const ppvListContainer = document.getElementById('ppv-list');
             ppvListContainer.innerHTML = '';
-
             ppvs.forEach(ppv => {
-                if (!ppv.name) return; 
-
+                if (!ppv.name) return;
                 const eventDate = new Date(`${ppv.date}T${ppv.time}`);
                 const timeDiff = eventDate.getTime() - now.getTime();
                 const eventItem = document.createElement('div');
                 eventItem.className = 'event-item';
-                
-                eventItem.innerHTML = `
-                    <img src="${ppv.logo}" alt="${ppv.name} Logo">
-                    <div class="event-details">
-                        <h3>${ppv.name}</h3>
-                        <p>${eventDate.toLocaleDateString('es-ES', { weekday: 'long', month: 'long', day: 'numeric' })}</p>
-                    </div>
-                    <div class="event-actions">
-                        <button class="play-btn">Reproducir</button>
-                        <div class="countdown-box"></div>
-                    </div>
-                `;
-                
+                eventItem.innerHTML = `<img src="${ppv.logo}" alt="${ppv.name} Logo"><div class="event-details"><h3>${ppv.name}</h3><p>${eventDate.toLocaleDateString('es-ES', { weekday: 'long', month: 'long', day: 'numeric' })}</p></div><div class="event-actions"><button class="play-btn">Reproducir</button><div class="countdown-box"></div></div>`;
                 const playButton = eventItem.querySelector('.play-btn');
-                playButton.addEventListener('click', () => {
-                    loadPlayer(ppv.playerType, ppv.streamUrl, ppv.useProxy);
-                });
-
+                playButton.addEventListener('click', () => loadPlayer(ppv.playerType, ppv.streamUrl));
                 const countdownBox = eventItem.querySelector('.countdown-box');
-                if (timeDiff < - (4 * 3600 * 1000)) {
-                    countdownBox.textContent = 'Finalizado';
-                    countdownBox.classList.add('finished');
-                } else if (timeDiff <= 0) {
-                    countdownBox.textContent = 'En Vivo';
-                    countdownBox.classList.add('live');
-                } else {
-                    const days = Math.floor(timeDiff / (1000 * 3600 * 24));
-                    const hours = Math.floor((timeDiff % (1000 * 3600 * 24)) / (1000 * 3600));
-                    const minutes = Math.floor((timeDiff % (1000 * 3600)) / (1000 * 60));
+                if (timeDiff < -14400000) { countdownBox.textContent = 'Finalizado'; countdownBox.classList.add('finished'); }
+                else if (timeDiff <= 0) { countdownBox.textContent = 'En Vivo'; countdownBox.classList.add('live'); }
+                else {
+                    const days = Math.floor(timeDiff / 86400000);
+                    const hours = Math.floor((timeDiff % 86400000) / 3600000);
+                    const minutes = Math.floor((timeDiff % 3600000) / 60000);
                     let text = '';
                     if (days > 0) text += `${days}d `;
                     text += `${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m`;
                     countdownBox.textContent = text;
                 }
-                
                 ppvListContainer.appendChild(eventItem);
             });
         }
-
         document.addEventListener('DOMContentLoaded', () => {
-            loadPlayer(null, null, false);
+            loadPlayer(null, null);
             updatePPVCountdowns();
             setInterval(updatePPVCountdowns, 60000);
         });
     </script>
-
 </body>
 </html>
