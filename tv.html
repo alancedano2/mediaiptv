@@ -10,209 +10,38 @@
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
     
     <style>
-        html, body {
-            height: 100%;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
-            color: white;
-            scroll-behavior: smooth;
-            min-height: 100vh;
-        }
-        nav {
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        nav img {
-            height: 40px;
-            flex-shrink: 0;
-        }
-        .nav-links {
-            display: flex;
-            gap: 25px;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-            align-items: center;
-        }
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1rem;
-            transition: color 0.3s;
-            cursor: pointer;
-            padding: 5px 0;
-            white-space: nowrap;
-        }
-        .nav-links a[href="/"] {
-            color: #00aaff;
-            border-bottom: 2px solid #00aaff;
-        }
-        .nav-links a:hover {
-            color: #00aaff;
-        }
-        .main-content-wrapper {
-            display: flex;
-            max-width: 1600px;
-            margin: 30px auto;
-            gap: 20px;
-            padding: 0 20px;
-            flex-direction: column;
-        }
-        @media (min-width: 992px) {
-            .main-content-wrapper {
-                flex-direction: row;
-                align-items: flex-start;
-            }
-        }
-        #player-container {
-            width: 100%;
-            height: 250px;
-            background-color: black;
-            border-radius: 12px;
-            box-shadow: 0 0 15px rgba(0,170,255,0.7);
-            position: relative;
-        }
-        @media (min-width: 992px) {
-            #player-container {
-                flex-grow: 1;
-                height: 600px;
-                flex-basis: calc(100% - 370px);
-            }
-        }
-        #player, .video-js {
-             width: 100%;
-             height: 100%;
-             border-radius: 12px;
-        }
-        .channels-sidebar {
-            width: 100%;
-        }
-        @media (min-width: 992px) {
-            .channels-sidebar {
-                width: 350px;
-                min-width: 350px;
-            }
-        }
-        .events-box {
-            background-color: rgba(0, 0, 0, 0.5);
-            border-radius: 12px;
-            padding: 15px;
-            height: 600px;
-            overflow-y: auto;
-        }
-        @media (max-width: 991px) {
-             .events-box {
-                 max-height: 70vh;
-                 height: auto;
-             }
-        }
-        .events-box h2 {
-            text-align: center;
-            color: #00aaff;
-            margin-top: 0;
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-        }
-        .event-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            background-color: rgba(0, 0, 0, 0.6);
-            padding: 10px;
-            border-radius: 10px;
-        }
-        .event-item:last-child {
-            margin-bottom: 0;
-        }
-        .event-item img {
-            width: 50px;
-            height: 50px;
-            margin-right: 15px;
-            border-radius: 8px;
-            object-fit: contain;
-            flex-shrink: 0;
-        }
-        .event-details {
-            flex-grow: 1;
-            overflow: hidden; 
-        }
-        .event-details h3 {
-            margin: 0 0 5px 0;
-            font-size: 1rem;
-            color: #fff;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
-        .event-details p {
-            margin: 0;
-            font-size: 0.8rem;
-            color: #ccc;
-        }
-        .event-actions {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            margin-left: 10px;
-        }
-        .event-actions button {
-            padding: 8px 12px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            color: #ffffff;
-            background: linear-gradient(90deg, #00aaff, #0077cc);
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-        .event-actions button:hover {
-            transform: scale(1.05);
-        }
-        .countdown-box {
-            background-color: rgba(0, 170, 255, 0.2);
-            color: #00aaff;
-            padding: 4px 8px;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            text-align: center;
-            white-space: nowrap;
-        }
-        .countdown-box.finished {
-            background-color: #5a6268;
-            color: #ccc;
-        }
-        .countdown-box.live {
-            background-color: #ff4d4d;
-            color: white;
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(255, 77, 77, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0); }
-        }
-        .player-placeholder {
-            display:flex; align-items:center; justify-content:center; height:100%; color: #ccc; font-size: 1.2rem; text-align:center; padding: 20px;
-        }
+        html, body { height: 100%; width: 100%; margin: 0; padding: 0; overflow-x: hidden; }
+        body { font-family: Arial, sans-serif; background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77); color: white; scroll-behavior: smooth; min-height: 100vh; }
+        nav { background-color: rgba(0, 0, 0, 0.7); padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 5px rgba(0,0,0,0.5); position: sticky; top: 0; z-index: 1000; width: 100%; box-sizing: border-box; }
+        nav img { height: 40px; flex-shrink: 0; }
+        .nav-links { display: flex; gap: 25px; flex-wrap: wrap; justify-content: flex-end; align-items: center; }
+        .nav-links a { color: white; text-decoration: none; font-weight: bold; font-size: 1rem; transition: color 0.3s; cursor: pointer; padding: 5px 0; white-space: nowrap; }
+        .nav-links a[href="/"] { color: #00aaff; border-bottom: 2px solid #00aaff; }
+        .nav-links a:hover { color: #00aaff; }
+        .main-content-wrapper { display: flex; max-width: 1600px; margin: 30px auto; gap: 20px; padding: 0 20px; flex-direction: column; }
+        @media (min-width: 992px) { .main-content-wrapper { flex-direction: row; align-items: flex-start; } }
+        #player-container { width: 100%; height: 250px; background-color: black; border-radius: 12px; box-shadow: 0 0 15px rgba(0,170,255,0.7); position: relative; }
+        @media (min-width: 992px) { #player-container { flex-grow: 1; height: 600px; flex-basis: calc(100% - 370px); } }
+        #player, .video-js { width: 100%; height: 100%; border-radius: 12px; }
+        .channels-sidebar { width: 100%; }
+        @media (min-width: 992px) { .channels-sidebar { width: 350px; min-width: 350px; } }
+        .events-box { background-color: rgba(0, 0, 0, 0.5); border-radius: 12px; padding: 15px; height: 600px; overflow-y: auto; }
+        @media (max-width: 991px) { .events-box { max-height: 70vh; height: auto; } }
+        .events-box h2 { text-align: center; color: #00aaff; margin-top: 0; margin-bottom: 15px; font-size: 1.3rem; }
+        .event-item { display: flex; align-items: center; margin-bottom: 15px; background-color: rgba(0, 0, 0, 0.6); padding: 10px; border-radius: 10px; }
+        .event-item:last-child { margin-bottom: 0; }
+        .event-item img { width: 50px; height: 50px; margin-right: 15px; border-radius: 8px; object-fit: contain; flex-shrink: 0; }
+        .event-details { flex-grow: 1; overflow: hidden; }
+        .event-details h3 { margin: 0 0 5px 0; font-size: 1rem; color: #fff; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+        .event-details p { margin: 0; font-size: 0.8rem; color: #ccc; }
+        .event-actions { display: flex; flex-direction: column; align-items: center; gap: 5px; margin-left: 10px; }
+        .event-actions button { padding: 8px 12px; font-size: 0.8rem; font-weight: bold; color: #ffffff; background: linear-gradient(90deg, #00aaff, #0077cc); border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; }
+        .event-actions button:hover { transform: scale(1.05); }
+        .countdown-box { background-color: rgba(0, 170, 255, 0.2); color: #00aaff; padding: 4px 8px; border-radius: 5px; font-size: 0.9rem; font-weight: bold; text-align: center; white-space: nowrap; }
+        .countdown-box.finished { background-color: #5a6268; color: #ccc; }
+        .countdown-box.live { background-color: #ff4d4d; color: white; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(255, 77, 77, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0); } }
+        .player-placeholder { display:flex; align-items:center; justify-content:center; height:100%; color: #ccc; font-size: 1.2rem; text-align:center; padding: 20px; }
     </style>
 </head>
 <body>
@@ -245,28 +74,26 @@
     <script>
         let currentPlayer = null;
 
-        // --- Función maestra para cargar CUALQUIER tipo de reproductor ---
-        function loadPlayer(playerType, sourceUrl) {
-            // 1. Destruir el reproductor anterior si existe
+        function loadPlayer(playerType, sourceUrl, useProxy) {
             if (currentPlayer) {
-                // Video.js tiene un método 'dispose', Clappr tiene 'destroy'
-                if (typeof currentPlayer.dispose === 'function') {
-                    currentPlayer.dispose();
-                } else if (typeof currentPlayer.destroy === 'function') {
-                    currentPlayer.destroy();
-                }
+                if (typeof currentPlayer.dispose === 'function') { currentPlayer.dispose(); } 
+                else if (typeof currentPlayer.destroy === 'function') { currentPlayer.destroy(); }
                 currentPlayer = null;
             }
             
             const playerContainer = document.getElementById('player');
-            playerContainer.innerHTML = ''; // Limpiar el contenedor
+            playerContainer.innerHTML = '';
 
             if (!sourceUrl) {
                 playerContainer.innerHTML = `<div class="player-placeholder">Seleccione un PPV de la lista para reproducir</div>`;
                 return;
             }
+            
+            // Construir la URL final: usar el proxy si se especifica
+            const finalUrl = useProxy 
+                ? `/api/proxy?url=${encodeURIComponent(sourceUrl)}` 
+                : sourceUrl;
 
-            // 2. Crear el nuevo reproductor según el tipo
             if (playerType === 'videojs') {
                 const videoElement = document.createElement('video');
                 videoElement.id = 'video-js-player';
@@ -274,34 +101,26 @@
                 playerContainer.appendChild(videoElement);
                 
                 currentPlayer = videojs('video-js-player', {
-                    controls: true,
-                    autoplay: true,
-                    preload: 'auto',
-                    sources: [{
-                        src: sourceUrl,
-                        type: 'application/x-mpegURL'
-                    }]
+                    controls: true, autoplay: true, preload: 'auto',
+                    sources: [{ src: finalUrl, type: 'application/x-mpegURL' }]
                 });
 
             } else if (playerType === 'clappr') {
                 currentPlayer = new Clappr.Player({
-                    parent: playerContainer,
-                    source: sourceUrl,
-                    width: '100%',
-                    height: '100%',
-                    autoPlay: true,
+                    parent: playerContainer, source: finalUrl,
+                    width: '100%', height: '100%', autoPlay: true,
                 });
             }
         }
 
-        // --- DATOS Y LÓGICA DE EVENTOS PPV ---
         const ppvs = [
-            // MODIFICADO: Añadido playerType a cada evento
-            { name: 'MLB: Yankees vs Orioles', date: '2025-06-22', time: '11:35', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Major_League_Baseball_logo.svg/1280px-Major_League_Baseball_logo.svg.png', streamUrl: 'http://my.blerdvn.com:83/live/BigBillV/4930586271/824036.m3u8', playerType: 'videojs' },
+            // MODIFICADO: Se usa la URL real y se añade 'useProxy: true'
+            { name: 'MLB: Yankees vs Orioles', date: '2025-06-22', time: '11:35', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Major_League_Baseball_logo.svg/1280px-Major_League_Baseball_logo.svg.png', streamUrl: 'http://my.blerdvn.com:83/live/BigBillV/4930586271/824036.m3u8', playerType: 'videojs', useProxy: true },
             { name: '', date: '', time: '', logo: '', streamUrl: '', playerType: '' },
             { name: '', date: '', time: '', logo: '', streamUrl: '', playerType: '' },
             { name: '', date: '', time: '', logo: '', streamUrl: '', playerType: '' },
-            { name: 'NBA: Pacers vs Thunders', date: '2025-06-22', time: '20:00', logo: 'https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png', streamUrl: 'https://nflarcadia.xyz/bRtT37sn3w/Sx5q6YTgCs/11.m3u8', playerType: 'clappr' }
+            // El stream de NBA no usa proxy
+            { name: 'NBA: Pacers vs Thunders', date: '2025-06-22', time: '20:00', logo: 'https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png', streamUrl: 'https://nflarcadia.xyz/bRtT37sn3w/Sx5q6YTgCs/11.m3u8', playerType: 'clappr', useProxy: false }
         ];
 
         function updatePPVCountdowns() {
@@ -314,11 +133,9 @@
 
                 const eventDate = new Date(`${ppv.date}T${ppv.time}`);
                 const timeDiff = eventDate.getTime() - now.getTime();
-
                 const eventItem = document.createElement('div');
                 eventItem.className = 'event-item';
                 
-                // MODIFICADO: Se elimina el onclick del botón
                 eventItem.innerHTML = `
                     <img src="${ppv.logo}" alt="${ppv.name} Logo">
                     <div class="event-details">
@@ -331,46 +148,34 @@
                     </div>
                 `;
                 
-                // Añadimos los datos al botón para que el event listener los pueda leer
                 const playButton = eventItem.querySelector('.play-btn');
-                playButton.dataset.streamUrl = ppv.streamUrl;
-                playButton.dataset.playerType = ppv.playerType;
-
-                // Añadimos el Event Listener al botón
                 playButton.addEventListener('click', () => {
-                    loadPlayer(ppv.playerType, ppv.streamUrl);
+                    loadPlayer(ppv.playerType, ppv.streamUrl, ppv.useProxy);
                 });
 
                 const countdownBox = eventItem.querySelector('.countdown-box');
-                if (timeDiff < - (4 * 60 * 60 * 1000)) {
+                if (timeDiff < - (4 * 3600 * 1000)) {
                     countdownBox.textContent = 'Finalizado';
                     countdownBox.classList.add('finished');
-                } 
-                else if (timeDiff <= 0) {
+                } else if (timeDiff <= 0) {
                     countdownBox.textContent = 'En Vivo';
                     countdownBox.classList.add('live');
-                }
-                else {
-                    const totalSeconds = Math.floor(timeDiff / 1000);
-                    const days = Math.floor(totalSeconds / (60 * 60 * 24));
-                    const hoursRemaining = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
-                    const minutesRemaining = Math.floor((totalSeconds % (60 * 60)) / 60);
-                    
-                    let countdownText = '';
-                    if (days > 0) {
-                        countdownText += `${days}d `;
-                    }
-                    countdownText += `${String(hoursRemaining).padStart(2, '0')}h ${String(minutesRemaining).padStart(2, '0')}m`;
-                    countdownBox.textContent = countdownText;
+                } else {
+                    const days = Math.floor(timeDiff / (1000 * 3600 * 24));
+                    const hours = Math.floor((timeDiff % (1000 * 3600 * 24)) / (1000 * 3600));
+                    const minutes = Math.floor((timeDiff % (1000 * 3600)) / (1000 * 60));
+                    let text = '';
+                    if (days > 0) text += `${days}d `;
+                    text += `${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m`;
+                    countdownBox.textContent = text;
                 }
                 
                 ppvListContainer.appendChild(eventItem);
             });
         }
 
-        // --- INICIALIZACIÓN DE LA PÁGINA ---
         document.addEventListener('DOMContentLoaded', () => {
-            loadPlayer(null, null); // Inicia con un estado vacío
+            loadPlayer(null, null, false);
             updatePPVCountdowns();
             setInterval(updatePPVCountdowns, 60000);
         });
