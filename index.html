@@ -4,119 +4,348 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>StreamVerse - Inicio</title>
-    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
-    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
     <style>
-        body { margin: 0; font-family: Arial, sans-serif; background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77); color: white; scroll-behavior: smooth; }
-        header { position: sticky; top: 0; z-index: 1000; }
-        nav { background-color: rgba(0, 0, 0, 0.7); padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
-        nav img { height: 40px; }
-        .nav-links { display: flex; gap: 25px; }
-        .nav-links a { color: white; text-decoration: none; font-weight: bold; font-size: 1rem; transition: color 0.3s; cursor: pointer; padding: 5px 0; }
-        .nav-links a.active { color: #00aaff; border-bottom: 2px solid #00aaff; }
-        .nav-links a:hover { color: #00aaff; }
-        .page-container { max-width: 1600px; margin: 40px auto; padding: 0 20px; display: flex; gap: 30px; align-items: flex-start; }
-        .breaking-news-banner { background-color:#c00; padding:10px; text-align:center; font-weight:bold; color: white; }
-        .main-content { flex: 3; }
-        .sidebar-content { flex: 1; display: flex; flex-direction: column; gap: 20px; }
-        .player-section { background-color: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; }
-        .channel-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; }
-        .channel-buttons button { background-color: #415a77; color: white; border: 2px solid #415a77; border-radius: 8px; padding: 10px 20px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: all 0.3s ease; }
-        .channel-buttons button:hover { background-color: #00aaff; border-color: #00aaff; }
-        .channel-buttons button.active { background-color: #00aaff; border-color: #fff; box-shadow: 0 0 10px rgba(0,170,255,0.7); }
-        #player-container { width: 100%; height: 655px; background-color: black; border-radius: 12px; box-shadow: 0 0 20px rgba(0,170,255,0.8); overflow: hidden; }
-        .video-js { width: 100%; height: 100%; }
-        .news-card { background-color: rgba(0, 0, 0, 0.6); border-radius: 12px; box-shadow: 0 0 15px rgba(0, 170, 255, 0.5); padding: 20px; }
-        .news-card .source { font-size: 0.8rem; color: #aaa; margin-bottom: 5px; text-transform: uppercase; }
-        .news-card h3 { margin: 0 0 10px 0; font-size: 1.1rem; color: #00aaff; }
-        .news-card p { margin: 0 0 15px 0; font-size: 0.9rem; color: #ccc; }
-        .news-card a { color: #ffc400; text-decoration: none; font-weight: bold; }
-        .news-card a:hover { text-decoration: underline; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
+            color: white;
+            scroll-behavior: smooth;
+        }
+        nav {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav img {
+            height: 40px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: color 0.3s;
+            cursor: pointer;
+            padding: 5px 0;
+        }
+        .nav-links a[href="/"] {
+            color: #00aaff;
+            border-bottom: 2px solid #00aaff;
+        }
+        .nav-links a:hover {
+            color: #00aaff;
+        }
+        .content-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 30px;
+            margin: 40px auto;
+            max-width: 1600px;
+            padding: 0 20px;
+        }
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            flex-grow: 1;
+        }
+        #player {
+            width: 100%;
+            max-width: 1200px;
+            height: 655px;
+            background-color: black;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,170,255,0.8);
+            position: relative;
+            overflow: hidden; 
+        }
+        
+        #player iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        #banner-container {
+            width: 970px;
+            height: 250px;
+            background-color: #000;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,170,255,0.5);
+            overflow: hidden;
+        }
+        #banner-container a {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        #banner-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .sidebar-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            width: 350px;
+            flex-shrink: 0;
+        }
+        .events-box {
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .events-box h2 {
+            text-align: center;
+            color: #00aaff;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        .event-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 15px;
+        }
+        .event-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .event-item img {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+            border-radius: 8px;
+            object-fit: contain;
+        }
+        .event-details {
+            flex-grow: 1;
+        }
+        .event-details h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+        .event-details p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        .countdown-box {
+            background-color: #00aaff;
+            color: #0d1b2a;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            white-space: nowrap;
+        }
+        .countdown-box.finished {
+            background-color: #ff4d4d;
+            color: white;
+        }
     </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="/"><img src="logo.png" alt="Logo"></a>
-            <div class="nav-links">
-                <a href="/" class="active">Inicio</a>
-                <a href="/peliculas.html">Zona de Películas</a>
-                <a href="/repeticiones.html">Repeticiones</a>
-                <a href="https://mediaformulaiptv.vercel.app/f1zone.html">F1</a>
-                <a href="/noticias.html">Noticias</a>
-                <a href="/tv.html">TV</a>
-            </div>
-        </nav>
-        <div class="breaking-news-banner">
-            ÚLTIMA HORA: EE.UU. ataca sitios nucleares en Irán, según confirma el Presidente Trump
-        </div>
-    </header>
 
-    <div class="page-container">
-        <main class="main-content">
-            <section class="player-section">
-                <div class="channel-buttons">
-                    <button class="channel-btn" data-src="https://fox-foxnewsnow-vizio.amagi.tv/playlist.m3u8">Fox News</button>
-                    <button class="channel-btn" data-src="http://198.16.100.186:8278/cbshd_glo/playlist.m3u8?tid=MA1A7337105773371057&ct=19254&tsum=89d432f03b1b50b68b7bace382dc13ac">CBS News</button>
-                    <button class="channel-btn" data-src="http://tvlatino.club:2082/live/991943952/e2zQtWgRZ5D4/540502.m3u8">Telemundo PR</button>
-                </div>
-                <div id="player-container"></div>
-            </section>
-        </main>
-        <aside class="sidebar-content">
-            <div class="news-card">
-                <span class="source">Associated Press</span><h3>EE.UU. ataca 3 sitios nucleares iraníes</h3><p>El Presidente Donald Trump afirmó que el ejército de EE.UU. atacó tres sitios en Irán...</p><a href="https://apnews.com/article/israel-iran-war-nuclear-talks-geneva-news-06-21-2025-a7b0cdaba28b5817467ccf712d214579" target="_blank">Leer más...</a>
+    <nav>
+        <a href="/"><img src="logo.png" alt="Logo"></a>
+        <div class="nav-links">
+            <a href="/">Inicio</a>
+            <a href="/peliculas.html">Zona de Películas</a>
+            <a href="/repeticiones.html">Repeticiones</a>
+            <a href="https://mediaformulaiptv.vercel.app/f1zone.html">F1</a>
+            <a href="/noticias.html">Noticias</a>
+            <a href="/tv.html">TV</a>
+        </div>
+    </nav>
+
+    <div class="content-container">
+        <div class="main-content">
+            <div id="player">
+                <iframe 
+                    src="" allow="autoplay; encrypted-media; fullscreen"
+                    allowfullscreen>
+                </iframe>
             </div>
-            <div class="news-card">
-                <span class="source">Fox News</span><h3>Trump anuncia ataque 'muy exitoso'</h3><p>El presidente declaró que se lanzó una "carga completa de BOMBAS" sobre el sitio de Fordow...</p><a href="https://www.foxnews.com/politics/trump-declares-very-successful-attack-irans-nuclear-program-us-forces-strike-3-key-sites" target="_blank">Leer más...</a>
+            <div id="banner-container">
+                <a id="banner-link" href="#" target="_blank" rel="noopener noreferrer">
+                    <img id="banner-image" src="" alt="Publicidad">
+                </a>
             </div>
-             <div class="news-card">
-                <span class="source">Politico</span><h3>Intervención sigue a presión israelí</h3><p>La decisión de intervenir se produce después de que Israel solicitara a EE.UU. el uso de sus bombas "bunker-buster" GBU-57...</p><a href="https://www.politico.com/news/2025/06/21/us-bombed-3-iranian-nuclear-sites-trump-says-00416403" target="_blank">Leer más...</a>
+        </div>
+        
+        <div class="sidebar-container">
+            <div class="events-box">
+                <h2>Próximos Eventos</h2>
+                <div id="events-list"></div>
             </div>
-        </aside>
+
+            <div class="events-box">
+                <h2>Próximos PPV</h2>
+                <div id="ppv-list"></div>
+            </div>
+        </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const buttons = document.querySelectorAll('.channel-btn');
-            const playerContainer = document.getElementById('player-container');
-            let player = null;
+            function formatTimeTo12Hour(hours, minutes) {
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+                const strMinutes = String(minutes).padStart(2, '0');
+                return `${hours}:${strMinutes} ${ampm}`;
+            }
 
-            function loadChannel(sourceUrl) {
-                if (player) {
-                    player.dispose();
-                }
-                playerContainer.innerHTML = '';
-                const videoElement = document.createElement('video');
-                videoElement.id = 'video-player';
-                videoElement.className = 'video-js vjs-default-skin';
-                playerContainer.appendChild(videoElement);
-                
-                player = videojs('video-player', {
-                    controls: true,
-                    autoplay: true,
-                    preload: 'auto',
-                    sources: [{
-                        src: `/api/proxy?url=${encodeURIComponent(sourceUrl)}`,
-                        type: 'application/x-mpegURL'
-                    }]
+            const events = [
+                { name: 'WWE RAW', day: 'Lunes', time: '20:00', logo: 'https://upload.wikimedia.org/wikipedia/commons/8/86/WWE_RAW_Logo_2025.svg' },
+                { name: 'WWE NXT', day: 'Martes', time: '20:00', logo: 'https://1000marcas.net/wp-content/uploads/2022/10/WWE-NXT-Logo.png' },
+                { name: 'AEW Dynamite', day: 'Miércoles', time: '20:00', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/AEW_Logo_%28simplified%29.svg/2560px-AEW_Logo_%28simplified%29.svg.png' },
+                { name: 'WWE SmackDown', day: 'Viernes', time: '20:00', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/WWE_SmackDown_%282024%29_Logo.svg/1200px-WWE_SmackDown_%282024%29_Logo.svg.png' },
+                { name: 'AEW Collision', day: 'Sábado', time: '20:00', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/AEW_Logo_%28simplified%29.svg/2560px-AEW_Logo_%28simplified%29.svg.png' }
+            ];
+            const daysOfWeek = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+
+            function updateWeeklyCountdowns() {
+                const now = new Date();
+                const eventsListContainer = document.getElementById('events-list');
+                eventsListContainer.innerHTML = '';
+                events.forEach(event => {
+                    const eventDate = new Date();
+                    const [hours, minutes] = event.time.split(':').map(Number);
+                    let dayIndex = daysOfWeek.indexOf(event.day);
+                    let currentDayIndex = now.getDay();
+                    let daysToAdd = dayIndex - currentDayIndex;
+                    if (daysToAdd < 0 || (daysToAdd === 0 && (now.getHours() > hours || (now.getHours() === hours && now.getMinutes() >= minutes)))) {
+                        daysToAdd += 7;
+                    }
+                    eventDate.setDate(now.getDate() + daysToAdd);
+                    eventDate.setHours(hours, minutes, 0, 0);
+                    const timeDiff = eventDate.getTime() - now.getTime();
+                    const eventItem = document.createElement('div');
+                    eventItem.className = 'event-item';
+                    eventItem.innerHTML = `<img src="${event.logo}" alt="${event.name} Logo"><div class="event-details"><h3>${event.name}</h3><p>${event.day} a las ${formatTimeTo12Hour(hours, minutes)}</p></div><div class="countdown-box"></div>`;
+                    const countdownBox = eventItem.querySelector('.countdown-box');
+                    if (timeDiff > 0) {
+                        const totalSeconds = Math.floor(timeDiff / 1000);
+                        const days = Math.floor(totalSeconds / (3600 * 24));
+                        const hoursRemaining = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+                        const minutesRemaining = Math.floor((totalSeconds % 3600) / 60);
+                        const secondsRemaining = totalSeconds % 60;
+                        let countdownText = '';
+                        if (days > 0) countdownText += `${days}d `;
+                        countdownText += `${String(hoursRemaining).padStart(2, '0')}:${String(minutesRemaining).padStart(2, '0')}:${String(secondsRemaining).padStart(2, '0')}`;
+                        countdownBox.textContent = countdownText;
+                    } else {
+                        countdownBox.textContent = '¡Finalizado!';
+                        countdownBox.classList.add('finished');
+                    }
+                    eventsListContainer.appendChild(eventItem);
                 });
             }
 
-            buttons.forEach(button => {
-                button.addEventListener('click', (e) => {
-                    buttons.forEach(btn => btn.classList.remove('active'));
-                    e.currentTarget.classList.add('active');
-                    const src = e.currentTarget.dataset.src;
-                    loadChannel(src);
-                });
-            });
+            const ppvs = [
+                { name: 'Cubs vs Marines', date: '2025-06-20', time: '14:20', logo: 'https://images.seeklogo.com/logo-png/25/2/mlb-logo-png_seeklogo-250501.png' },
+                { name: 'Yankees vs Orioles', date: '2025-06-20', time: '19:05', logo: 'https://images.seeklogo.com/logo-png/25/2/mlb-logo-png_seeklogo-250501.png' },
+                { name: '', date: '', time: '', logo: '' },
+                { name: '', date: '', time: '', logo: '' },
+                { name: 'Pacers vs Thunders', date: '2025-06-22', time: '20:00', logo: 'https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png' }
+            ];
 
-            const firstButton = buttons[0];
-            if (firstButton) {
-                firstButton.click();
+            function updatePPVCountdowns() {
+                const now = new Date();
+                const ppvListContainer = document.getElementById('ppv-list');
+                ppvListContainer.innerHTML = '';
+                ppvs.forEach(ppv => {
+                    if (!ppv.name) return;
+                    const eventDate = new Date(`${ppv.date}T${ppv.time}`);
+                    const timeDiff = eventDate.getTime() - now.getTime();
+                    const eventItem = document.createElement('div');
+                    eventItem.className = 'event-item';
+                    eventItem.innerHTML = `<img src="${ppv.logo}" alt="${ppv.name} Logo"><div class="event-details"><h3>${ppv.name}</h3><p>${new Date(eventDate).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p></div><div class="countdown-box"></div>`;
+                    const countdownBox = eventItem.querySelector('.countdown-box');
+                    if (timeDiff > 0) {
+                        const totalSeconds = Math.floor(timeDiff / 1000);
+                        const days = Math.floor(totalSeconds / (3600 * 24));
+                        const hoursRemaining = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+                        const minutesRemaining = Math.floor((totalSeconds % 3600) / 60);
+                        const secondsRemaining = totalSeconds % 60;
+                        let countdownText = '';
+                        if (days > 0) countdownText += `${days}d `;
+                        countdownText += `${String(hoursRemaining).padStart(2, '0')}:${String(minutesRemaining).padStart(2, '0')}:${String(secondsRemaining).padStart(2, '0')}`;
+                        countdownBox.textContent = countdownText;
+                    } else if (timeDiff > -10800000) {
+                        countdownBox.textContent = '¡En Vivo!';
+                        countdownBox.classList.add('finished');
+                    } else {
+                        countdownBox.textContent = '¡Finalizado!';
+                        countdownBox.classList.add('finished');
+                    }
+                    ppvListContainer.appendChild(eventItem);
+                });
             }
+
+            const banners = [
+                { image: 'banner_kq105.jpg', link: 'https://kq105.com' },
+                { image: 'banner_discord.jpg', link: 'https://discord.gg/5Xcs9v62jp' },
+                { image: 'banner_wwe_raw.jpg', link: null },
+                { image: 'banner_smackdown.jpg', link: null },
+                { image: 'banner_wwe_nxt.jpg', link: null }
+            ];
+            let currentBannerIndex = 0;
+            const bannerLink = document.getElementById('banner-link');
+            const bannerImage = document.getElementById('banner-image');
+
+            function updateBanner() {
+                bannerImage.style.opacity = '0';
+                setTimeout(() => {
+                    const currentBanner = banners[currentBannerIndex];
+                    bannerImage.src = currentBanner.image;
+                    if (currentBanner.link) {
+                        bannerLink.href = currentBanner.link;
+                        bannerLink.style.cursor = 'pointer';
+                    } else {
+                        bannerLink.removeAttribute('href');
+                        bannerLink.style.cursor = 'default';
+                    }
+                    currentBannerIndex = (currentBannerIndex + 1) % banners.length;
+                    bannerImage.style.opacity = '1';
+                }, 500);
+            }
+
+            updateWeeklyCountdowns();
+            setInterval(updateWeeklyCountdowns, 1000);
+            updatePPVCountdowns();
+            setInterval(updatePPVCountdowns, 1000);
+            updateBanner();
+            setInterval(updateBanner, 5000);
         });
     </script>
+
 </body>
 </html>
