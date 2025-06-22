@@ -20,7 +20,7 @@
         .nav-links a:hover { color: #00aaff; }
         .main-content-wrapper { display: flex; max-width: 1600px; margin: 30px auto; gap: 20px; padding: 0 20px; flex-direction: column; }
         @media (min-width: 992px) { .main-content-wrapper { flex-direction: row; align-items: flex-start; } }
-        #player-container { width: 100%; height: 250px; background-color: black; border-radius: 12px; box-shadow: 0 0 15px rgba(0,170,255,0.7); position: relative; }
+        #player-container { width: 100%; height: 255px; background-color: black; border-radius: 12px; box-shadow: 0 0 15px rgba(0,170,255,0.7); position: relative; }
         @media (min-width: 992px) { #player-container { flex-grow: 1; height: 600px; flex-basis: calc(100% - 370px); } }
         #player, .video-js { width: 100%; height: 100%; border-radius: 12px; }
         .channels-sidebar { width: 100%; }
@@ -111,8 +111,8 @@
         }
 
         const ppvs = [
-            { name: 'MLB: Yankees vs Orioles', date: '2025-06-22', time: '11:35', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Major_League_Baseball_logo.svg/1280px-Major_League_Baseball_logo.svg.png', streamUrl: 'https://mediaiptvproxy.fraelvillegasplay8.workers.dev/?url=http://my.blerdvn.com:83/live/BigBillV/4930586271/824036.ts', playerType: 'videojs' },
-            { name: 'prueba', date: '', time: '', logo: '', streamUrl: 'https://mediaiptvproxy.fraelvillegasplay8.workers.dev/?url=http://my.blerdvn.com:83/live/BigBillV/4930586271/824036.m3u8', playerType: 'clappr'},
+            { name: '', date: '', time: '', logo: '', streamUrl: '', playerType: 'videojs' },
+            { name: '', date: '', time: '', logo: '', streamUrl: '', playerType: 'clappr'},
             { name: 'NBA: Pacers vs Thunders', date: '2025-06-22', time: '20:00', logo: 'https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png', streamUrl: 'https://nflarcadia.xyz/bRtT37sn3w/Sx5q6YTgCs/11.m3u8', playerType: 'clappr' }
         ];
 
