@@ -26,8 +26,9 @@
         .channel-buttons button { background-color: #415a77; color: white; border: 2px solid #415a77; border-radius: 8px; padding: 10px 20px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: all 0.3s ease; }
         .channel-buttons button:hover { background-color: #00aaff; border-color: #00aaff; }
         .channel-buttons button.active { background-color: #00aaff; border-color: #fff; box-shadow: 0 0 10px rgba(0,170,255,0.7); }
-        #player-container { width: 100%; height: 655px; background-color: black; border-radius: 12px; box-shadow: 0 0 20px rgba(0,170,255,0.8); overflow: hidden; }
+        #player-container { width: 100%; height: 655px; background-color: black; border-radius: 12px; box-shadow: 0 0 20px rgba(0,170,255,0.8); overflow: hidden; display:flex; justify-content:center; align-items:center; }
         .video-js { width: 100%; height: 100%; }
+        .player-placeholder { font-size: 1.2rem; color: #888; text-align: center; }
         .news-card { background-color: rgba(0, 0, 0, 0.6); border-radius: 12px; box-shadow: 0 0 15px rgba(0, 170, 255, 0.5); padding: 20px; }
         .news-card .source { font-size: 0.8rem; color: #aaa; margin-bottom: 5px; text-transform: uppercase; }
         .news-card h3 { margin: 0 0 10px 0; font-size: 1.1rem; color: #00aaff; }
@@ -60,11 +61,12 @@
         <main class="main-content">
             <section class="player-section">
                 <div class="channel-buttons">
-                    <button class="channel-btn" data-src="https://stream.livenewsplay.com:9443/hls/foxnews/foxsd.m3u8">Fox News</button>
-                    <button class="channel-btn" data-src="http://198.16.100.186:8278/cbshd_glo/playlist.m3u8?tid=MA1A7337105773371057&ct=19254&tsum=89d432f03b1b50b68b7bace382dc13ac">CBS News</button>
+                    <button class="channel-btn" data-src="">Fox News</button>
+                    <button class="channel-btn" data-src="">CBS News</button>
                     <button class="channel-btn" data-src="https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8">Telemundo PR</button>
                 </div>
-                <div id="player-container"></div>
+                <div id="player-container">
+                    </div>
             </section>
         </main>
 
@@ -88,28 +90,33 @@
             let player = null;
 
             function loadChannel(sourceUrl) {
+                // Destruir el reproductor anterior si existe
                 if (player) {
                     player.dispose();
                     player = null;
                 }
                 playerContainer.innerHTML = '';
 
-                // Todos los canales usarán Video.js
-                const videoElement = document.createElement('video');
-                videoElement.id = 'video-player';
-                videoElement.className = 'video-js vjs-default-skin';
-                playerContainer.appendChild(videoElement);
-                
-                player = videojs('video-player', {
-                    controls: true,
-                    autoplay: true,
-                    preload: 'auto',
-                    sources: [{
-                        // Usamos el proxy para todas las URLs
-                        src: `/api/proxy?url=${encodeURIComponent(sourceUrl)}`,
-                        type: 'application/x-mpegURL'
-                    }]
-                });
+                // Si la URL no está vacía, crear el reproductor
+                if (sourceUrl) {
+                    const videoElement = document.createElement('video');
+                    videoElement.id = 'video-player';
+                    videoElement.className = 'video-js vjs-default-skin';
+                    playerContainer.appendChild(videoElement);
+                    
+                    player = videojs('video-player', {
+                        controls: true,
+                        autoplay: true,
+                        preload: 'auto',
+                        sources: [{
+                            src: sourceUrl, // Se carga la URL directamente
+                            type: 'application/x-mpegURL'
+                        }]
+                    });
+                } else {
+                    // Si la URL está vacía, mostrar un mensaje
+                    playerContainer.innerHTML = '<div class="player-placeholder">Canal no disponible. Por favor, selecciona otro.</div>';
+                }
             }
 
             buttons.forEach(button => {
@@ -121,9 +128,13 @@
                 });
             });
 
-            const firstButton = buttons[0];
-            if (firstButton) {
-                firstButton.click();
+            // Cargar el canal de Telemundo PR por defecto, ya que sabemos que funciona
+            const telemundoButton = document.querySelector('button[data-src*="telemundo"]');
+            if (telemundoButton) {
+                telemundoButton.click();
+            } else {
+                // Si por alguna razón no se encuentra, cargar el primer botón
+                buttons[0].click();
             }
         });
     </script>
