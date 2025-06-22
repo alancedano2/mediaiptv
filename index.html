@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>StreamVerse - Inicio</title>
     
-    <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
 
     <style>
         body { margin: 0; font-family: Arial, sans-serif; background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77); color: white; scroll-behavior: smooth; }
@@ -26,6 +27,7 @@
         .channel-buttons button:hover { background-color: #00aaff; border-color: #00aaff; }
         .channel-buttons button.active { background-color: #00aaff; border-color: #fff; box-shadow: 0 0 10px rgba(0,170,255,0.7); }
         #player-container { width: 100%; height: 655px; background-color: black; border-radius: 12px; box-shadow: 0 0 20px rgba(0,170,255,0.8); overflow: hidden; }
+        .video-js { width: 100%; height: 100%; }
         .news-card { background-color: rgba(0, 0, 0, 0.6); border-radius: 12px; box-shadow: 0 0 15px rgba(0, 170, 255, 0.5); padding: 20px; }
         .news-card .source { font-size: 0.8rem; color: #aaa; margin-bottom: 5px; text-transform: uppercase; }
         .news-card h3 { margin: 0 0 10px 0; font-size: 1.1rem; color: #00aaff; }
@@ -58,33 +60,23 @@
         <main class="main-content">
             <section class="player-section">
                 <div class="channel-buttons">
-                    <button class="channel-btn" data-src="/api/proxy?url=https://stream.livenewsplay.com:9443/hls/foxnews/foxsd.m3u8">Fox News</button>
-                    <button class="channel-btn" data-src="/api/proxy?url=http://198.16.100.186:8278/cbshd_glo/playlist.m3u8?tid=MA1A7337105773371057&ct=19254&tsum=89d432f03b1b50b68b7bace382dc13ac">CBS News</button>
-                    <button class="channel-btn" data-src="/api/proxy?url=https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8">Telemundo PR</button>
+                    <button class="channel-btn" data-src="https://stream.livenewsplay.com:9443/hls/foxnews/foxsd.m3u8">Fox News</button>
+                    <button class="channel-btn" data-src="http://198.16.100.186:8278/cbshd_glo/playlist.m3u8?tid=MA1A7337105773371057&ct=19254&tsum=89d432f03b1b50b68b7bace382dc13ac">CBS News</button>
+                    <button class="channel-btn" data-src="https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8">Telemundo PR</button>
                 </div>
-                <div id="player-container">
-                    </div>
+                <div id="player-container"></div>
             </section>
         </main>
 
         <aside class="sidebar-content">
             <div class="news-card">
-                <span class="source">Associated Press</span>
-                <h3>EE.UU. ataca 3 sitios nucleares iraníes</h3>
-                <p>El Presidente Donald Trump afirmó que el ejército de EE.UU. atacó tres sitios en Irán, incluyendo las instalaciones fortificadas de Fordow, para desmantelar el programa nuclear del país.</p>
-                <a href="https://apnews.com/article/israel-iran-war-nuclear-talks-geneva-news-06-21-2025-a7b0cdaba28b5817467ccf712d214579" target="_blank">Leer más...</a>
+                <span class="source">Associated Press</span><h3>EE.UU. ataca 3 sitios nucleares iraníes</h3><p>El Presidente Donald Trump afirmó que el ejército de EE.UU. atacó tres sitios en Irán, incluyendo las instalaciones fortificadas de Fordow, para desmantelar el programa nuclear del país.</p><a href="https://apnews.com/article/israel-iran-war-nuclear-talks-geneva-news-06-21-2025-a7b0cdaba28b5817467ccf712d214579" target="_blank">Leer más...</a>
             </div>
             <div class="news-card">
-                <span class="source">Fox News</span>
-                <h3>Trump anuncia ataque 'muy exitoso'</h3>
-                <p>El presidente declaró que se lanzó una "carga completa de BOMBAS" sobre el sitio de Fordow y que todos los aviones regresaron a salvo.</p>
-                <a href="https://www.foxnews.com/politics/trump-declares-very-successful-attack-irans-nuclear-program-us-forces-strike-3-key-sites" target="_blank">Leer más...</a>
+                <span class="source">Fox News</span><h3>Trump anuncia ataque 'muy exitoso'</h3><p>El presidente declaró que se lanzó una "carga completa de BOMBAS" sobre el sitio de Fordow y que todos los aviones regresaron a salvo.</p><a href="https://www.foxnews.com/politics/trump-declares-very-successful-attack-irans-nuclear-program-us-forces-strike-3-key-sites" target="_blank">Leer más...</a>
             </div>
              <div class="news-card">
-                <span class="source">Politico</span>
-                <h3>Intervención sigue a presión israelí</h3>
-                <p>La decisión de intervenir se produce después de que Israel solicitara a EE.UU. el uso de sus bombas "bunker-buster" GBU-57, capaces de destruir la planta de enriquecimiento.</p>
-                <a href="https://www.politico.com/news/2025/06/21/us-bombed-3-iranian-nuclear-sites-trump-says-00416403" target="_blank">Leer más...</a>
+                <span class="source">Politico</span><h3>Intervención sigue a presión israelí</h3><p>La decisión de intervenir se produce después de que Israel solicitara a EE.UU. el uso de sus bombas "bunker-buster" GBU-57, capaces de destruir la planta de enriquecimiento.</p><a href="https://www.politico.com/news/2025/06/21/us-bombed-3-iranian-nuclear-sites-trump-says-00416403" target="_blank">Leer más...</a>
             </div>
         </aside>
     </div>
@@ -97,16 +89,26 @@
 
             function loadChannel(sourceUrl) {
                 if (player) {
-                    player.destroy();
+                    player.dispose();
                     player = null;
                 }
                 playerContainer.innerHTML = '';
-                player = new Clappr.Player({
-                    parent: playerContainer,
-                    source: sourceUrl,
-                    width: '100%',
-                    height: '100%',
-                    autoPlay: true,
+
+                // Todos los canales usarán Video.js
+                const videoElement = document.createElement('video');
+                videoElement.id = 'video-player';
+                videoElement.className = 'video-js vjs-default-skin';
+                playerContainer.appendChild(videoElement);
+                
+                player = videojs('video-player', {
+                    controls: true,
+                    autoplay: true,
+                    preload: 'auto',
+                    sources: [{
+                        // Usamos el proxy para todas las URLs
+                        src: `/api/proxy?url=${encodeURIComponent(sourceUrl)}`,
+                        type: 'application/x-mpegURL'
+                    }]
                 });
             }
 
