@@ -1,194 +1,158 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>StreamVerse - PPV en Vivo</title>
-
-  <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
-  <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
-  <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
-
-  <style>
-    html, body { height: 100%; margin: 0; padding: 0; background: #0d1b2a; color: white; font-family: Arial, sans-serif; }
-    nav { background-color: rgba(0, 0, 0, 0.7); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 999; }
-    nav img { height: 40px; }
-    .nav-links { display: flex; gap: 20px; }
-    .nav-links a { color: white; text-decoration: none; font-weight: bold; }
-    .nav-links a:hover { color: #00aaff; }
-
-    .main-content-wrapper { display: flex; flex-wrap: wrap; gap: 20px; padding: 20px; max-width: 1400px; margin: auto; }
-    #player-container { flex: 2; background: black; border-radius: 12px; box-shadow: 0 0 15px rgba(0,170,255,0.7); height: 500px; }
-    #player, .video-js { width: 100%; height: 100%; border-radius: 12px; }
-
-    .channels-sidebar { flex: 1; min-width: 300px; }
-    .events-box { background-color: rgba(0,0,0,0.5); border-radius: 12px; padding: 15px; height: 500px; overflow-y: auto; }
-    .event-item { display: flex; align-items: center; background: rgba(0,0,0,0.6); border-radius: 10px; margin-bottom: 15px; padding: 10px; }
-    .event-item img { width: 50px; height: 50px; margin-right: 15px; object-fit: contain; border-radius: 8px; }
-    .event-details h3 { margin: 0 0 5px 0; font-size: 1rem; }
-    .event-details p { margin: 0; font-size: 0.8rem; color: #ccc; }
-    .event-actions { margin-left: auto; display: flex; flex-direction: column; gap: 5px; align-items: center; }
-    .event-actions button { background: linear-gradient(90deg, #00aaff, #0077cc); border: none; color: white; border-radius: 8px; padding: 6px 12px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
-    .countdown-box { font-size: 0.8rem; padding: 4px 8px; border-radius: 5px; color: white; background: #00aaff; }
-    .countdown-box.finished { background: gray; }
-    .countdown-box.live { background: red; animation: pulse 1.5s infinite; }
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.7); }
-      70% { box-shadow: 0 0 0 10px rgba(255, 77, 77, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0); }
-    }
-    .player-placeholder {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      color: #ccc;
-      font-size: 1.2rem;
-      text-align: center;
-      padding: 20px;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>StreamVerse - PPV en Vivo</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+    
+    <style>
+        html, body { height: 100%; width: 100%; margin: 0; padding: 0; overflow-x: hidden; }
+        body { font-family: Arial, sans-serif; background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77); color: white; scroll-behavior: smooth; min-height: 100vh; }
+        nav { background-color: rgba(0, 0, 0, 0.7); padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 5px rgba(0,0,0,0.5); position: sticky; top: 0; z-index: 1000; width: 100%; box-sizing: border-box; }
+        nav img { height: 40px; flex-shrink: 0; }
+        .nav-links { display: flex; gap: 25px; flex-wrap: wrap; justify-content: flex-end; align-items: center; }
+        .nav-links a { color: white; text-decoration: none; font-weight: bold; font-size: 1rem; transition: color 0.3s; cursor: pointer; padding: 5px 0; white-space: nowrap; }
+        .nav-links a[href="/"] { color: #00aaff; border-bottom: 2px solid #00aaff; }
+        .nav-links a:hover { color: #00aaff; }
+        .main-content-wrapper { display: flex; max-width: 1600px; margin: 30px auto; gap: 20px; padding: 0 20px; flex-direction: column; }
+        @media (min-width: 992px) { .main-content-wrapper { flex-direction: row; align-items: flex-start; } }
+        #player-container { width: 100%; height: 255px; background-color: black; border-radius: 12px; box-shadow: 0 0 15px rgba(0,170,255,0.7); position: relative; }
+        @media (min-width: 992px) { #player-container { flex-grow: 1; height: 600px; flex-basis: calc(100% - 370px); } }
+        #player, .video-js { width: 100%; height: 100%; border-radius: 12px; }
+        .channels-sidebar { width: 100%; }
+        @media (min-width: 992px) { .channels-sidebar { width: 350px; min-width: 350px; } }
+        .events-box { background-color: rgba(0, 0, 0, 0.5); border-radius: 12px; padding: 15px; height: 600px; overflow-y: auto; }
+        @media (max-width: 991px) { .events-box { max-height: 70vh; height: auto; } }
+        .events-box h2 { text-align: center; color: #00aaff; margin-top: 0; margin-bottom: 15px; font-size: 1.3rem; }
+        .event-item { display: flex; align-items: center; margin-bottom: 15px; background-color: rgba(0, 0, 0, 0.6); padding: 10px; border-radius: 10px; }
+        .event-item:last-child { margin-bottom: 0; }
+        .event-item img { width: 50px; height: 50px; margin-right: 15px; border-radius: 8px; object-fit: contain; flex-shrink: 0; }
+        .event-details { flex-grow: 1; overflow: hidden; }
+        /* --- CSS CORREGIDO AQUÍ --- */
+        .event-details h3 {
+            margin: 0 0 5px 0;
+            font-size: 1rem;
+            color: #fff;
+            white-space: normal; /* Permite que el texto salte a la siguiente línea */
+            overflow-wrap: break-word; /* Asegura que palabras muy largas no se salgan del contenedor */
+        }
+        .event-details p { margin: 0; font-size: 0.8rem; color: #ccc; }
+        .event-actions { display: flex; flex-direction: column; align-items: center; gap: 5px; margin-left: 10px; }
+        .event-actions button { padding: 8px 12px; font-size: 0.8rem; font-weight: bold; color: #ffffff; background: linear-gradient(90deg, #00aaff, #0077cc); border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; }
+        .event-actions button:hover { transform: scale(1.05); }
+        .countdown-box { background-color: rgba(0, 170, 255, 0.2); color: #00aaff; padding: 4px 8px; border-radius: 5px; font-size: 0.9rem; font-weight: bold; text-align: center; white-space: nowrap; }
+        .countdown-box.finished { background-color: #5a6268; color: #ccc; }
+        .countdown-box.live { background-color: #ff4d4d; color: white; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(255, 77, 77, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0); } }
+        .player-placeholder { display:flex; align-items:center; justify-content:center; height:100%; color: #ccc; font-size: 1.2rem; text-align:center; padding: 20px; }
+    </style>
 </head>
 <body>
 
-  <nav>
-    <a href="/"><img src="logo.png" alt="Logo" /></a>
-    <div class="nav-links">
-      <a href="/">Inicio</a>
-      <a href="/peliculas.html">Películas</a>
-      <a href="/repeticiones.html">Repeticiones</a>
-      <a href="/f1zone.html">F1</a>
-      <a href="/noticias.html">Noticias</a>
-      <a href="/tv.html">TV</a>
+    <nav>
+        <a href="/"><img src="logo.png" alt="Logo"></a>
+        <div class="nav-links">
+            <a href="/">Inicio</a>
+            <a href="/peliculas.html">Zona de Películas</a>
+            <a href="/repeticiones.html">Repeticiones</a>
+            <a href="https://mediaformulaiptv.vercel.app/f1zone.html">F1</a>
+            <a href="/noticias.html">Noticias</a>
+            <a href="/tv.html">TV</a>
+        </div>
+    </nav>
+
+    <div class="main-content-wrapper">
+        <div id="player-container">
+            <div id="player"></div>
+        </div>
+        <div class="channels-sidebar">
+            <div class="events-box">
+                <h2>Próximos PPV</h2>
+                <div id="ppv-list"></div>
+            </div>
+        </div>
     </div>
-  </nav>
 
-  <div class="main-content-wrapper">
-    <div id="player-container">
-      <div id="player"></div>
-    </div>
-    <div class="channels-sidebar">
-      <div class="events-box">
-        <h2>Próximos PPV</h2>
-        <div id="ppv-list"></div>
-      </div>
-    </div>
-  </div>
+    <script>
+        let currentPlayer = null;
 
-  <script>
-    let currentPlayer = null;
-
-    function loadPlayer(playerType, sourceUrl) {
-      if (currentPlayer) {
-        if (typeof currentPlayer.dispose === 'function') currentPlayer.dispose();
-        else if (typeof currentPlayer.destroy === 'function') currentPlayer.destroy();
-        currentPlayer = null;
-      }
-
-      const playerContainer = document.getElementById('player');
-      playerContainer.innerHTML = '';
-
-      if (!sourceUrl) {
-        playerContainer.innerHTML = `<div class="player-placeholder">Seleccione un PPV de la lista para reproducir</div>`;
-        return;
-      }
-
-      const finalUrl = sourceUrl;
-
-      if (playerType === 'videojs') {
-        const videoElement = document.createElement('video');
-        videoElement.id = 'video-js-player';
-        videoElement.className = 'video-js vjs-default-skin';
-        playerContainer.appendChild(videoElement);
-
-        currentPlayer = videojs('video-js-player', {
-          controls: true,
-          autoplay: true,
-          preload: 'auto',
-          html5: {
-            vhs: {
-              withCredentials: false,
-              overrideNative: true,
-              maxRetries: 5,
-              retryDelay: 2000
+        function loadPlayer(playerType, sourceUrl) {
+            if (currentPlayer) {
+                if (typeof currentPlayer.dispose === 'function') { currentPlayer.dispose(); }
+                else if (typeof currentPlayer.destroy === 'function') { currentPlayer.destroy(); }
+                currentPlayer = null;
             }
-          },
-          sources: [{ src: finalUrl, type: 'application/x-mpegURL' }]
-        });
+            
+            const playerContainer = document.getElementById('player');
+            playerContainer.innerHTML = '';
 
-        currentPlayer.on('error', () => {
-          console.warn("Error Video.js");
-          playerContainer.innerHTML = `<div class="player-placeholder">⚠️ Error al cargar el stream.</div>`;
-        });
+            if (!sourceUrl) {
+                playerContainer.innerHTML = `<div class="player-placeholder">Seleccione un PPV de la lista para reproducir</div>`;
+                return;
+            }
+            
+            const finalUrl = sourceUrl;
 
-      } else if (playerType === 'clappr') {
-        currentPlayer = new Clappr.Player({
-          parent: playerContainer,
-          source: finalUrl,
-          width: '100%',
-          height: '100%',
-          autoPlay: true,
-        });
-      }
-    }
+            if (playerType === 'videojs') {
+                const videoElement = document.createElement('video');
+                videoElement.id = 'video-js-player';
+                videoElement.className = 'video-js vjs-default-skin';
+                playerContainer.appendChild(videoElement);
+                
+                currentPlayer = videojs('video-js-player', {
+                    controls: true, autoplay: true, preload: 'auto',
+                    sources: [{ src: finalUrl, type: 'application/x-mpegURL' }]
+                });
 
-    // Aquí colocas tus eventos PPV
-    const ppvs = [
-      {
-        name: 'Prueba PPV',
-        date: '2025-06-23',
-        time: '20:00',
-        logo: 'https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png',
-        streamUrl: 'https://mediaiptvproxy.fraelvillegasplay8.workers.dev/?url=https://3148-209-91-239-6.ngrok-free.app/LiveApp/streams/P3fRPAmOVbZLVtCu47502729983636.m3u8',
-        playerType: 'videojs'
-      }
-    ];
-
-    function updatePPVCountdowns() {
-      const now = new Date();
-      const ppvListContainer = document.getElementById('ppv-list');
-      ppvListContainer.innerHTML = '';
-      ppvs.forEach(ppv => {
-        const eventDate = new Date(`${ppv.date}T${ppv.time}`);
-        const timeDiff = eventDate.getTime() - now.getTime();
-        const eventItem = document.createElement('div');
-        eventItem.className = 'event-item';
-        eventItem.innerHTML = `
-          <img src="${ppv.logo}" alt="${ppv.name}">
-          <div class="event-details">
-            <h3>${ppv.name}</h3>
-            <p>${eventDate.toLocaleDateString('es-ES', { weekday: 'long', month: 'long', day: 'numeric' })}</p>
-          </div>
-          <div class="event-actions">
-            <button class="play-btn">Reproducir</button>
-            <div class="countdown-box"></div>
-          </div>
-        `;
-        eventItem.querySelector('.play-btn').addEventListener('click', () => {
-          loadPlayer(ppv.playerType, ppv.streamUrl);
-        });
-        const countdownBox = eventItem.querySelector('.countdown-box');
-        if (timeDiff < -14400000) {
-          countdownBox.textContent = 'Finalizado';
-          countdownBox.classList.add('finished');
-        } else if (timeDiff <= 0) {
-          countdownBox.textContent = 'En Vivo';
-          countdownBox.classList.add('live');
-        } else {
-          const hours = Math.floor(timeDiff / 3600000);
-          const minutes = Math.floor((timeDiff % 3600000) / 60000);
-          countdownBox.textContent = `${hours}h ${minutes}m`;
+            } else if (playerType === 'clappr') {
+                currentPlayer = new Clappr.Player({
+                    parent: playerContainer, source: finalUrl,
+                    width: '100%', height: '100%', autoPlay: true,
+                });
+            }
         }
-        ppvListContainer.appendChild(eventItem);
-      });
-    }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      loadPlayer(null, null);
-      updatePPVCountdowns();
-      setInterval(updatePPVCountdowns, 60000);
-    });
-  </script>
+        const ppvs = [
+            { name: 'NBA: Pacers vs Thunders', date: '2025-06-22', time: '20:00', logo: 'https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png', streamUrl: 'https://mediaiptvproxy.fraelvillegasplay8.workers.dev/?url=https://3148-209-91-239-6.ngrok-free.app/LiveApp/streams/P3fRPAmOVbZLVtCu47502729983636.m3u8', playerType: 'clappr' }
+        ];
 
+        function updatePPVCountdowns() {
+            const now = new Date();
+            const ppvListContainer = document.getElementById('ppv-list');
+            ppvListContainer.innerHTML = '';
+            ppvs.forEach(ppv => {
+                if (!ppv.name) return;
+                const eventDate = new Date(`${ppv.date}T${ppv.time}`);
+                const timeDiff = eventDate.getTime() - now.getTime();
+                const eventItem = document.createElement('div');
+                eventItem.className = 'event-item';
+                eventItem.innerHTML = `<img src="${ppv.logo}" alt="${ppv.name} Logo"><div class="event-details"><h3>${ppv.name}</h3><p>${eventDate.toLocaleDateString('es-ES', { weekday: 'long', month: 'long', day: 'numeric' })}</p></div><div class="event-actions"><button class="play-btn">Reproducir</button><div class="countdown-box"></div></div>`;
+                const playButton = eventItem.querySelector('.play-btn');
+                playButton.addEventListener('click', () => loadPlayer(ppv.playerType, ppv.streamUrl));
+                const countdownBox = eventItem.querySelector('.countdown-box');
+                if (timeDiff < -14400000) { countdownBox.textContent = 'Finalizado'; countdownBox.classList.add('finished'); }
+                else if (timeDiff <= 0) { countdownBox.textContent = 'En Vivo'; countdownBox.classList.add('live'); }
+                else {
+                    const days = Math.floor(timeDiff / 86400000);
+                    const hours = Math.floor((timeDiff % 86400000) / 3600000);
+                    const minutes = Math.floor((timeDiff % 3600000) / 60000);
+                    let text = '';
+                    if (days > 0) text += `${days}d `;
+                    text += `${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m`;
+                    countdownBox.textContent = text;
+                }
+                ppvListContainer.appendChild(eventItem);
+            });
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPlayer(null, null);
+            updatePPVCountdowns();
+            setInterval(updatePPVCountdowns, 60000);
+        });
+    </script>
 </body>
 </html>
