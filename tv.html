@@ -32,13 +32,12 @@
         .event-item:last-child { margin-bottom: 0; }
         .event-item img { width: 50px; height: 50px; margin-right: 15px; border-radius: 8px; object-fit: contain; flex-shrink: 0; }
         .event-details { flex-grow: 1; overflow: hidden; }
-        /* --- CSS CORREGIDO AQUÍ --- */
         .event-details h3 {
             margin: 0 0 5px 0;
             font-size: 1rem;
             color: #fff;
-            white-space: normal; /* Permite que el texto salte a la siguiente línea */
-            overflow-wrap: break-word; /* Asegura que palabras muy largas no se salgan del contenedor */
+            white-space: normal;
+            overflow-wrap: break-word;
         }
         .event-details p { margin: 0; font-size: 0.8rem; color: #ccc; }
         .event-actions { display: flex; flex-direction: column; align-items: center; gap: 5px; margin-left: 10px; }
@@ -86,7 +85,7 @@
                 else if (typeof currentPlayer.destroy === 'function') { currentPlayer.destroy(); }
                 currentPlayer = null;
             }
-            
+
             const playerContainer = document.getElementById('player');
             playerContainer.innerHTML = '';
 
@@ -94,7 +93,7 @@
                 playerContainer.innerHTML = `<div class="player-placeholder">Seleccione un PPV de la lista para reproducir</div>`;
                 return;
             }
-            
+
             const finalUrl = sourceUrl;
 
             if (playerType === 'videojs') {
@@ -102,22 +101,52 @@
                 videoElement.id = 'video-js-player';
                 videoElement.className = 'video-js vjs-default-skin';
                 playerContainer.appendChild(videoElement);
-                
+
                 currentPlayer = videojs('video-js-player', {
-                    controls: true, autoplay: true, preload: 'auto',
-                    sources: [{ src: finalUrl, type: 'application/x-mpegURL' }]
+                    controls: true,
+                    autoplay: true,
+                    preload: 'auto',
+                    fluid: true,
+                    html5: {
+                        vhs: {
+                            withCredentials: false,
+                            overrideNative: true,
+                            maxRetries: 5,
+                            retryDelay: 2000
+                        }
+                    },
+                    sources: [{
+                        src: finalUrl,
+                        type: 'application/x-mpegURL'
+                    }]
+                });
+
+                currentPlayer.on('error', () => {
+                    const err = currentPlayer.error();
+                    console.warn("Video.js Error:", err);
+                    playerContainer.innerHTML = `<div class="player-placeholder">⚠️ Error al cargar el stream. Intenta nuevamente más tarde.</div>`;
                 });
 
             } else if (playerType === 'clappr') {
                 currentPlayer = new Clappr.Player({
-                    parent: playerContainer, source: finalUrl,
-                    width: '100%', height: '100%', autoPlay: true,
+                    parent: playerContainer,
+                    source: finalUrl,
+                    width: '100%',
+                    height: '100%',
+                    autoPlay: true
                 });
             }
         }
 
         const ppvs = [
-            { name: 'Prueba 1', date: '2025-06-22', time: '20:00', logo: 'https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png', streamUrl: 'https://mediaiptvproxy.fraelvillegasplay8.workers.dev/?url=https://3148-209-91-239-6.ngrok-free.app/LiveApp/streams/P3fRPAmOVbZLVtCu47502729983636.m3u8', playerType: 'videojs' }
+            {
+                name: 'Prueba 1',
+                date: '2025-06-22',
+                time: '20:00',
+                logo: 'https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png',
+                streamUrl: 'https://mediaiptvproxy.fraelvillegasplay8.workers.dev/?url=https://3148-209-91-239-6.ngrok-free.app/LiveApp/streams/P3fRPAmOVbZLVtCu47502729983636.m3u8',
+                playerType: 'videojs'
+            }
         ];
 
         function updatePPVCountdowns() {
@@ -148,6 +177,7 @@
                 ppvListContainer.appendChild(eventItem);
             });
         }
+
         document.addEventListener('DOMContentLoaded', () => {
             loadPlayer(null, null);
             updatePPVCountdowns();
