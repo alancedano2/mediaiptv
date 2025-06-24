@@ -93,7 +93,7 @@
         return;
       }
 
-      const finalUrl = sourceUrl + (sourceUrl.includes('?') ? '&' : '?') + 'nocache=' + Date.now();
+      const finalUrl = sourceUrl;
 
       if (playerType === 'videojs') {
         const videoElement = document.createElement('video');
