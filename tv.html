@@ -32,13 +32,12 @@
         .event-item:last-child { margin-bottom: 0; }
         .event-item img { width: 50px; height: 50px; margin-right: 15px; border-radius: 8px; object-fit: contain; flex-shrink: 0; }
         .event-details { flex-grow: 1; overflow: hidden; }
-        /* --- CSS CORREGIDO AQUÍ --- */
         .event-details h3 {
             margin: 0 0 5px 0;
             font-size: 1rem;
             color: #fff;
-            white-space: normal; /* Permite que el texto salte a la siguiente línea */
-            overflow-wrap: break-word; /* Asegura que palabras muy largas no se salgan del contenedor */
+            white-space: normal;
+            overflow-wrap: break-word;
         }
         .event-details p { margin: 0; font-size: 0.8rem; color: #ccc; }
         .event-actions { display: flex; flex-direction: column; align-items: center; gap: 5px; margin-left: 10px; }
@@ -117,7 +116,55 @@
         }
 
         const ppvs = [
-            { name: 'NBA: Pacers vs Thunders', date: '2025-06-22', time: '20:00', logo: 'https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png', streamUrl: 'https://mediaiptvproxy.fraelvillegasplay8.workers.dev/?url=https://3148-209-91-239-6.ngrok-free.app/LiveApp/streams/P3fRPAmOVbZLVtCu47502729983636.m3u8', playerType: 'videojs' }
+            // Evento original
+            { name: 'NBA: Pacers vs Thunders', date: '2025-06-22', time: '20:00', logo: 'https://cdn.freebiesupply.com/images/large/2x/nba-logo-transparent.png', streamUrl: 'https://mediaiptvproxy.fraelvillegasplay8.workers.dev/?url=https://3148-209-91-239-6.ngrok-free.app/LiveApp/streams/P3fRPAmOVbZLVtCu47502729983636.m3u8', playerType: 'videojs' },
+            
+            // --- INICIO DE PPV DE EJEMPLO (PARA EDITAR) ---
+            // Simplemente cambia los valores de cada línea.
+            // Para el logo, puedes usar un enlace a cualquier imagen. Un buen placeholder es: https://via.placeholder.com/50x50.png?text=Logo
+            // Si no tienes un streamUrl, déjalo vacío ('') y el botón no romperá la página.
+            
+            { 
+                name: 'MLB: Yankees vs Reds', 
+                date: '2025-06-24', 
+                time: '19:10', 
+                logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Major_League_Baseball_logo.svg/1280px-Major_League_Baseball_logo.svg.png', 
+                streamUrl: 'https://mediaiptvproxy.fraelvillegasplay8.workers.dev/?url=https://3148-209-91-239-6.ngrok-free.app/LiveApp/streams/P3fRPAmOVbZLVtCu47502729983636.m3u8', 
+                playerType: 'videojs' 
+            },
+            { 
+                name: 'BSN: Leones vs Gigantes', 
+                date: '2025-06-24', 
+                time: '20:00', 
+                logo: 'https://www.bsnpr.com/wp-content/uploads/2018/09/BSN_LogoPack_DarkFull.png', 
+                streamUrl: 'https://mediaiptvproxy.fraelvillegasplay8.workers.dev/?url=https://3148-209-91-239-6.ngrok-free.app/LiveApp/streams/4Rg5KhuVlJQQfqeN65503110396105.m3u8', 
+                playerType: 'videojs' 
+            },
+            { 
+                name: 'Prueba 1', 
+                date: 'AAAA-MM-DD', 
+                time: 'HH:MM', 
+                logo: 'https://via.placeholder.com/50x50.png?text=Logo', 
+                streamUrl: 'https://mediaiptvproxy.fraelvillegasplay8.workers.dev/?url=http://my.blerdvn.com:83/live/BigBillV/4930586271/824044.ts', 
+                playerType: 'videojs' // Ejemplo con otro reproductor
+            },
+            { 
+                name: 'Nombre del Evento 4', 
+                date: 'AAAA-MM-DD', 
+                time: 'HH:MM', 
+                logo: 'https://via.placeholder.com/50x50.png?text=Logo', 
+                streamUrl: '', 
+                playerType: 'videojs' 
+            },
+            { 
+                name: 'Nombre del Evento 5', 
+                date: 'AAAA-MM-DD', 
+                time: 'HH:MM', 
+                logo: 'https://via.placeholder.com/50x50.png?text=Logo', 
+                streamUrl: '', 
+                playerType: 'videojs' 
+            }
+            // --- FIN DE PPV DE EJEMPLO ---
         ];
 
         function updatePPVCountdowns() {
@@ -125,25 +172,44 @@
             const ppvListContainer = document.getElementById('ppv-list');
             ppvListContainer.innerHTML = '';
             ppvs.forEach(ppv => {
-                if (!ppv.name) return;
+                if (!ppv.name || !ppv.date || !ppv.time) return; // No muestra items si no tienen datos básicos
                 const eventDate = new Date(`${ppv.date}T${ppv.time}`);
-                const timeDiff = eventDate.getTime() - now.getTime();
+                // Si la fecha no es válida, no continuamos con este item
+                if (isNaN(eventDate.getTime())) {
+                    eventDate = null; 
+                }
+
                 const eventItem = document.createElement('div');
                 eventItem.className = 'event-item';
-                eventItem.innerHTML = `<img src="${ppv.logo}" alt="${ppv.name} Logo"><div class="event-details"><h3>${ppv.name}</h3><p>${eventDate.toLocaleDateString('es-ES', { weekday: 'long', month: 'long', day: 'numeric' })}</p></div><div class="event-actions"><button class="play-btn">Reproducir</button><div class="countdown-box"></div></div>`;
+
+                // Usamos la fecha formateada solo si es válida
+                const formattedDate = eventDate ? eventDate.toLocaleDateString('es-ES', { weekday: 'long', month: 'long', day: 'numeric' }) : 'Fecha no definida';
+
+                eventItem.innerHTML = `<img src="${ppv.logo}" alt="${ppv.name} Logo"><div class="event-details"><h3>${ppv.name}</h3><p>${formattedDate}</p></div><div class="event-actions"><button class="play-btn">Reproducir</button><div class="countdown-box"></div></div>`;
                 const playButton = eventItem.querySelector('.play-btn');
                 playButton.addEventListener('click', () => loadPlayer(ppv.playerType, ppv.streamUrl));
                 const countdownBox = eventItem.querySelector('.countdown-box');
-                if (timeDiff < -14400000) { countdownBox.textContent = 'Finalizado'; countdownBox.classList.add('finished'); }
-                else if (timeDiff <= 0) { countdownBox.textContent = 'En Vivo'; countdownBox.classList.add('live'); }
-                else {
-                    const days = Math.floor(timeDiff / 86400000);
-                    const hours = Math.floor((timeDiff % 86400000) / 3600000);
-                    const minutes = Math.floor((timeDiff % 3600000) / 60000);
-                    let text = '';
-                    if (days > 0) text += `${days}d `;
-                    text += `${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m`;
-                    countdownBox.textContent = text;
+                
+                if (eventDate) {
+                    const timeDiff = eventDate.getTime() - now.getTime();
+                    if (timeDiff < -14400000) { // Finalizado hace más de 4 horas
+                        countdownBox.textContent = 'Finalizado'; 
+                        countdownBox.classList.add('finished'); 
+                    } else if (timeDiff <= 0) { // Ya empezó y hasta 4 horas después
+                        countdownBox.textContent = 'En Vivo'; 
+                        countdownBox.classList.add('live'); 
+                    } else { // Próximamente
+                        const days = Math.floor(timeDiff / 86400000);
+                        const hours = Math.floor((timeDiff % 86400000) / 3600000);
+                        const minutes = Math.floor((timeDiff % 3600000) / 60000);
+                        let text = '';
+                        if (days > 0) text += `${days}d `;
+                        text += `${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m`;
+                        countdownBox.textContent = text;
+                    }
+                } else {
+                    // Si la fecha no es válida, mostramos un texto por defecto
+                    countdownBox.textContent = 'Próximamente';
                 }
                 ppvListContainer.appendChild(eventItem);
             });
