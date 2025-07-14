@@ -8,14 +8,11 @@
   <!-- Video.js CSS -->
   <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
 
-  <!-- Fuentes Google -->
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
 
   <style>
-    /* Reset básico */
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       font-family: 'Montserrat', sans-serif;
@@ -45,7 +42,6 @@
       justify-content: center;
     }
 
-    /* Lista canales */
     #channelList {
       flex: 1 1 280px;
       max-height: 500px;
@@ -61,10 +57,12 @@
     #channelList::-webkit-scrollbar {
       width: 8px;
     }
+
     #channelList::-webkit-scrollbar-track {
       background: #222;
       border-radius: 8px;
     }
+
     #channelList::-webkit-scrollbar-thumb {
       background-color: #00aaff;
       border-radius: 8px;
@@ -88,13 +86,13 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
     #channelList button:hover,
     #channelList button.active {
       background: #00aaff;
       color: #121212;
     }
 
-    /* Contenedor del video */
     #videoContainer {
       flex: 2 1 640px;
       max-width: 640px;
@@ -105,14 +103,12 @@
       background: #000;
     }
 
-    /* Video.js ajustes */
     .video-js {
       width: 100% !important;
       height: auto !important;
       aspect-ratio: 16 / 9;
     }
 
-    /* Mensajes */
     #loadingMessage {
       text-align: center;
       font-size: 1.1rem;
@@ -137,10 +133,7 @@
   <h1>IPTV Player StreamVerse</h1>
 
   <div id="container">
-    <div id="channelList">
-      Cargando canales...
-    </div>
-
+    <div id="channelList">Cargando canales...</div>
     <div id="videoContainer">
       <video
         id="video"
@@ -166,6 +159,17 @@
 
     const loadingMessage = document.getElementById('loadingMessage');
 
+    // URL base del proxy Cloudflared
+    const PROXY = "https://platform-tray-individual-bulgarian.trycloudflare.com/proxy?url=";
+
+    // Reescribe URLs HTTP para pasar por el proxy HTTPS
+    function proxify(url) {
+      if (url.startsWith("http://")) {
+        return PROXY + encodeURIComponent(url);
+      }
+      return url;
+    }
+
     async function fetchM3U(url) {
       loadingMessage.textContent = 'Descargando lista M3U...';
       const res = await fetch(url);
@@ -183,7 +187,7 @@
           const name = lines[i].split(',')[1]?.trim() || 'Sin nombre';
           const url = lines[i + 1]?.trim();
           if (url && !url.startsWith('#')) {
-            channels.push({ name, url });
+            channels.push({ name, url: proxify(url) });
           }
         }
       }
