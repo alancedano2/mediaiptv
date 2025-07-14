@@ -2,69 +2,203 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>IPTV Player desde M3U remota</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IPTV Player StreamVerse</title>
+
+  <!-- Video.js CSS -->
   <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-  <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+
+  <!-- Fuentes Google -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
+
   <style>
-    #channelList {
-      max-height: 300px;
-      overflow-y: scroll;
-      border: 1px solid #ccc;
-      margin-bottom: 1em;
+    /* Reset básico */
+    * {
+      box-sizing: border-box;
     }
-    #channelList button {
-      display: block;
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      background: #121212;
+      color: #eee;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    h1 {
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #00aaff;
+      text-align: center;
+    }
+
+    #container {
+      display: flex;
+      flex-wrap: wrap;
+      max-width: 960px;
       width: 100%;
-      padding: 8px;
-      text-align: left;
-      border: none;
-      background: #eee;
-      margin-bottom: 2px;
-      cursor: pointer;
+      gap: 20px;
+      justify-content: center;
     }
-    #channelList button:hover {
-      background: #ddd;
+
+    /* Lista canales */
+    #channelList {
+      flex: 1 1 280px;
+      max-height: 500px;
+      overflow-y: auto;
+      background: #222;
+      border-radius: 8px;
+      padding: 10px;
+      box-shadow: 0 0 10px #00aaff50;
+      scrollbar-width: thin;
+      scrollbar-color: #00aaff #222;
+    }
+
+    #channelList::-webkit-scrollbar {
+      width: 8px;
+    }
+    #channelList::-webkit-scrollbar-track {
+      background: #222;
+      border-radius: 8px;
+    }
+    #channelList::-webkit-scrollbar-thumb {
+      background-color: #00aaff;
+      border-radius: 8px;
+      border: 2px solid #222;
+    }
+
+    #channelList button {
+      width: 100%;
+      background: #333;
+      color: #eee;
+      border: none;
+      padding: 12px 15px;
+      margin-bottom: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #channelList button:hover,
+    #channelList button.active {
+      background: #00aaff;
+      color: #121212;
+    }
+
+    /* Contenedor del video */
+    #videoContainer {
+      flex: 2 1 640px;
+      max-width: 640px;
+      width: 100%;
+      box-shadow: 0 0 20px #00aaff80;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    /* Video.js ajustes */
+    .video-js {
+      width: 100% !important;
+      height: auto !important;
+      aspect-ratio: 16 / 9;
+    }
+
+    /* Mensajes */
+    #loadingMessage {
+      text-align: center;
+      font-size: 1.1rem;
+      margin-top: 10px;
+      color: #00aaff;
+    }
+
+    @media (max-width: 700px) {
+      #container {
+        flex-direction: column;
+        align-items: center;
+      }
+      #channelList,
+      #videoContainer {
+        max-width: 100%;
+      }
     }
   </style>
 </head>
 <body>
 
-  <h2>IPTV Player - Lista remota M3U</h2>
-  <div id="channelList">Cargando canales...</div>
+  <h1>IPTV Player StreamVerse</h1>
 
-  <video id="video" class="video-js vjs-default-skin" controls width="640" height="360"></video>
+  <div id="container">
+    <div id="channelList">
+      Cargando canales...
+    </div>
+
+    <div id="videoContainer">
+      <video
+        id="video"
+        class="video-js vjs-default-skin"
+        controls
+        preload="auto"
+        playsinline
+        muted
+      ></video>
+      <div id="loadingMessage"></div>
+    </div>
+  </div>
+
+  <!-- Video.js y HLS.js -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
 
   <script>
     const video = document.getElementById('video');
     const player = videojs(video);
     let hls;
+    let currentActiveButton = null;
+
+    const loadingMessage = document.getElementById('loadingMessage');
 
     async function fetchM3U(url) {
+      loadingMessage.textContent = 'Descargando lista M3U...';
       const res = await fetch(url);
       if (!res.ok) throw new Error('Error al descargar lista M3U');
       const text = await res.text();
+      loadingMessage.textContent = '';
       return text;
     }
 
-    // Parsear lista M3U simple (extrae nombre y URL)
     function parseM3U(data) {
       const lines = data.split('\n');
       const channels = [];
       for (let i = 0; i < lines.length; i++) {
         if (lines[i].startsWith('#EXTINF')) {
-          // Extraer nombre después de la coma
           const name = lines[i].split(',')[1]?.trim() || 'Sin nombre';
-          const url = lines[i+1]?.trim();
+          const url = lines[i + 1]?.trim();
           if (url && !url.startsWith('#')) {
-            channels.push({name, url});
+            channels.push({ name, url });
           }
         }
       }
       return channels;
     }
 
-    function loadStream(url) {
+    function setActiveButton(btn) {
+      if (currentActiveButton) currentActiveButton.classList.remove('active');
+      currentActiveButton = btn;
+      btn.classList.add('active');
+    }
+
+    function loadStream(url, btn) {
+      loadingMessage.textContent = 'Cargando canal...';
+
       if (hls) {
         hls.destroy();
         hls = null;
@@ -74,15 +208,25 @@
         hls = new Hls();
         hls.loadSource(url);
         hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED, function() {
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          loadingMessage.textContent = '';
           video.play();
+        });
+        hls.on(Hls.Events.ERROR, (event, data) => {
+          loadingMessage.textContent = `Error en el canal: ${data.details || 'Desconocido'}`;
         });
       } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
         video.src = url;
-        video.play();
+        video.addEventListener('loadedmetadata', () => {
+          loadingMessage.textContent = '';
+          video.play();
+        });
       } else {
-        alert('Tu navegador no soporta HLS');
+        loadingMessage.textContent = '';
+        alert('Tu navegador no soporta reproducción HLS');
       }
+
+      setActiveButton(btn);
     }
 
     async function init() {
@@ -97,20 +241,22 @@
         channels.forEach((ch, i) => {
           const btn = document.createElement('button');
           btn.textContent = ch.name;
-          btn.onclick = () => loadStream(ch.url);
+          btn.title = ch.url;
+          btn.onclick = () => loadStream(ch.url, btn);
           listDiv.appendChild(btn);
         });
 
         if (channels.length > 0) {
-          loadStream(channels[0].url);
+          loadStream(channels[0].url, listDiv.firstChild);
+        } else {
+          listDiv.textContent = 'No se encontraron canales en la lista M3U.';
         }
-      } catch(e) {
+      } catch (e) {
         document.getElementById('channelList').textContent = 'Error cargando canales: ' + e.message;
       }
     }
 
     init();
   </script>
-
 </body>
 </html>
