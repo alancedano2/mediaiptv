@@ -2,143 +2,115 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AEW - Repeticiones</title>
+  <title>IPTV Player desde M3U remota</title>
+  <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
   <style>
-    body {
-      margin: 0; font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
-      color: white;
+    #channelList {
+      max-height: 300px;
+      overflow-y: scroll;
+      border: 1px solid #ccc;
+      margin-bottom: 1em;
     }
-
-    nav {
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 15px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    nav img {
-      height: 40px;
-    }
-
-    nav .nav-links a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1rem;
-      margin-left: 20px;
-      transition: color 0.3s;
-      cursor: pointer;
-    }
-
-    nav .nav-links a:hover {
-      color: #00aaff;
-    }
-
-    .container {
-      display: flex;
-      flex-direction: row;
-      max-width: 1200px;
-      margin: 40px auto;
-      gap: 20px;
-    }
-
-    .video-player {
-      flex: 3;
-      background-color: rgba(0,0,0,0.4);
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(0,170,255,0.3);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .video-player iframe {
+    #channelList button {
+      display: block;
       width: 100%;
-      aspect-ratio: 16 / 9;
-      border: none;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,170,255,0.7);
-    }
-
-    .playlist {
-      flex: 1;
-      background-color: rgba(0,0,0,0.4);
-      padding: 15px;
-      border-radius: 15px;
-      max-height: 100%;
-      overflow-y: auto;
-    }
-
-    .playlist h3 {
-      margin-top: 0;
-      margin-bottom: 15px;
-      text-align: center;
-    }
-
-    .playlist-item {
       padding: 8px;
-      margin-bottom: 8px;
-      border-radius: 8px;
-      background-color: rgba(255,255,255,0.1);
+      text-align: left;
+      border: none;
+      background: #eee;
+      margin-bottom: 2px;
       cursor: pointer;
-      transition: background-color 0.3s;
     }
-
-    .playlist-item:hover {
-      background-color: #00aaff;
-      color: black;
-    }
-
-    .playlist-item.active {
-      background-color: #0077cc;
-      color: white;
-      font-weight: bold;
+    #channelList button:hover {
+      background: #ddd;
     }
   </style>
 </head>
 <body>
 
-<nav>
-  <a href="/"><img src="logo.png" alt="Logo"></a>
-  <div class="nav-links">
-    <a href="/">Inicio</a>
-    <a href="/peliculas.html">Zona de Películas</a>
-    <a href="/repeticiones.html">Repeticiones</a>
-    <a href="https://mediaformulaiptv.vercel.app/f1zone.html">F1</a>
-    <a href="/noticias.html">Noticias</a>
-    <a href="/tv.html">TV</a>
-  </div>
-</nav>
+  <h2>IPTV Player - Lista remota M3U</h2>
+  <div id="channelList">Cargando canales...</div>
 
-<div class="container">
-  <div class="video-player">
-    <iframe id="videoFrame" src="https://example.com/aew" allowfullscreen></iframe>
-  </div>
+  <video id="video" class="video-js vjs-default-skin" controls width="640" height="360"></video>
 
-  <div class="playlist">
-    <h3>Lista de Repeticiones</h3>
-    <div id="playlistItems">
-      <div class="playlist-item active" onclick="loadVideo('https://example.com/aew')">
-        AEW Dynamite - Último episodio
-      </div>
-    </div>
-  </div>
-</div>
+  <script>
+    const video = document.getElementById('video');
+    const player = videojs(video);
+    let hls;
 
-<script>
-  function loadVideo(url) {
-    document.getElementById('videoFrame').src = url;
-    document.querySelectorAll('.playlist-item').forEach(el => el.classList.remove('active'));
-    event.target.classList.add('active');
-  }
-</script>
+    async function fetchM3U(url) {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('Error al descargar lista M3U');
+      const text = await res.text();
+      return text;
+    }
+
+    // Parsear lista M3U simple (extrae nombre y URL)
+    function parseM3U(data) {
+      const lines = data.split('\n');
+      const channels = [];
+      for (let i = 0; i < lines.length; i++) {
+        if (lines[i].startsWith('#EXTINF')) {
+          // Extraer nombre después de la coma
+          const name = lines[i].split(',')[1]?.trim() || 'Sin nombre';
+          const url = lines[i+1]?.trim();
+          if (url && !url.startsWith('#')) {
+            channels.push({name, url});
+          }
+        }
+      }
+      return channels;
+    }
+
+    function loadStream(url) {
+      if (hls) {
+        hls.destroy();
+        hls = null;
+      }
+
+      if (Hls.isSupported()) {
+        hls = new Hls();
+        hls.loadSource(url);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, function() {
+          video.play();
+        });
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = url;
+        video.play();
+      } else {
+        alert('Tu navegador no soporta HLS');
+      }
+    }
+
+    async function init() {
+      const url = 'https://raw.githubusercontent.com/alancedano2/mediaiptv/refs/heads/main/m3u4u-132699-650521-Playlist.m3u';
+      try {
+        const m3uText = await fetchM3U(url);
+        const channels = parseM3U(m3uText);
+
+        const listDiv = document.getElementById('channelList');
+        listDiv.innerHTML = '';
+
+        channels.forEach((ch, i) => {
+          const btn = document.createElement('button');
+          btn.textContent = ch.name;
+          btn.onclick = () => loadStream(ch.url);
+          listDiv.appendChild(btn);
+        });
+
+        if (channels.length > 0) {
+          loadStream(channels[0].url);
+        }
+      } catch(e) {
+        document.getElementById('channelList').textContent = 'Error cargando canales: ' + e.message;
+      }
+    }
+
+    init();
+  </script>
 
 </body>
 </html>
