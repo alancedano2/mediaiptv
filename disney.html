@@ -1,81 +1,120 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Disney+</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
-      color: white;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reproductor IPTV</title>
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-    nav {
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 15px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
+        .player-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+        }
 
-    nav img {
-      height: 40px;
-    }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-    nav .nav-links a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1rem;
-      margin-left: 20px;
-      transition: color 0.3s;
-      cursor: pointer;
-    }
-
-    nav .nav-links a:hover {
-      color: #00aaff;
-    }
-
-    .content {
-      text-align: center;
-      padding: 80px 20px;
-    }
-
-    .content h1 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-    }
-
-    .content p {
-      font-size: 1.2rem;
-      color: #d1d1d1;
-    }
-  </style>
+        /* Estilo para el reproductor de Video.js */
+        .video-js {
+            width: 100% !important;
+            height: auto !important;
+        }
+    </style>
 </head>
 <body>
 
-<nav>
-  <a href="/"><img src="logo.png" alt="Logo"></a>
-  <div class="nav-links">
-    <a href="/">Inicio</a>
-    <a href="/peliculas.html">Zona de Películas</a>
-    <a href="/repeticiones.html">Repeticiones</a>
-    <a href="https://mediaformulaiptv.vercel.app/f1zone.html">F1</a>
-    <a href="/noticias.html">Noticias</a>
-    <a href="/tv.html">TV</a>
-  </div>
-</nav>
-
-<div class="content">
-  <h1>Disney+</h1>
-  <p><strong>Pronto se añadirán las películas, series y más...</strong></p>
+<div class="player-container">
+    <h1>Mi Reproductor IPTV</h1>
+    
+    <video
+        id="iptv-player"
+        class="video-js vjs-default-skin"
+        controls
+        preload="auto"
+        data-setup='{}'
+        style="width: 100%; height: auto;"
+    ></video>
 </div>
+
+<script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // La URL de tu lista M3U. 
+        // ¡Nota importante! El reproductor carga los enlaces de video DIRECTAMENTE de la lista.
+        const playlistUrl = 'https://raw.githubusercontent.com/alancedano2/mediaiptv/refs/heads/main/m3u4u-132699-650521-Playlist.m3u';
+        
+        const videoElement = document.getElementById('iptv-player');
+        const videoJsPlayer = videojs(videoElement);
+
+        if (Hls.isSupported()) {
+            // Hls.js se usa para manejar la reproducción en navegadores que no soportan HLS nativo.
+            const hls = new Hls();
+            
+            // Carga la lista de reproducción
+            hls.loadSource(playlistUrl);
+            hls.attachMedia(videoElement);
+            
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                // Aquí podrías, por ejemplo, reproducir automáticamente o mostrar información de la lista.
+                console.log('Lista M3U cargada y analizada.');
+                // Inicia la reproducción (puede fallar si el navegador bloquea el autoplay sin interacción del usuario)
+                // videoJsPlayer.play(); 
+            });
+
+            // Manejo de errores básicos
+            hls.on(Hls.Events.ERROR, function (event, data) {
+                console.error("Error en Hls.js:", data);
+                if (data.fatal) {
+                    switch(data.type) {
+                        case Hls.ErrorTypes.NETWORK_ERROR:
+                            console.log("Error de red. Intento de recuperación...");
+                            hls.recoverMediaError();
+                            break;
+                        case Hls.ErrorTypes.MEDIA_ERROR:
+                            console.log("Error de medios. Intento de recuperación...");
+                            hls.recoverMediaError();
+                            break;
+                        default:
+                            hls.destroy();
+                            break;
+                    }
+                }
+            });
+
+        } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
+            // Compatibilidad para navegadores que soportan HLS nativo (como Safari)
+            videoJsPlayer.src({
+                src: playlistUrl,
+                type: 'application/vnd.apple.mpegurl'
+            });
+            videoJsPlayer.play();
+        } else {
+            // Mensaje de error si HLS no es soportado
+            videoElement.innerHTML = 'Tu navegador no soporta la reproducción de este tipo de archivo.';
+        }
+    });
+</script>
 
 </body>
 </html>
