@@ -6,8 +6,7 @@
     "date": "Lunes 21 de julio del 2025",
     "time": "7:07 PM",
     "image": "https://s.secure.espncdn.com/stitcher/artwork/16x9.jpg?height=612&width=1088&cb=12&templateId=espn.core.dtc.large.16x9.1&source=https%3A//artwork.espncdn.com/events/401422027/16x9/1280x720_20220328205353.jpg&showBadge=true&package=ESPN_PLUS_MLB",
-    "streamUrl": "https://mediaexternalproxy.fraelvillegasplay8.workers.dev/?url=https://hz-possible-vsnet-spray.trycloudflare.com/live/36422.m3u8",
-    "streamUrl2": "https://mediaexternalproxy.fraelvillegasplay8.workers.dev/?url=https://hz-possible-vsnet-spray.trycloudflare.com/live/alternative_mlb.m3u8",
+    "streamUrl": "https://hz-possible-vsnet-spray.trycloudflare.com/live/36422.m3u8",
     "league": "MLB"
   },
   {
@@ -17,8 +16,7 @@
     "date": "Lunes 21 de julio del 2025",
     "time": "8:00 PM",
     "image": "https://cdn.wrestletalk.com/wp-content/uploads/2025/07/roman-reigns-raw.jpg",
-    "streamUrl": "https://mediaexternalproxy.fraelvillegasplay8.workers.dev/?url=https://hz-possible-vsnet-spray.trycloudflare.com/live/610819.m3u8",
-    "streamUrl2": "https://mediaexternalproxy.fraelvillegasplay8.workers.dev/?url=https://hz-possible-vsnet-spray.trycloudflare.com/live/610820.m3u8",
+    "streamUrl": "https://hz-possible-vsnet-spray.trycloudflare.com/live/610819.m3u8",
     "league": "WWE"
   }
 ]
