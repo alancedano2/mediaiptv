@@ -3,20 +3,34 @@
     "id": "mlb-bluejays-yankees",
     "title": "MLB: Toronto Blue Jays vs New York Yankees",
     "description": "¡Un emocionante enfrentamiento de la División Este! Los Blue Jays reciben a los Yankees en un partido clave de la MLB. Prepárate para la acción del béisbol con cada lanzamiento y cada bateo.",
-    "date": "Lunes 21 de julio del 2025",
+    "date": "Martes 22 de julio del 2025",
     "time": "7:07 PM",
     "image": "https://s.secure.espncdn.com/stitcher/artwork/16x9.jpg?height=612&width=1088&cb=12&templateId=espn.core.dtc.large.16x9.1&source=https%3A//artwork.espncdn.com/events/401422027/16x9/1280x720_20220328205353.jpg&showBadge=true&package=ESPN_PLUS_MLB",
-    "streamUrl": "https://hz-possible-vsnet-spray.trycloudflare.com/live/36422.m3u8",
+    "streamUrl": "https://mediaexternalproxy.fraelvillegasplay8.workers.dev/?url=https://hz-possible-vsnet-spray.trycloudflare.com/live/610912.m3u8",
+    "fallbackMp4Url": "/videos/video_fallback.mp4",
     "league": "MLB"
   },
   {
-    "id": "wwe-raw",
-    "title": "WWE Monday Night Raw",
-    "description": "¡La noche de los lunes se enciende con WWE Raw! Prepárate para combates impresionantes, rivalidades intensas y sorpresas inesperadas con tus superestrellas favoritas.",
-    "date": "Lunes 21 de julio del 2025",
+    "id": "wwe-nxt",
+    "title": "WWE NXT",
+    "description": "¡La noche de los martes se enciende con WWE NXT! Prepárate para combates impresionantes, rivalidades intensas y sorpresas inesperadas con tus superestrellas favoritas.",
+    "date": "Martes 22 de julio del 2025",
     "time": "8:00 PM",
-    "image": "https://cdn.wrestletalk.com/wp-content/uploads/2025/07/roman-reigns-raw.jpg",
-    "streamUrl": "https://hz-possible-vsnet-spray.trycloudflare.com/live/610819.m3u8",
+    "image": "https://images.cwtv.com/images/masters/cw/universal/shows/wwe-nxt/show-promo.jpg",
+    "streamUrl": "https://mediaexternalproxy.fraelvillegasplay8.workers.dev/?url=https://hz-possible-vsnet-spray.trycloudflare.com/live/610887.m3u8",
+    "streamUrl2": "https://mediaexternalproxy.fraelvillegasplay8.workers.dev/?url=https://hz-possible-vsnet-spray.trycloudflare.com/live/610888.m3u8",
+    "fallbackMp4Url": "/videos/video_fallback.mp4",
     "league": "WWE"
+  },
+  {
+    "id": "mls-all-star-skills-challenge",
+    "title": "MLS All-Star Skills Challenge",
+    "description": "¡Prepárate para la acción y la habilidad! Las estrellas de la MLS compiten en un emocionante desafío de habilidades previo al partido de estrellas. Duelos de precisión, control de balón y más.",
+    "date": "Martes 22 de julio del 2025",
+    "time": "9:00 PM",
+    "image": "https://is1-ssl.mzstatic.com/image/thumb/BgtyY1s-04azDkgn3QooMQ/580x326Sports.TVAMCR01.webp",
+    "streamUrl": "https://mediaexternalproxy.fraelvillegasplay8.workers.dev/?url=https://hz-possible-vsnet-spray.trycloudflare.com/live/610885.m3u8",
+    "fallbackMp4Url": "/videos/video_fallback.mp4",
+    "league": "MLS"
   }
 ]
