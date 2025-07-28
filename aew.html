@@ -1,69 +1,69 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dos Ventanas Cuadradas</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f0f2f5; /* Un fondo suave */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh; /* Ocupa al menos el 100% de la altura de la ventana */
-            overflow: hidden; /* Evita barras de desplazamiento innecesarias en el body */
-        }
-
-        .container {
-            display: flex;
-            gap: 20px; /* Espacio entre las dos ventanas */
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .window-wrapper {
-            width: 500px; /* Ancho deseado para cada ventana */
-            height: 500px; /* Altura deseada para cada ventana, igual al ancho para que sea cuadrada */
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            overflow: hidden; /* Asegura que el contenido del iframe no se desborde */
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        .window-wrapper iframe {
-            width: 100%;
-            height: 100%;
-            border: none; /* Elimina el borde predeterminado del iframe */
-        }
-
-        /* Responsive design básico para pantallas más pequeñas */
-        @media (max-width: 1100px) {
-            .container {
-                flex-direction: column; /* Apila las ventanas en pantallas pequeñas */
-                align-items: center;
-            }
-            .window-wrapper {
-                width: 90vw; /* Ocupa el 90% del ancho de la vista */
-                height: 90vw; /* Ajusta la altura para mantener la proporción cuadrada */
-                max-width: 500px; /* Limita el tamaño máximo */
-                max-height: 500px; /* Limita el tamaño máximo */
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Consola noVNC Proxmox - Cloudflare Tunnel</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    .container {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .window-wrapper {
+      width: 500px;
+      height: 500px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    @media (max-width: 1100px) {
+      .container {
+        flex-direction: column;
+        align-items: center;
+      }
+      .window-wrapper {
+        width: 90vw;
+        height: 90vw;
+        max-width: 500px;
+        max-height: 500px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="window-wrapper">
-            <iframe src="https://c25a52200f91.ngrok-free.app/"></iframe>
-        </div>
-        <div class="window-wrapper">
-            <iframe src="https://c25a52200f91.ngrok-free.app/?console=kvm&novnc=1&vmid=100&vmname=Windows10&node=pve&resize=off&cmd="></iframe>
-        </div>
+  <div class="container">
+    <!-- Dashboard principal Proxmox -->
+    <div class="window-wrapper">
+      <iframe src="https://worcester-agreements-satisfactory-although.trycloudflare.com/" title="Proxmox Dashboard"></iframe>
     </div>
+    <!-- Consola noVNC VM Windows10 -->
+    <div class="window-wrapper">
+      <iframe 
+        src="https://worcester-agreements-satisfactory-although.trycloudflare.com/?console=kvm&novnc=1&vmid=100&vmname=Windows10&node=pve&resize=off&cmd=" 
+        title="Consola noVNC Windows10">
+      </iframe>
+    </div>
+  </div>
 </body>
 </html>
