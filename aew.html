@@ -3,67 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Consola noVNC Proxmox - Cloudflare Tunnel</title>
+  <title>Consola noVNC Proxmox - Windows10</title>
   <style>
-    body {
-      margin: 0;
-      padding: 0;
+    body, html {
+      margin: 0; padding: 0; height: 100vh; background: #f0f2f5;
+      display: flex; justify-content: center; align-items: center;
       font-family: Arial, sans-serif;
-      background-color: #f0f2f5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      overflow: hidden;
-    }
-    .container {
-      display: flex;
-      gap: 20px;
-      padding: 20px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    .window-wrapper {
-      width: 500px;
-      height: 500px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
     iframe {
-      width: 100%;
-      height: 100%;
+      width: 500px;
+      height: 500px;
       border: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 8px;
     }
-    @media (max-width: 1100px) {
-      .container {
-        flex-direction: column;
-        align-items: center;
-      }
-      .window-wrapper {
+    @media (max-width: 600px) {
+      iframe {
         width: 90vw;
         height: 90vw;
-        max-width: 500px;
-        max-height: 500px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Dashboard principal Proxmox -->
-    <div class="window-wrapper">
-      <iframe src="https://worcester-agreements-satisfactory-although.trycloudflare.com/" title="Proxmox Dashboard"></iframe>
-    </div>
-    <!-- Consola noVNC VM Windows10 -->
-    <div class="window-wrapper">
-      <iframe 
-        src="https://worcester-agreements-satisfactory-although.trycloudflare.com/?console=kvm&novnc=1&vmid=100&vmname=Windows10&node=pve&resize=off&cmd=" 
-        title="Consola noVNC Windows10">
-      </iframe>
-    </div>
-  </div>
+  <iframe 
+    src="https://worcester-agreements-satisfactory-although.trycloudflare.com/?console=kvm&novnc=1&vmid=100&vmname=Windows10&node=pve&resize=off&cmd=" 
+    title="Consola noVNC Windows10">
+  </iframe>
 </body>
 </html>
