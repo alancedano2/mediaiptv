@@ -1,266 +1,69 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>IPTV Player StreamVerse</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dos Ventanas Cuadradas</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5; /* Un fondo suave */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Ocupa al menos el 100% de la altura de la ventana */
+            overflow: hidden; /* Evita barras de desplazamiento innecesarias en el body */
+        }
 
-  <!-- Video.js CSS -->
-  <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+        .container {
+            display: flex;
+            gap: 20px; /* Espacio entre las dos ventanas */
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
+        .window-wrapper {
+            width: 500px; /* Ancho deseado para cada ventana */
+            height: 500px; /* Altura deseada para cada ventana, igual al ancho para que sea cuadrada */
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden; /* Asegura que el contenido del iframe no se desborde */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
 
-  <style>
-    * { box-sizing: border-box; }
+        .window-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none; /* Elimina el borde predeterminado del iframe */
+        }
 
-    body {
-      font-family: 'Montserrat', sans-serif;
-      margin: 0;
-      background: #121212;
-      color: #eee;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
-
-    h1 {
-      font-weight: 600;
-      margin-bottom: 20px;
-      color: #00aaff;
-      text-align: center;
-    }
-
-    #container {
-      display: flex;
-      flex-wrap: wrap;
-      max-width: 960px;
-      width: 100%;
-      gap: 20px;
-      justify-content: center;
-    }
-
-    #channelList {
-      flex: 1 1 280px;
-      max-height: 500px;
-      overflow-y: auto;
-      background: #222;
-      border-radius: 8px;
-      padding: 10px;
-      box-shadow: 0 0 10px #00aaff50;
-      scrollbar-width: thin;
-      scrollbar-color: #00aaff #222;
-    }
-
-    #channelList::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    #channelList::-webkit-scrollbar-track {
-      background: #222;
-      border-radius: 8px;
-    }
-
-    #channelList::-webkit-scrollbar-thumb {
-      background-color: #00aaff;
-      border-radius: 8px;
-      border: 2px solid #222;
-    }
-
-    #channelList button {
-      width: 100%;
-      background: #333;
-      color: #eee;
-      border: none;
-      padding: 12px 15px;
-      margin-bottom: 8px;
-      font-size: 1rem;
-      font-weight: 600;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background-color 0.3s, color 0.3s;
-      text-align: left;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    #channelList button:hover,
-    #channelList button.active {
-      background: #00aaff;
-      color: #121212;
-    }
-
-    #videoContainer {
-      flex: 2 1 640px;
-      max-width: 640px;
-      width: 100%;
-      box-shadow: 0 0 20px #00aaff80;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #000;
-    }
-
-    .video-js {
-      width: 100% !important;
-      height: auto !important;
-      aspect-ratio: 16 / 9;
-    }
-
-    #loadingMessage {
-      text-align: center;
-      font-size: 1.1rem;
-      margin-top: 10px;
-      color: #00aaff;
-    }
-
-    @media (max-width: 700px) {
-      #container {
-        flex-direction: column;
-        align-items: center;
-      }
-      #channelList,
-      #videoContainer {
-        max-width: 100%;
-      }
-    }
-  </style>
+        /* Responsive design básico para pantallas más pequeñas */
+        @media (max-width: 1100px) {
+            .container {
+                flex-direction: column; /* Apila las ventanas en pantallas pequeñas */
+                align-items: center;
+            }
+            .window-wrapper {
+                width: 90vw; /* Ocupa el 90% del ancho de la vista */
+                height: 90vw; /* Ajusta la altura para mantener la proporción cuadrada */
+                max-width: 500px; /* Limita el tamaño máximo */
+                max-height: 500px; /* Limita el tamaño máximo */
+            }
+        }
+    </style>
 </head>
 <body>
-
-  <h1>IPTV Player StreamVerse</h1>
-
-  <div id="container">
-    <div id="channelList">Cargando canales...</div>
-    <div id="videoContainer">
-      <video
-        id="video"
-        class="video-js vjs-default-skin"
-        controls
-        preload="auto"
-        playsinline
-        muted
-      ></video>
-      <div id="loadingMessage"></div>
+    <div class="container">
+        <div class="window-wrapper">
+            <iframe src="https://c25a52200f91.ngrok-free.app/"></iframe>
+        </div>
+        <div class="window-wrapper">
+            <iframe src="https://c25a52200f91.ngrok-free.app/?console=kvm&novnc=1&vmid=100&vmname=Windows10&node=pve&resize=off&cmd="></iframe>
+        </div>
     </div>
-  </div>
-
-  <!-- Video.js y HLS.js -->
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-  <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
-
-  <script>
-    const video = document.getElementById('video');
-    const player = videojs(video);
-    let hls;
-    let currentActiveButton = null;
-
-    const loadingMessage = document.getElementById('loadingMessage');
-
-    // URL base del proxy Cloudflared
-    const PROXY = "https://platform-tray-individual-bulgarian.trycloudflare.com/proxy?url=";
-
-    // Reescribe URLs HTTP para pasar por el proxy HTTPS
-    function proxify(url) {
-      if (url.startsWith("http://")) {
-        return PROXY + encodeURIComponent(url);
-      }
-      return url;
-    }
-
-    async function fetchM3U(url) {
-      loadingMessage.textContent = 'Descargando lista M3U...';
-      const res = await fetch(url);
-      if (!res.ok) throw new Error('Error al descargar lista M3U');
-      const text = await res.text();
-      loadingMessage.textContent = '';
-      return text;
-    }
-
-    function parseM3U(data) {
-      const lines = data.split('\n');
-      const channels = [];
-      for (let i = 0; i < lines.length; i++) {
-        if (lines[i].startsWith('#EXTINF')) {
-          const name = lines[i].split(',')[1]?.trim() || 'Sin nombre';
-          const url = lines[i + 1]?.trim();
-          if (url && !url.startsWith('#')) {
-            channels.push({ name, url: proxify(url) });
-          }
-        }
-      }
-      return channels;
-    }
-
-    function setActiveButton(btn) {
-      if (currentActiveButton) currentActiveButton.classList.remove('active');
-      currentActiveButton = btn;
-      btn.classList.add('active');
-    }
-
-    function loadStream(url, btn) {
-      loadingMessage.textContent = 'Cargando canal...';
-
-      if (hls) {
-        hls.destroy();
-        hls = null;
-      }
-
-      if (Hls.isSupported()) {
-        hls = new Hls();
-        hls.loadSource(url);
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED, () => {
-          loadingMessage.textContent = '';
-          video.play();
-        });
-        hls.on(Hls.Events.ERROR, (event, data) => {
-          loadingMessage.textContent = `Error en el canal: ${data.details || 'Desconocido'}`;
-        });
-      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = url;
-        video.addEventListener('loadedmetadata', () => {
-          loadingMessage.textContent = '';
-          video.play();
-        });
-      } else {
-        loadingMessage.textContent = '';
-        alert('Tu navegador no soporta reproducción HLS');
-      }
-
-      setActiveButton(btn);
-    }
-
-    async function init() {
-      const url = 'https://raw.githubusercontent.com/alancedano2/mediaiptv/refs/heads/main/m3u4u-132699-650521-Playlist.m3u';
-      try {
-        const m3uText = await fetchM3U(url);
-        const channels = parseM3U(m3uText);
-
-        const listDiv = document.getElementById('channelList');
-        listDiv.innerHTML = '';
-
-        channels.forEach((ch, i) => {
-          const btn = document.createElement('button');
-          btn.textContent = ch.name;
-          btn.title = ch.url;
-          btn.onclick = () => loadStream(ch.url, btn);
-          listDiv.appendChild(btn);
-        });
-
-        if (channels.length > 0) {
-          loadStream(channels[0].url, listDiv.firstChild);
-        } else {
-          listDiv.textContent = 'No se encontraron canales en la lista M3U.';
-        }
-      } catch (e) {
-        document.getElementById('channelList').textContent = 'Error cargando canales: ' + e.message;
-      }
-    }
-
-    init();
-  </script>
 </body>
 </html>
