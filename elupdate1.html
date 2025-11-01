@@ -3,23 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>elupdate1 - Reproductor Clappr M3U8</title>
+    <title>elupdate1 - Clappr Fullscreen</title>
     
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f0f0f0; margin: 0; padding: 20px; }
-        h1 { color: #2c3e50; text-align: center; }
-        .player-wrapper { 
-            max-width: 800px; 
-            margin: 20px auto; 
-            background: white; 
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
-            border-radius: 8px;
-            overflow: hidden;
+        /* Estilos para pantalla completa */
+        html, body { 
+            margin: 0; 
+            padding: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: hidden; /* Oculta barras de desplazamiento */
+            background-color: black;
         }
-        /* El div de Clappr necesita una altura definida */
-        #clappr-player-elupdate1 {
-            width: 100%;
-            height: 450px; 
+        #clappr-player-elupdate1 { 
+            width: 100%; 
+            height: 100%; 
         }
     </style>
 
@@ -28,11 +26,7 @@
 </head>
 <body>
 
-    <h1>elupdate1 - Reproductor Clappr</h1>
-
-    <div class="player-wrapper">
-        <div id="clappr-player-elupdate1"></div>
-    </div>
+    <div id="clappr-player-elupdate1"></div>
 
     <script>
         const M3U8_URL = 'https://dining-aye-civil-beside.trycloudflare.com//LiveApp/streams/ewo-elupdate.m3u8';
@@ -44,9 +38,7 @@
             plugins: [HlsjsPlayback], 
             autoPlay: true,
             width: '100%',
-            height: '100%',
-            // Opcional: configuración extra de Clappr
-            poster: 'https://cdn.jsdelivr.net/gh/clappr/clappr@master/images/clappr-logo.png' 
+            height: '100%'
         });
     </script>
 
