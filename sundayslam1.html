@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sundayslam1 - Clappr Fullscreen</title>
+    <title>sundayslam1 - Clappr Fullscreen (CORREGIDO)</title>
     
     <style>
         /* Estilos para pantalla completa */
@@ -25,6 +25,7 @@
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clappr-hlsjs-playback@0.4.0/dist/clappr-hlsjs-playback.min.js"></script>
+    
 </head>
 <body>
 
@@ -37,7 +38,7 @@
             source: M3U8_URL,
             parentId: '#clappr-player-sundayslam1',
             mimeType: 'application/x-mpegurl',
-            plugins: [HlsjsPlayback], 
+            // plugins: [HlsjsPlayback], ELIMINADO para evitar el error ReferenceError
             autoPlay: true,
             width: '100%',
             height: '100%'
