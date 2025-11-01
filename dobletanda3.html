@@ -3,29 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dobletanda3 - Reproductor HTML Nativo</title>
+    <title>dobletanda3 - HTML Nativo Fullscreen</title>
     
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f0f0f0; margin: 0; padding: 20px; }
-        h1 { color: #27ae60; text-align: center; }
-        .player-wrapper { max-width: 800px; margin: 20px auto; text-align: center; background: white; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 8px; padding: 10px; }
-        #native-player-dobletanda3 { width: 100%; height: auto; display: block; }
+        /* Estilos para pantalla completa */
+        html, body { 
+            margin: 0; 
+            padding: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: hidden;
+            background-color: black;
+        }
+        #native-player-dobletanda3 { 
+            width: 100%; 
+            height: 100%; 
+        }
     </style>
 
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
 
-    <h1>dobletanda3 - Reproductor HTML Nativo</h1>
-
-    <div class="player-wrapper">
-        <video 
-            id="native-player-dobletanda3" 
-            controls 
-            autoplay 
-            poster=""
-        ></video>
-    </div>
+    <video 
+        id="native-player-dobletanda3" 
+        controls 
+        autoplay 
+        poster=""
+    ></video>
 
     <script>
         const M3U8_URL = 'https://dining-aye-civil-beside.trycloudflare.com//LiveApp/streams/ewo-dobletanda.m3u8';
@@ -43,8 +48,6 @@
             video.addEventListener('loadedmetadata', function() {
                 video.play();
             });
-        } else {
-            console.error('El navegador no soporta HLS de forma nativa ni a través de HLS.js.');
         }
     </script>
 
