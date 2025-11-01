@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>elupdate1 - Clappr Fullscreen</title>
+    <title>elupdate1 - Clappr Fullscreen (Corregido)</title>
     
     <style>
         /* Estilos para pantalla completa */
@@ -12,7 +12,7 @@
             padding: 0; 
             width: 100%; 
             height: 100%; 
-            overflow: hidden; /* Oculta barras de desplazamiento */
+            overflow: hidden; 
             background-color: black;
         }
         #clappr-player-elupdate1 { 
@@ -22,7 +22,10 @@
     </style>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clappr-hlsjs-playback@latest/dist/clappr-hlsjs-playback.min.js"></script>
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clappr-hlsjs-playback@0.4.0/dist/clappr-hlsjs-playback.min.js"></script>
+    
 </head>
 <body>
 
@@ -31,14 +34,16 @@
     <script>
         const M3U8_URL = 'https://lil-brought-joy-pete.trycloudflare.com//LiveApp/streams/ewo-elupdate.m3u8';
 
+        // 💡 NOTA: Al usar esta URL de plugin, NO necesitamos mencionar el plugin HlsjsPlayback en la configuración, 
+        // Clappr lo detecta y lo usa automáticamente si la fuente es M3U8.
         var player = new Clappr.Player({
             source: M3U8_URL,
             parentId: '#clappr-player-elupdate1',
             mimeType: 'application/x-mpegurl',
-            plugins: [HlsjsPlayback], 
             autoPlay: true,
             width: '100%',
             height: '100%'
+            // ❌ Eliminada la línea: plugins: [HlsjsPlayback], para evitar el error.
         });
     </script>
 
