@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sundayslam3 - Reproductor HTML Nativo</title>
+    
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f0f0f0; margin: 0; padding: 20px; }
+        h1 { color: #27ae60; text-align: center; }
+        .player-wrapper { max-width: 800px; margin: 20px auto; text-align: center; background: white; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 8px; padding: 10px; }
+        #native-player-sundayslam3 { width: 100%; height: auto; display: block; }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+
+    <h1>sundayslam3 - Reproductor HTML Nativo</h1>
+
+    <div class="player-wrapper">
+        <video 
+            id="native-player-sundayslam3" 
+            controls 
+            autoplay 
+            poster=""
+        ></video>
+    </div>
+
+    <script>
+        const M3U8_URL = 'https://dining-aye-civil-beside.trycloudflare.com//LiveApp/streams/ewo-sundayslam.m3u8';
+        const video = document.getElementById('native-player-sundayslam3');
+
+        if (Hls.isSupported()) {
+            var hls = new Hls();
+            hls.loadSource(M3U8_URL);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                video.play();
+            });
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = M3U8_URL;
+            video.addEventListener('loadedmetadata', function() {
+                video.play();
+            });
+        } else {
+            console.error('El navegador no soporta HLS de forma nativa ni a través de HLS.js.');
+        }
+    </script>
+
+</body>
+</html>
