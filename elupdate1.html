@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>elupdate1 - Reproductor Clappr M3U8</title>
+    
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f0f0f0; margin: 0; padding: 20px; }
+        h1 { color: #2c3e50; text-align: center; }
+        .player-wrapper { 
+            max-width: 800px; 
+            margin: 20px auto; 
+            background: white; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        /* El div de Clappr necesita una altura definida */
+        #clappr-player-elupdate1 {
+            width: 100%;
+            height: 450px; 
+        }
+    </style>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clappr-hlsjs-playback@latest/dist/clappr-hlsjs-playback.min.js"></script>
+</head>
+<body>
+
+    <h1>elupdate1 - Reproductor Clappr</h1>
+
+    <div class="player-wrapper">
+        <div id="clappr-player-elupdate1"></div>
+    </div>
+
+    <script>
+        const M3U8_URL = 'https://dining-aye-civil-beside.trycloudflare.com//LiveApp/streams/ewo-elupdate.m3u8';
+
+        var player = new Clappr.Player({
+            source: M3U8_URL,
+            parentId: '#clappr-player-elupdate1',
+            mimeType: 'application/x-mpegurl',
+            plugins: [HlsjsPlayback], 
+            autoPlay: true,
+            width: '100%',
+            height: '100%',
+            // Opcional: configuración extra de Clappr
+            poster: 'https://cdn.jsdelivr.net/gh/clappr/clappr@master/images/clappr-logo.png' 
+        });
+    </script>
+
+</body>
+</html>
