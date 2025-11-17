@@ -1,5 +1,3 @@
-// Contenido para: /api/radio.js
-
 export default async function handler(req, res) {
   
   // Generamos un "cache bust" para el servidor
