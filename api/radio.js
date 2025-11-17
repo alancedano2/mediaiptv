@@ -3,7 +3,7 @@ export default async function handler(req, res) {
   const cacheBust = `&_v=${new Date().getTime()}`;
 
   const masterPlaylistUrl =
-    'https://televicentro.streamguys1.com/wkaqfm/playlist.m3u8?key=96bc32e12ecb6b1bafd065de263d64235ff13cc93b57ff806196d3ecd0891325&aw_0_1st.playerId=kq105&source=kq105.com&us_privacy=1YNY&clientType=web&callLetters=WKAQ-FM&devicename=web-desktop&stationid=1864&dist=kq105.com&subscription_type=free&aw_0_1st.version=1.0_html5&aw_0_1st.playerid=kq105_floating_player' + cacheBust;
+    'https://televicentro.streamguys1.com/wkaqfm/playlist.m3u8?key=96bc32e12ecb6b1bafd065de263d64235ff13cc93b57ff806196d3ecd0891325&aw_0_1st.playerId=kq105&source=kq105.com&us_privacy=1YNY&clientType=web&callLetters=WKAQ-FM&devicename=web-desktop&stationid=1846&dist=kq105.com&subscription_type=free&aw_0_1st.version=1.0_html5&aw_0_1st.playerid=kq105_floating_player' + cacheBust;
 
   try {
     // --- PASO 1: Pedir el "menú" ---
@@ -30,7 +30,7 @@ export default async function handler(req, res) {
     // Añadimos el cache bust a la segunda URL
     realPlaylistUrl += `&_v=${new Date().getTime()}`;
 
-    // --- PASO 3: Pedir el playlist real ---
+    // --- PASO 3: Pedir el playlist real (el que tú me mostraste) ---
     const realResponse = await fetch(realPlaylistUrl, { cache: 'no-store' });
     if (!realResponse.ok) {
       throw new Error(`Error en Paso 3: ${realResponse.statusText}`);
