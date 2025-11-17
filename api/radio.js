@@ -1,8 +1,7 @@
 // Contenido para: /api/radio.js
 
 export default async function handler(req, res) {
-  // Log 1: Inició la función
-  console.log("--- [LOG DE VERCEL] Inició la función /api/radio (v2) ---");
+  console.log("--- [LOG DE VERCEL] Inició la función /api/radio (v2 FINAL) ---");
 
   const masterPlaylistUrl =
     'https://televicentro.streamguys1.com/wkaqfm/playlist.m3u8?key=96bc32e12ecb6b1bafd065de263d64235ff13cc93b57ff806196d3ecd0891325&aw_0_1st.playerId=kq105&source=kq105.com&us_privacy=1YNY&clientType=web&callLetters=WKAQ-FM&devicename=web-desktop&stationid=1846&dist=kq105.com&subscription_type=free&aw_0_1st.version=1.0_html5&aw_0_1st.playerid=kq105_floating_player';
@@ -17,13 +16,11 @@ export default async function handler(req, res) {
     }
 
     const masterPlaylistText = await masterResponse.text();
-    console.log("[LOG DE VERCEL] Texto del maestro:", masterPlaylistText);
 
     // --- PASO 2: Encontrar la URL del "playlist real" ---
     const lines = masterPlaylistText.split('\n');
     let realPlaylistUrl = "";
     for (const line of lines) {
-      // Buscamos la primera línea que no sea un comentario
       if (line.trim() && !line.startsWith('#')) {
         realPlaylistUrl = line;
         break;
@@ -45,7 +42,6 @@ export default async function handler(req, res) {
     }
 
     const realPlaylistText = await realResponse.text();
-    console.log("[LOG DE VERCEL] Texto del real:", realPlaylistText);
 
     // --- PASO 4: Parsear la metadata (como antes) ---
     const realLines = realPlaylistText.split('\n');
@@ -56,8 +52,6 @@ export default async function handler(req, res) {
         break;
       }
     }
-
-    console.log(`[LOG DE VERCEL] Línea #EXTINF encontrada: ${lastExtinfLine}`);
 
     let artist = null;
     let title = null;
