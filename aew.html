@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Radio Player con Metadata (Versión 4 - Fix Caché)</title>
+    <title>Radio Player con Proxy</title>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
-        /* (Estilos CSS iguales al código anterior) */
+        /* (Tus mismos estilos CSS) */
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: #f0f2f5;
@@ -59,88 +59,68 @@
     </div>
 
     <script>
+        // URL del Audio (Esto SÍ funciona directo con HLS.js)
         var streamUrl = 'https://televicentro.streamguys1.com/wkaqfm/playlist.m3u8?key=96bc32e12ecb6b1bafd065de263d64235ff13cc93b57ff806196d3ecd0891325&aw_0_1st.playerId=kq105&source=kq105.com&us_privacy=1YNY&clientType=web&callLetters=WKAQ-FM&devicename=web-desktop&stationid=1846&dist=kq105.com&subscription_type=free&aw_0_1st.version=1.0_html5&aw_0_1st.playerid=kq105_floating_player';
+        
+        // ¡URL DE TU PROPIO PROXY!
+        var proxyUrl = '/api/radio'; 
+
         var audioPlayer = document.getElementById('radioPlayer');
         var metadataDiv = document.getElementById('metadataDisplay');
 
-        // --- TAREA 1: REPRODUCIR EL AUDIO CON HLS.js ---
+        // --- TAREA 1: REPRODUCIR EL AUDIO (Sin cambios) ---
         if (Hls.isSupported()) {
             var hls = new Hls();
             hls.loadSource(streamUrl);
             hls.attachMedia(audioPlayer);
-            console.log("HLS.js iniciado para reproducir audio.");
-            
             hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                console.log("Playlist cargado, intentando 'play()'.");
                 audioPlayer.play(); 
             });
-
         } else if (audioPlayer.canPlayType('application/vnd.apple.mpegurl')) {
             audioPlayer.src = streamUrl;
         }
 
-        // --- TAREA 2: BUSCAR LA METADATA (CON FIX DE CACHÉ) ---
+        // --- TAREA 2: BUSCAR LA METADATA (Llamando al Proxy) ---
         
         let currentSong = ""; 
 
-        async function fetchMetadata() {
-            // ¡AQUÍ ESTÁ EL ARREGLO!
-            // Añadimos un parámetro que siempre sea único para evitar el caché.
-            const cacheBustedUrl = streamUrl + '&_cachebust=' + new Date().getTime();
-            
-            console.log("Buscando metadata de:", cacheBustedUrl);
-            
+        async function fetchMetadataFromProxy() {
+            console.log("Buscando metadata desde el proxy...", proxyUrl);
             try {
-                // Usamos la nueva URL y le decimos al 'fetch' que no guarde nada
-                const response = await fetch(cacheBustedUrl, { cache: 'no-store' });
-                const playlistText = await response.text();
+                // ¡AQUÍ ESTÁ EL CAMBIO!
+                // Llamamos a nuestro propio proxy, que no tiene CORS
+                const response = await fetch(proxyUrl, { cache: 'no-store' });
+                const data = await response.json(); // Recibimos el JSON
+
+                const artist = data.artist;
+                const title = data.title;
+                const songId = (artist || "") + " - " + (title || "");
                 
-                const lines = playlistText.split('\n');
-                let lastExtinfLine = "";
-                for (let i = lines.length - 1; i >= 0; i--) {
-                    if (lines[i].startsWith('#EXTINF:')) {
-                        lastExtinfLine = lines[i];
-                        break;
-                    }
-                }
+                console.log("Metadata recibida:", songId);
 
-                if (lastExtinfLine) {
-                    const artistMatch = /artist="([^"]*)"/.exec(lastExtinfLine);
-                    const titleMatch = /title="([^"]*)"/.exec(lastExtinfLine);
-
-                    const artist = artistMatch ? artistMatch[1] : null;
-                    const title = titleMatch ? titleMatch[1] : null;
-                    const songId = (artist || "") + " - " + (title || "");
+                if (songId !== currentSong && songId.trim() !== "-") {
+                    currentSong = songId;
+                    console.log("¡ACTUALIZANDO HTML! Nueva canción:", currentSong);
                     
-                    // Añadí un console.log para ver qué encontró
-                    console.log("Metadata encontrada:", songId);
-
-                    if (songId !== currentSong && songId.trim() !== "-") {
-                        currentSong = songId;
-                        console.log("¡ACTUALIZANDO HTML! Nueva canción:", currentSong);
-                        
-                        if (artist && title) {
-                            metadataDiv.innerHTML = `
-                                <p class="label">ARTISTA:</p>
-                                <p>${artist}</p>
-                                <p class="label" style="margin-top: 8px;">CANCIÓN:</p>
-                                <p>${title}</p>
-                            `;
-                        } else if (title) {
-                            metadataDiv.innerHTML = `<p>${title}</p>`;
-                        }
-                    } else if (songId === currentSong) {
-                        console.log("Misma canción, no se actualiza.");
+                    if (artist && title) {
+                        metadataDiv.innerHTML = `
+                            <p class="label">ARTISTA:</p>
+                            <p>${artist}</p>
+                            <p class="label" style="margin-top: 8px;">CANCIÓN:</p>
+                            <p>${title}</p>
+                        `;
+                    } else if (title) {
+                        metadataDiv.innerHTML = `<p>${title}</p>`;
                     }
                 }
             } catch (error) {
-                console.error('Error buscando metadata:', error);
+                console.error('Error buscando metadata del proxy:', error);
                 metadataDiv.innerHTML = "<p>Error al cargar metadata.</p>";
             }
         }
 
-        fetchMetadata();
-        setInterval(fetchMetadata, 10000); 
+        fetchMetadataFromProxy();
+        setInterval(fetchMetadataFromProxy, 10000); 
 
     </script>
 
