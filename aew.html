@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Radio Player con Proxy</title>
+    <title>Radio Player con Proxy (Fix Final)</title>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
         /* (Tus mismos estilos CSS) */
@@ -59,10 +59,10 @@
     </div>
 
     <script>
-        // URL del Audio (Esto SÍ funciona directo con HLS.js)
+        // URL del Audio
         var streamUrl = 'https://televicentro.streamguys1.com/wkaqfm/playlist.m3u8?key=96bc32e12ecb6b1bafd065de263d64235ff13cc93b57ff806196d3ecd0891325&aw_0_1st.playerId=kq105&source=kq105.com&us_privacy=1YNY&clientType=web&callLetters=WKAQ-FM&devicename=web-desktop&stationid=1846&dist=kq105.com&subscription_type=free&aw_0_1st.version=1.0_html5&aw_0_1st.playerid=kq105_floating_player';
         
-        // ¡URL DE TU PROPIO PROXY!
+        // URL DE TU PROPIO PROXY
         var proxyUrl = '/api/radio'; 
 
         var audioPlayer = document.getElementById('radioPlayer');
@@ -85,13 +85,18 @@
         let currentSong = ""; 
 
         async function fetchMetadataFromProxy() {
-            console.log("Buscando metadata desde el proxy...", proxyUrl);
+            
+            // !!!!!!!!!!   AQUÍ ESTÁ EL ARREGLO   !!!!!!!!!!
+            // Añadimos un parámetro 'cachebust' que cambia cada vez
+            const urlConCacheBust = proxyUrl + '?cachebust=' + new Date().getTime();
+            
+            console.log("Buscando metadata desde:", urlConCacheBust);
+            
             try {
-                // ¡AQUÍ ESTÁ EL CAMBIO!
-                // Llamamos a nuestro propio proxy, que no tiene CORS
-                const response = await fetch(proxyUrl, { cache: 'no-store' });
-                const data = await response.json(); // Recibimos el JSON
-
+                // Usamos la NUEVA url
+                const response = await fetch(urlConCacheBust, { cache: 'no-store' });
+                const data = await response.json(); 
+                
                 const artist = data.artist;
                 const title = data.title;
                 const songId = (artist || "") + " - " + (title || "");
