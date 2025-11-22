@@ -1,133 +1,215 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Radio Player con Proxy (Fix Final)</title>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reemo Portal - Iniciar Sesión</title>
     <style>
-        /* (Tus mismos estilos CSS) */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f0f2f5;
-            color: #1c1e21;
-            display: grid;
-            place-items: center;
-            min-height: 100vh;
-            margin: 0;
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --primary-color: #e94560; /* Color aproximado de acento */
+            --text-color: #ffffff;
+            --text-muted: #a0a0a0;
+            --input-bg: #2a2a2a;
+            --border-color: #333;
         }
-        .player-card {
-            background-color: #ffffff;
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: var(--card-bg);
+            padding: 40px;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            padding: 24px;
-            width: 90%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            width: 100%;
             max-width: 400px;
             text-align: center;
         }
-        audio {
+
+        .logo {
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: var(--primary-color);
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
             width: 100%;
+            padding: 12px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-color);
+            font-size: 1rem;
+            box-sizing: border-box; /* Para que el padding no rompa el ancho */
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
             margin-bottom: 20px;
         }
-        #metadataDisplay {
-            font-size: 1.1em;
-            font-weight: 600;
-            color: #050505;
-            min-height: 50px;
-            display: grid;
-            place-items: center;
-            background-color: #f0f2f5;
-            padding: 10px;
-            border-radius: 6px;
+
+        .actions a {
+            color: var(--primary-color);
+            text-decoration: none;
         }
-        #metadataDisplay p {
-            margin: 0;
+
+        .actions a:hover {
+            text-decoration: underline;
         }
-        #metadataDisplay .label {
-            font-size: 0.8em;
-            font-weight: normal;
-            color: #65676b;
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color: #d13850;
+        }
+
+        .footer-links {
+            margin-top: 25px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .footer-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .trusted-by {
+            margin-top: 40px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+        
+        .trusted-by p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Simulación de iconos de empresas */
+        .trusted-logos {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            opacity: 0.5;
+        }
+        
+        .placeholder-logo {
+            width: 30px;
+            height: 30px;
+            background-color: #555;
+            border-radius: 50%;
         }
     </style>
 </head>
 <body>
 
-    <div class="player-card">
-        <h2>KQ 105 Player</h2>
-        <audio id="radioPlayer" controls></audio>
-        <div id="metadataDisplay">
-            <p>Cargando metadata...</p>
+    <div class="login-container">
+        <div class="logo">
+            REEMO<span>.IO</span>
+        </div>
+        
+        <h2>Bienvenido de nuevo</h2>
+        <p class="subtitle">Ingresa tus credenciales para continuar</p>
+
+        <form action="#" method="POST">
+            <div class="form-group">
+                <label for="username">Usuario o Email</label>
+                <input type="text" id="username" name="username" placeholder="ej. usuario@empresa.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" placeholder="••••••••" required>
+            </div>
+
+            <div class="actions">
+                <label style="margin:0; cursor:pointer;">
+                    <input type="checkbox" name="remember"> Recuérdame
+                </label>
+                <a href="#">¿Olvidaste tu contraseña?</a>
+            </div>
+
+            <button type="submit" class="btn-submit">Iniciar Sesión</button>
+        </form>
+
+        <div class="footer-links">
+            ¿No tienes una cuenta? <a href="#">Regístrate ahora</a>
+        </div>
+
+        <div class="trusted-by">
+            <p>TRUSTED BY</p>
+            <div class="trusted-logos">
+                <div class="placeholder-logo"></div>
+                <div class="placeholder-logo"></div>
+                <div class="placeholder-logo"></div>
+                <div class="placeholder-logo"></div>
+            </div>
         </div>
     </div>
-
-    <script>
-        // URL del Audio
-        var streamUrl = 'https://televicentro.streamguys1.com/wkaqfm/playlist.m3u8?key=96bc32e12ecb6b1bafd065de263d64235ff13cc93b57ff806196d3ecd0891325&aw_0_1st.playerId=kq105&source=kq105.com&us_privacy=1YNY&clientType=web&callLetters=WKAQ-FM&devicename=web-desktop&stationid=1846&dist=kq105.com&subscription_type=free&aw_0_1st.version=1.0_html5&aw_0_1st.playerid=kq105_floating_player';
-        
-        // URL DE TU PROPIO PROXY
-        var proxyUrl = '/api/radio'; 
-
-        var audioPlayer = document.getElementById('radioPlayer');
-        var metadataDiv = document.getElementById('metadataDisplay');
-
-        // --- TAREA 1: REPRODUCIR EL AUDIO (Sin cambios) ---
-        if (Hls.isSupported()) {
-            var hls = new Hls();
-            hls.loadSource(streamUrl);
-            hls.attachMedia(audioPlayer);
-            hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                audioPlayer.play(); 
-            });
-        } else if (audioPlayer.canPlayType('application/vnd.apple.mpegurl')) {
-            audioPlayer.src = streamUrl;
-        }
-
-        // --- TAREA 2: BUSCAR LA METADATA (Llamando al Proxy) ---
-        
-        let currentSong = ""; 
-
-        async function fetchMetadataFromProxy() {
-            
-            // !!!!!!!!!!   AQUÍ ESTÁ EL ARREGLO   !!!!!!!!!!
-            // Añadimos un parámetro 'cachebust' que cambia cada vez
-            const urlConCacheBust = proxyUrl + '?cachebust=' + new Date().getTime();
-            
-            console.log("Buscando metadata desde:", urlConCacheBust);
-            
-            try {
-                // Usamos la NUEVA url
-                const response = await fetch(urlConCacheBust, { cache: 'no-store' });
-                const data = await response.json(); 
-                
-                const artist = data.artist;
-                const title = data.title;
-                const songId = (artist || "") + " - " + (title || "");
-                
-                console.log("Metadata recibida:", songId);
-
-                if (songId !== currentSong && songId.trim() !== "-") {
-                    currentSong = songId;
-                    console.log("¡ACTUALIZANDO HTML! Nueva canción:", currentSong);
-                    
-                    if (artist && title) {
-                        metadataDiv.innerHTML = `
-                            <p class="label">ARTISTA:</p>
-                            <p>${artist}</p>
-                            <p class="label" style="margin-top: 8px;">CANCIÓN:</p>
-                            <p>${title}</p>
-                        `;
-                    } else if (title) {
-                        metadataDiv.innerHTML = `<p>${title}</p>`;
-                    }
-                }
-            } catch (error) {
-                console.error('Error buscando metadata del proxy:', error);
-                metadataDiv.innerHTML = "<p>Error al cargar metadata.</p>";
-            }
-        }
-
-        fetchMetadataFromProxy();
-        setInterval(fetchMetadataFromProxy, 10000); 
-
-    </script>
 
 </body>
 </html>
