@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Reproductores Corregidos (REQUIERE CORS)</title>
+    <title>Reproductores FINAL FIX (REQUIERE CORS)</title>
     <link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet" />
     <style>
         body { margin: 20px; font-family: sans-serif; background-color: #f0f0f0; }
@@ -14,7 +14,7 @@
 </head>
 <body>
 
-    <h1>Reproductores Combo - Listos para CORS</h1>
+    <h1>Reproductores Combo - Solución Final</h1>
     
     <div class="player-container">
         <h2>1. Reproductor Video.js</h2>
@@ -28,10 +28,11 @@
 
     <script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clappr-hlsjs-playback@latest/dist/clappr-hlsjs-playback.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clappr-hlsjs-playback@latest/dist/clappr-hlsjs-playback.min.js"></script> 
 
     <script>
         const url_stream = 'https://gg.poocloud.in/nba_charlottehornets/index.m3u8';
+        
         const hlsConfig = {
             // Intentamos enviar el Referer, pero solo funcionará si CORS está desactivado
             xhrSetup: function (xhr, url) {
@@ -47,11 +48,12 @@
             sources: [{ src: url_stream, type: 'application/x-mpegURL' }]
         });
 
-        // --- INICIALIZACIÓN DE CLAPPR (CORREGIDO) ---
+        // --- INICIALIZACIÓN DE CLAPPR (SOLUCIONADO EL ReferenceError) ---
+        // HlsjsPlayback ya está definido aquí gracias al script cargado arriba.
         var clappr_player = new Clappr.Player({
             source: url_stream,
             parentId: '#clappr-player',
-            plugins: [HlsjsPlayback], // HlsjsPlayback ya está definida aquí
+            plugins: [HlsjsPlayback], 
             autoPlay: false,
             hlsjsConfig: hlsConfig
         });
