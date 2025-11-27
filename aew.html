@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Reproductores Combo (Intentando Headers)</title>
+    <title>Reproductores Corregidos (REQUIERE CORS)</title>
     <link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet" />
     <style>
         body { margin: 20px; font-family: sans-serif; background-color: #f0f0f0; }
@@ -14,16 +14,11 @@
 </head>
 <body>
 
-    <h1>Reproductores Combo - Intentando Headers</h1>
+    <h1>Reproductores Combo - Listos para CORS</h1>
     
     <div class="player-container">
         <h2>1. Reproductor Video.js</h2>
-        <video
-            id="videojs-player"
-            class="video-js vjs-default-skin"
-            controls
-            preload="auto">
-        </video>
+        <video id="videojs-player" class="video-js vjs-default-skin" controls preload="auto"></video>
     </div>
 
     <div class="player-container">
@@ -37,40 +32,28 @@
 
     <script>
         const url_stream = 'https://gg.poocloud.in/nba_charlottehornets/index.m3u8';
-        
-        // --- CONFIGURACIÓN DE CABECERAS ---
         const hlsConfig = {
-            // Aquí intentamos inyectar el Referrer, pero el navegador podría anularlo
+            // Intentamos enviar el Referer, pero solo funcionará si CORS está desactivado
             xhrSetup: function (xhr, url) {
-                // SIMULA EL REFERRER
-                xhr.setRequestHeader('Referer', 'https://ppv.to/'); 
-                // NO podemos enviar User-Agent desde aquí.
+                xhr.setRequestHeader('Referer', 'https://gg.poocloud.in/'); 
             }
         };
 
-
         // --- INICIALIZACIÓN DE VIDEO.JS ---
-        // Video.js usa su propio plugin HLS, pero a veces acepta config.
         videojs('videojs-player', {
             controls: true,
             preload: 'auto',
-            html5: {
-                hls: hlsConfig
-            },
-            sources: [{
-                src: url_stream,
-                type: 'application/x-mpegURL'
-            }]
+            html5: { hls: hlsConfig },
+            sources: [{ src: url_stream, type: 'application/x-mpegURL' }]
         });
 
-        // --- INICIALIZACIÓN DE CLAPPR ---
-        // Clappr sí acepta la configuración directa de hls.js
+        // --- INICIALIZACIÓN DE CLAPPR (CORREGIDO) ---
         var clappr_player = new Clappr.Player({
             source: url_stream,
             parentId: '#clappr-player',
-            plugins: [HlsjsPlayback], 
+            plugins: [HlsjsPlayback], // HlsjsPlayback ya está definida aquí
             autoPlay: false,
-            hlsjsConfig: hlsConfig // Aplicamos la configuración de headers aquí
+            hlsjsConfig: hlsConfig
         });
     </script>
     
