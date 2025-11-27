@@ -1,46 +1,64 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Reproductor HLS - NBA</title>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <title>Combo de Reproductores HLS</title>
+    <link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet" />
     <style>
-        body { background-color: #000; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: sans-serif; }
-        video { width: 80%; max-width: 1000px; border: 2px solid #333; }
-        .error { color: red; position: absolute; top: 20px; }
+        body { margin: 20px; font-family: sans-serif; background-color: #f0f0f0; }
+        h1 { text-align: center; color: #333; }
+        h2 { border-bottom: 2px solid #ccc; padding-bottom: 5px; margin-top: 30px; }
+        .player-container { margin: 0 auto 50px; width: 90%; max-width: 800px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        /* Estilo para el reproductor VJS */
+        .video-js { width: 100% !important; height: 450px; }
+        /* Estilo para el contenedor Clappr */
+        #clappr-player { width: 100%; height: 450px; }
     </style>
 </head>
 <body>
 
-    <video id="video" controls autoplay></video>
-    <div id="msg" class="error"></div>
+    <h1>Reproductores Combo (Video.js & Clappr)</h1>
+    
+    <div class="player-container">
+        <h2>1. Reproductor Video.js</h2>
+        <video
+            id="videojs-player"
+            class="video-js vjs-default-skin"
+            controls
+            preload="auto">
+            </video>
+    </div>
+
+    <div class="player-container">
+        <h2>2. Reproductor Clappr</h2>
+        <div id="clappr-player"></div>
+    </div>
+
+    <script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clappr-hlsjs-playback@latest/dist/clappr-hlsjs-playback.min.js"></script>
 
     <script>
-        var video = document.getElementById('video');
-        var url = "https://gg.poocloud.in/nba_charlottehornets/index.m3u8";
+        const url_stream = 'https://gg.poocloud.in/nba_charlottehornets/index.m3u8';
+        
+        // --- INICIALIZACIÓN DE VIDEO.JS ---
+        videojs('videojs-player', {
+            controls: true,
+            preload: 'auto',
+            sources: [{
+                src: url_stream,
+                type: 'application/x-mpegURL'
+            }]
+        });
 
-        if (Hls.isSupported()) {
-            var hls = new Hls({
-                // Intentamos configurar cabeceras (Nota: Los navegadores suelen bloquear esto por seguridad)
-                xhrSetup: function (xhr, url) {
-                    xhr.setRequestHeader('Referer', 'https://ppv.to/');
-                }
-            });
-            hls.loadSource(url);
-            hls.attachMedia(video);
-            hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                video.play();
-            });
-            hls.on(Hls.Events.ERROR, function (event, data) {
-                document.getElementById('msg').innerText = "Si no carga, instala la extensión 'Allow CORS' o 'Native HLS Playback'.";
-            });
-        }
-        // Soporte nativo (Safari en Mac/iPhone)
-        else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            video.src = url;
-            video.addEventListener('loadedmetadata', function() {
-                video.play();
-            });
-        }
+        // --- INICIALIZACIÓN DE CLAPPR ---
+        var clappr_player = new Clappr.Player({
+            source: url_stream,
+            parentId: '#clappr-player',
+            plugins: [HlsjsPlayback], 
+            autoPlay: false
+        });
     </script>
+    
 </body>
 </html>
