@@ -1,317 +1,421 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>StreamVerse - Inicio</title>
-    <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KQ105 - Radio Stream</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
     <style>
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
-            color: white;
-            scroll-behavior: smooth;
-        }
-        nav {
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        nav img {
-            height: 40px;
-        }
-        .nav-links {
-            display: flex;
-            gap: 25px;
-        }
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1rem;
-            transition: color 0.3s;
-            cursor: pointer;
-            padding: 5px 0;
-        }
-        .nav-links a[href="/"] {
-            color: #00aaff;
-            border-bottom: 2px solid #00aaff;
-        }
-        .nav-links a:hover {
-            color: #00aaff;
-        }
-        .content-container {
+            font-family: 'Montserrat', sans-serif;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
-            gap: 30px;
-            margin: 40px auto;
-            max-width: 1600px;
-            padding: 0 20px;
-        }
-        .main-content {
-            display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 30px;
-            flex-grow: 1;
+            min-height: 100vh;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
         }
-        #player {
-            width: 100%;
-            max-width: 1200px;
-            height: 655px;
-            background-color: black;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0,170,255,0.8);
-            position: relative;
-            overflow: hidden; 
-        }
-        
-        #player iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        
-        #banner-container {
-            width: 970px;
-            height: 250px;
-            background-color: #000;
-            border-radius: 12px;
-            box-shadow: 0 0 15px rgba(0,170,255,0.5);
-            overflow: hidden;
-        }
-        #banner-container a {
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
-        #banner-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: opacity 0.5s ease-in-out;
-        }
-        .sidebar-container {
+
+        .player-container {
+            background: #34495e;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
             display: flex;
             flex-direction: column;
-            gap: 30px;
-            width: 350px;
+            gap: 20px;
+        }
+
+        .header { display: flex; flex-direction: column; align-items: center; }
+        .logo-box { background-color: #e74c3c; border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
+        .logo { max-width: 100px; height: auto; display: block; margin: 0 auto; }
+        .station-name { font-size: 2.5em; font-weight: 700; color: #ffffff; margin: 0 0 20px 0; }
+
+        audio#radioPlayer { display: none; }
+
+        .custom-audio-player {
+            display: flex;
+            align-items: center;
+            background-color: #2c3e50;
+            border-radius: 50px;
+            padding: 10px 20px;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.2);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .player-btn { background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #ecf0f1; }
+        .player-btn svg { width: 24px; height: 24px; fill: #ecf0f1; transition: all 0.2s ease; }
+        .player-btn:hover svg { fill: #f39c12; }
+
+        #playPauseBtn { width: 40px; height: 40px; background-color: #f39c12; border-radius: 50%; margin-right: 15px; }
+        #playPauseBtn svg { width: 20px; height: 20px; fill: #2c3e50; }
+        #playPauseBtn:hover svg { fill: #ffffff; }
+        #playPauseBtn .icon-pause { display: none; }
+        #playPauseBtn.playing .icon-pause { display: block; }
+        #playPauseBtn.playing .icon-play { display: none; }
+
+        .volume-container { display: flex; align-items: center; margin-left: auto; }
+        #volumeBtn svg { width: 28px; height: 28px; }
+        #volumeBtn .icon-mute { display: none; }
+        #volumeBtn.muted .icon-mute { display: block; }
+        #volumeBtn.muted .icon-volume { display: none; }
+
+        #volumeSlider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100px;
+            height: 5px;
+            background: #4a657c;
+            border-radius: 5px;
+            outline: none;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        #volumeSlider:hover { background: #5e80a0; }
+
+        #volumeSlider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 15px;
+            height: 15px;
+            background: #f39c12;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        #currentSongInfo {
+            display: flex;
+            align-items: center;
+            background: #2c3e50;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+            gap: 15px;
+            min-height: 100px;
+        }
+
+        #albumCover {
+            width: 70px;
+            height: 70px;
+            border-radius: 8px;
+            object-fit: cover;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
             flex-shrink: 0;
         }
-        .events-box {
-            background-color: rgba(0, 0, 0, 0.6);
-            border-radius: 12px;
-            box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
-            padding: 20px;
-            max-height: 850px; 
+
+        #metadataBox { flex-grow: 1; text-align: left; min-width: 0; }
+        #metadataBox .title { font-weight: 700; font-size: 1.3em; display: block; margin-bottom: 3px; color: #f39c12; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #metadataBox .artist { font-style: italic; font-size: 1em; color: #bdc3c7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        #songHistory {
+            background: #2c3e50;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.2);
+            text-align: left;
+            max-height: 250px;
             overflow-y: auto;
         }
-        .events-box h2 {
-            text-align: center;
-            color: #00aaff;
-            margin-top: 0;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-        }
-        .event-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            padding-bottom: 15px;
-        }
-        .event-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-        .event-item img {
-            width: 50px;
-            height: 50px;
-            margin-right: 15px;
+
+        #songHistory h4 { margin: 0 0 10px 0; color: #f39c12; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; }
+
+        .history-item { display: flex; align-items: center; margin-bottom: 10px; gap: 10px; }
+        .history-item img { width: 40px; height: 40px; border-radius: 5px; object-fit: cover; }
+        .history-item-title { font-weight: 600; font-size: 0.95em; color: #ecf0f1; }
+        .history-item-artist { font-size: 0.8em; color: #bdc3c7; }
+
+        #downloadHistoryBtn {
+            background-color: #f39c12;
+            border: none;
             border-radius: 8px;
-            object-fit: contain;
+            color: #2c3e50;
+            font-weight: 700;
+            padding: 12px;
+            font-size: 1em;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s ease;
         }
-        .event-details {
-            flex-grow: 1;
-        }
-        .event-details h3 {
-            margin: 0 0 5px 0;
-            font-size: 1.1rem;
-            color: #fff;
-        }
-        .event-details p {
-            margin: 0;
-            font-size: 0.9rem;
-            color: #ccc;
-        }
-        .countdown-box {
-            background-color: #00aaff;
-            color: #0d1b2a;
-            padding: 8px 12px;
-            border-radius: 5px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            min-width: 100px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            white-space: nowrap;
-        }
-        .countdown-box.finished {
-            background-color: #ff4d4d;
-            color: white;
+
+        #downloadHistoryBtn:hover {
+            background-color: #f1c40f;
+            box-shadow: 0 4px 15px rgba(243,156,18,0.3);
         }
     </style>
+
 </head>
 <body>
 
-    <nav>
-        <a href="/"><img src="logo.png" alt="Logo"></a>
-        <div class="nav-links">
-            <a href="/">Inicio</a>
-            <a href="/peliculas.html">Zona de Películas</a>
-            <a href="/repeticiones.html">Repeticiones</a>
-            <a href="https://mediaformulaiptv.vercel.app/f1zone.html">F1</a>
-            <a href="/noticias.html">Noticias</a>
-            <a href="/tv.html">TV</a>
-        </div>
-    </nav>
+<div class="player-container">
 
-    <div class="content-container">
-        <div class="main-content">
-            <div id="player">
-                </div>
-            <div id="banner-container">
-                <a id="banner-link" href="#" target="_blank" rel="noopener noreferrer">
-                    <img id="banner-image" src="" alt="Publicidad">
-                </a>
-            </div>
+    <div class="header">
+        <div class="logo-box">
+            <img src="logo.png" alt="Logo de KQ105" class="logo">
         </div>
-        
-        <div class="sidebar-container">
-            <div class="events-box">
-                <h2>Próximos Eventos</h2>
-                <div id="events-list"></div>
-            </div>
+        <h1 class="station-name">KQ105</h1>
+    </div>
+
+    <audio id="radioPlayer"></audio>
+
+    <div class="custom-audio-player">
+        <button id="playPauseBtn" class="player-btn">
+            <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5.14v14l11-7-11-7z"/></svg>
+            <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        </button>
+
+        <div class="volume-container">
+            <button id="volumeBtn" class="player-btn">
+                <svg class="icon-volume" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+                <svg class="icon-mute" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63z"/></svg>
+            </button>
+            <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            // --- NUEVO: Lógica para crear el reproductor Clappr ---
-            const playerContainer = document.getElementById('player');
-            const streamUrl = 'https://m3.merichunidya.com:999/hls/cr7star004.m3u8?md5=6HHfi40AiVPxxeEOqhBFHQ&expires=1750822079';
+    <div id="currentSongInfo">
+        <img id="albumCover" src="placeholder_cover.png" alt="Cover">
+        <div id="metadataBox">
+            <span class="artist">Sintonizando...</span>
+        </div>
+    </div>
 
-            const player = new Clappr.Player({
-                parent: playerContainer,
-                source: streamUrl,
-                width: '100%',
-                height: '100%',
-                autoPlay: true,
-                mute: false,
-                mediacontrol: { seekbar: "#00aaff" },
-            });
+    <div id="songHistory">
+        <h4>Historial Reciente</h4>
+        <p style="font-size: 0.9em; color: #bdc3c7;">Cargando historial...</p>
+    </div>
 
-            // --- Lógica existente para las barras laterales y banner ---
-            function formatTimeTo12Hour(hours, minutes) {
-                const ampm = hours >= 12 ? 'PM' : 'AM';
-                hours = hours % 12;
-                hours = hours ? hours : 12;
-                const strMinutes = String(minutes).padStart(2, '0');
-                return `${hours}:${strMinutes} ${ampm}`;
-            }
+    <button id="downloadHistoryBtn">Descargar Historial (.txt)</button>
 
-            const events = [
-                { name: 'WWE RAW', day: 'Lunes', time: '20:00', logo: 'https://upload.wikimedia.org/wikipedia/commons/8/86/WWE_RAW_Logo_2025.svg' },
-                { name: 'WWE NXT', day: 'Martes', time: '20:00', logo: 'https://1000marcas.net/wp-content/uploads/2022/10/WWE-NXT-Logo.png' },
-                { name: 'AEW Dynamite', day: 'Miércoles', time: '20:00', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/AEW_Logo_%28simplified%29.svg/2560px-AEW_Logo_%28simplified%29.svg.png' },
-                { name: 'WWE SmackDown', day: 'Viernes', time: '20:00', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/WWE_SmackDown_%282024%29_Logo.svg/1200px-WWE_SmackDown_%282024%29_Logo.svg.png' },
-                { name: 'AEW Collision', day: 'Sábado', time: '20:00', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/AEW_Logo_%28simplified%29.svg/2560px-AEW_Logo_%28simplified%29.svg.png' }
-            ];
-            const daysOfWeek = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+</div>
 
-            function updateWeeklyCountdowns() {
-                const now = new Date();
-                const eventsListContainer = document.getElementById('events-list');
-                eventsListContainer.innerHTML = '';
-                events.forEach(event => {
-                    const eventDate = new Date();
-                    const [hours, minutes] = event.time.split(':').map(Number);
-                    let dayIndex = daysOfWeek.indexOf(event.day);
-                    let currentDayIndex = now.getDay();
-                    let daysToAdd = dayIndex - currentDayIndex;
-                    if (daysToAdd < 0 || (daysToAdd === 0 && (now.getHours() > hours || (now.getHours() === hours && now.getMinutes() >= minutes)))) {
-                        daysToAdd += 7;
-                    }
-                    eventDate.setDate(now.getDate() + daysToAdd);
-                    eventDate.setHours(hours, minutes, 0, 0);
-                    const timeDiff = eventDate.getTime() - now.getTime();
-                    const eventItem = document.createElement('div');
-                    eventItem.className = 'event-item';
-                    eventItem.innerHTML = `<img src="${event.logo}" alt="${event.name} Logo"><div class="event-details"><h3>${event.name}</h3><p>${event.day} a las ${formatTimeTo12Hour(hours, minutes)}</p></div><div class="countdown-box"></div>`;
-                    const countdownBox = eventItem.querySelector('.countdown-box');
-                    if (timeDiff > 0) {
-                        const totalSeconds = Math.floor(timeDiff / 1000);
-                        const days = Math.floor(totalSeconds / (3600 * 24));
-                        const hoursRemaining = Math.floor((totalSeconds % (3600 * 24)) / 3600);
-                        const minutesRemaining = Math.floor((totalSeconds % 3600) / 60);
-                        const secondsRemaining = totalSeconds % 60;
-                        let countdownText = '';
-                        if (days > 0) countdownText += `${days}d `;
-                        countdownText += `${String(hoursRemaining).padStart(2, '0')}:${String(minutesRemaining).padStart(2, '0')}:${String(secondsRemaining).padStart(2, '0')}`;
-                        countdownBox.textContent = countdownText;
-                    } else {
-                        countdownBox.textContent = '¡Finalizado!';
-                        countdownBox.classList.add('finished');
-                    }
-                    eventsListContainer.appendChild(eventItem);
-                });
-            }
-            
-            const banners = [
-                { image: 'banner_kq105.jp', link: 'https://kq105.com' },
-                { image: 'banner_discord.jpg', link: 'https://discord.gg/5Xcs9v62jp' },
-                { image: 'banner_wwe_raw.jpg', link: null },
-                { image: 'banner_smackdown.jpg', link: null },
-                { image: 'banner_wwe_nxt.jpg', link: null }
-            ];
-            let currentBannerIndex = 0;
-            const bannerLink = document.getElementById('banner-link');
-            const bannerImage = document.getElementById('banner-image');
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
-            function updateBanner() {
-                bannerImage.style.opacity = '0';
-                setTimeout(() => {
-                    const currentBanner = banners[currentBannerIndex];
-                    bannerImage.src = currentBanner.image;
-                    if (currentBanner.link) {
-                        bannerLink.href = currentBanner.link;
-                        bannerLink.style.cursor = 'pointer';
-                    } else {
-                        bannerLink.removeAttribute('href');
-                        bannerLink.style.cursor = 'default';
-                    }
-                    currentBannerIndex = (currentBannerIndex + 1) % banners.length;
-                    bannerImage.style.opacity = '1';
-                }, 500);
-            }
+<script>
+/* ================================
+   CONFIG
+================================= */
 
-            updateWeeklyCountdowns();
-            setInterval(updateWeeklyCountdowns, 1000);
-            
-            updateBanner();
-            setInterval(updateBanner, 5000);
-        });
-    </script>
+var m3u8_url = "https://televicentro.streamguys1.com/wkaqfm/playlist.m3u8?key=96bc32e12ecb6b1bafd065de263d64235ff13cc93b57ff806196d3ecd0891325&aw_0_1st.playerId=kq105&source=kq105.com&us_privacy=1YNY&clientType=web&callLetters=WKAQ-FM&devicename=web-desktop&stationid=1846&dist=kq105.com&subscription_type=free&aw_0_1st.version=1.0_html5&aw_0_1st.playerid=kq105_floating_player";
+
+const PLACEHOLDER_COVER = "placeholder_cover.png";
+const WKAQ_COVER = "cover_wkaq.png";
+const LOCAL_STORAGE_KEY = "radioHistory";
+
+/* ================================
+   ELEMENTOS
+================================= */
+
+var radioPlayer = document.getElementById("radioPlayer");
+var playPauseBtn = document.getElementById("playPauseBtn");
+var volumeBtn = document.getElementById("volumeBtn");
+var volumeSlider = document.getElementById("volumeSlider");
+var downloadBtn = document.getElementById("downloadHistoryBtn");
+
+var albumCover = document.getElementById("albumCover");
+var metadataBox = document.getElementById("metadataBox");
+var songHistoryDiv = document.getElementById("songHistory");
+
+var currentTitle = "";
+var currentArtist = "";
+var songHistoryList = [];
+
+/* ================================
+   PLAYER
+================================= */
+
+playPauseBtn.addEventListener("click", () => {
+    radioPlayer.paused ? radioPlayer.play() : radioPlayer.pause();
+});
+
+volumeBtn.addEventListener("click", () => {
+    radioPlayer.muted = !radioPlayer.muted;
+});
+
+volumeSlider.addEventListener("input", () => {
+    radioPlayer.volume = volumeSlider.value;
+    radioPlayer.muted = volumeSlider.value == 0;
+});
+
+radioPlayer.addEventListener("play", () => {
+    playPauseBtn.classList.add("playing");
+});
+
+radioPlayer.addEventListener("pause", () => {
+    playPauseBtn.classList.remove("playing");
+});
+
+radioPlayer.addEventListener("volumechange", () => {
+    if (radioPlayer.muted || radioPlayer.volume === 0) {
+        volumeSlider.value = 0;
+        volumeBtn.classList.add("muted");
+    } else {
+        volumeSlider.value = radioPlayer.volume;
+        volumeBtn.classList.remove("muted");
+    }
+});
+
+/* ================================
+   HISTORIAL
+================================= */
+
+function loadHistory() {
+    try {
+        const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+        songHistoryList = saved ? JSON.parse(saved) : [];
+    } catch {
+        songHistoryList = [];
+    }
+    updateHistoryDisplay();
+}
+
+function saveHistory() {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(songHistoryList));
+}
+
+function downloadHistoryAsTxt() {
+    if (songHistoryList.length === 0) {
+        alert("No hay historial para descargar.");
+        return;
+    }
+
+    let text = `Historial de Canciones - KQ105\nGenerado: ${new Date().toLocaleString()}\n\n`;
+    songHistoryList.forEach(s => text += `${s.artist} - ${s.title}\n`);
+
+    const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "historial_kq105.txt";
+    document.body.appendChild(a);
+    a.click();
+
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+downloadBtn.addEventListener("click", downloadHistoryAsTxt);
+
+/* ================================
+   METADATA UI
+================================= */
+
+function updateMetadataDisplay(title, artist, cover = PLACEHOLDER_COVER) {
+    metadataBox.innerHTML = `
+        <span class="title">${title}</span>
+        <span class="artist">${artist}</span>
+    `;
+    albumCover.src = cover;
+}
+
+function updateHistoryDisplay() {
+    songHistoryDiv.innerHTML = "<h4>Historial Reciente</h4>";
+
+    if (songHistoryList.length === 0) {
+        songHistoryDiv.innerHTML += `<p style="font-size:0.9em;color:#bdc3c7;">No hay canciones todavía.</p>`;
+        return;
+    }
+
+    songHistoryList.forEach(song => {
+        const item = document.createElement("div");
+        item.className = "history-item";
+        item.innerHTML = `
+            <img src="${song.cover}" alt="cover">
+            <div>
+                <span class="history-item-title">${song.title}</span>
+                <span class="history-item-artist">${song.artist}</span>
+            </div>
+        `;
+        songHistoryDiv.appendChild(item);
+    });
+}
+
+/* ================================
+   COVER FETCH
+================================= */
+
+async function fetchAlbumCover(artist, title) {
+    const query = encodeURIComponent(`${title} ${artist}`);
+    const url = `https://itunes.apple.com/search?term=${query}&entity=song&limit=1`;
+
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (data.results?.length > 0) {
+            return data.results[0].artworkUrl100.replace("100x100bb", "600x600bb");
+        }
+    } catch {}
+
+    return PLACEHOLDER_COVER;
+}
+
+/* ================================
+   STREAM HLS
+================================= */
+
+if (Hls.isSupported()) {
+    var hls = new Hls();
+    hls.loadSource(m3u8_url);
+    hls.attachMedia(radioPlayer);
+
+    hls.on(Hls.Events.MEDIA_ATTACHED, () => {
+        loadHistory();
+        radioPlayer.volume = volumeSlider.value;
+        radioPlayer.play();
+        updateMetadataDisplay("Sintonizando...", "");
+    });
+
+    hls.on(Hls.Events.FRAG_CHANGED, async (event, data) => {
+        if (!data.frag.title) return;
+
+        const titleMatch = /title="([^"]*)"/.exec(data.frag.title);
+        const artistMatch = /artist="([^"]*)"/.exec(data.frag.title);
+
+        const title = titleMatch ? titleMatch[1] : "Título no disponible";
+        const artist = artistMatch ? artistMatch[1] : "Artista no disponible";
+
+        if (title === currentTitle && artist === currentArtist) return;
+
+        currentTitle = title;
+        currentArtist = artist;
+
+        let cover =
+            title.includes("WKAQ-FM") || artist.includes("WKAQ-FM")
+                ? WKAQ_COVER
+                : await fetchAlbumCover(artist, title);
+
+        updateMetadataDisplay(title, artist, cover);
+
+        songHistoryList = songHistoryList.filter(s => !(s.title === title && s.artist === artist));
+        songHistoryList.unshift({ title, artist, cover });
+
+        updateHistoryDisplay();
+        saveHistory();
+    });
+
+} else if (radioPlayer.canPlayType("application/vnd.apple.mpegurl")) {
+    radioPlayer.src = m3u8_url;
+    radioPlayer.addEventListener("loadedmetadata", () => {
+        radioPlayer.play();
+        updateMetadataDisplay("Reproducción nativa.", "Metadata no disponible.");
+    });
+    songHistoryDiv.innerHTML = `<h4>Historial Reciente</h4><p style="font-size:.9em;color:#bdc3c7;">El historial no está disponible en este modo.</p>`;
+}
+
+</script>
 
 </body>
 </html>
