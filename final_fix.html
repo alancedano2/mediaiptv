@@ -1,86 +1,46 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reparación de Streaming .TS</title>
-    
-    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
-    
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f0f0f; color: #e0e0e0; padding: 20px; }
-        .container { max-width: 900px; margin: auto; }
-        .player-card { background: #1a1a1a; padding: 20px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #333; }
-        h2 { color: #00d4ff; margin-top: 0; font-size: 1.2rem; }
-        .video-js, .plyr, #clappr-player, #dplayer { width: 100% !important; border-radius: 8px; overflow: hidden; }
-        .status-tag { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; background: #333; margin-bottom: 10px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stream HLS - Clappr</title>
+  <!-- Clappr CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #111;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    #player {
+      width: 80%;
+      max-width: 1280px;
+      aspect-ratio: 16/9;
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Multi-Player (Fix .TS)</h1>
-    <p>Si el video no carga, es posible que el enlace haya expirado o requiera un User-Agent específico.</p>
-
-    <div class="player-card">
-        <span class="status-tag">MOTOR: VIDEOJS + HLS.JS</span>
-        <h2>Video.js</h2>
-        <video id="vjs-fix" class="video-js vjs-default-skin vjs-16-9" controls></video>
-    </div>
-
-    <div class="player-card">
-        <span class="status-tag">MOTOR: CLAPPR DEFAULT</span>
-        <h2>Clappr Player</h2>
-        <div id="clappr-player"></div>
-    </div>
-
-    <div class="player-card">
-        <span class="status-tag">MOTOR: DPLAYER + HLS.JS</span>
-        <h2>DPlayer (Opción B)</h2>
-        <div id="dplayer"></div>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-<script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dplayer/dist/DPlayer.min.js"></script>
+<div id="player"></div>
 
 <script>
-    const streamUrl = "https://territories-delaware-wma-tolerance.trycloudflare.com/14335.m3u8";
-
-    // --- Configuración Video.js ---
-    var vjsPlayer = videojs('vjs-fix');
-    vjsPlayer.src({
-        src: streamUrl,
-        type: 'application/x-mpegURL' // Engañamos al player para que use el motor HLS
-    });
-
-    // --- Configuración Clappr ---
-    var clapprPlayer = new Clappr.Player({
-        source: streamUrl,
-        parentId: "#clappr-player",
-        mimeType: "application/x-mpegURL",
-        width: '100%',
-        autoPlay: false
-    });
-
-    // --- Configuración DPlayer ---
-    const dp = new DPlayer({
-        container: document.getElementById('dplayer'),
-        video: {
-            url: streamUrl,
-            type: 'customHls',
-            customType: {
-                customHls: function (video, player) {
-                    const hls = new Hls();
-                    hls.loadSource(video.src);
-                    hls.attachMedia(video);
-                },
-            },
-        },
-    });
+  // Reemplaza la URL con tu enlace HLS o el de cloudflared
+  const player = new Clappr.Player({
+    source: 'https://territories-delaware-wma-tolerance.trycloudflare.com',
+    parentId: '#player',
+    width: '100%',
+    height: '100%',
+    autoPlay: true,
+    mute: false,
+    hideMediaControl: false,
+    watermark: null,
+    mediacontrol: { seekbar: "#ff0000" }, // opcional
+    plugins: [Clappr.FlasHLS], // soporte HLS
+  });
 </script>
 
 </body>
