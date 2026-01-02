@@ -3,28 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reproductor Completo</title>
+    <title>Reproductor Clappr Fix</title>
     <script src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
     <style>
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: #000; overflow: hidden; }
         #player { width: 100vw; height: 100vh; }
-        
-        /* Capa transparente para forzar el clic inicial */
-        #overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            background: rgba(0,0,0,0.1);
-        }
     </style>
 </head>
 <body>
 
-    <div id="overlay"></div>
     <div id="player"></div>
 
     <script>
@@ -33,21 +20,19 @@
             parentId: "#player",
             width: '100%',
             height: '100%',
-            autoPlay: false, // Lo iniciaremos por JS tras el clic
-            preload: 'auto',
+            autoPlay: false, // Desactivado para evitar bloqueos del navegador
+            preload: 'metadata',
             playback: {
                 playInline: true,
                 hlsjsConfig: {
+                    // Estas opciones ayudan con el error bufferAddCodecError
                     enableWorker: true,
-                    lowLatencyMode: true,
+                    enableSoftwareAES: true,
+                    forceKeyFrameOnDiscontinuity: true,
+                    // Ignora errores de códec no fatales
+                    overrideNative: true 
                 }
             }
-        });
-
-        // Al hacer clic en cualquier parte de la pantalla
-        document.getElementById('overlay').addEventListener('click', function() {
-            player.play();
-            this.style.display = 'none'; // Desaparece el overlay
         });
     </script>
 </body>
