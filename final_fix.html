@@ -3,15 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reproductor Clappr</title>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
+    <title>Reproductor Completo</title>
+    <script src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
     <style>
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: #000; overflow: hidden; }
         #player { width: 100vw; height: 100vh; }
+        
+        /* Capa transparente para forzar el clic inicial */
+        #overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body>
 
+    <div id="overlay"></div>
     <div id="player"></div>
 
     <script>
@@ -20,27 +33,22 @@
             parentId: "#player",
             width: '100%',
             height: '100%',
-            autoPlay: true,
-            mute: true, // INDISPENSABLE para evitar el NotAllowedError
-            actualLiveTime: true,
+            autoPlay: false, // Lo iniciaremos por JS tras el clic
+            preload: 'auto',
             playback: {
                 playInline: true,
                 hlsjsConfig: {
                     enableWorker: true,
-                    maxBufferLength: 30,
-                    // Esto ayuda a recuperarse de errores de red automáticamente
-                    recoverAttempts: 5 
-                }
-            },
-            events: {
-                onError: function(e) {
-                    console.log("Error detectado, intentando reiniciar...");
-                    player.configure({source: "https://houses-shades-eng-leisure.trycloudflare.com/mystream/815000/index.m3u8"});
-                    player.play();
+                    lowLatencyMode: true,
                 }
             }
         });
-    </script>
 
+        // Al hacer clic en cualquier parte de la pantalla
+        document.getElementById('overlay').addEventListener('click', function() {
+            player.play();
+            this.style.display = 'none'; // Desaparece el overlay
+        });
+    </script>
 </body>
 </html>
