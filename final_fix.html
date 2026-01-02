@@ -6,18 +6,8 @@
     <title>Reproductor Clappr</title>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            overflow: hidden; /* Evita barras de desplazamiento */
-        }
-        #player {
-            width: 100vw;
-            height: 100vh;
-        }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: #000; overflow: hidden; }
+        #player { width: 100vw; height: 100vh; }
     </style>
 </head>
 <body>
@@ -31,11 +21,22 @@
             width: '100%',
             height: '100%',
             autoPlay: true,
-            mute: false,
+            mute: true, // INDISPENSABLE para evitar el NotAllowedError
+            actualLiveTime: true,
             playback: {
                 playInline: true,
                 hlsjsConfig: {
-                    enableWorker: true
+                    enableWorker: true,
+                    maxBufferLength: 30,
+                    // Esto ayuda a recuperarse de errores de red automáticamente
+                    recoverAttempts: 5 
+                }
+            },
+            events: {
+                onError: function(e) {
+                    console.log("Error detectado, intentando reiniciar...");
+                    player.configure({source: "https://houses-shades-eng-leisure.trycloudflare.com/mystream/815000/index.m3u8"});
+                    player.play();
                 }
             }
         });
