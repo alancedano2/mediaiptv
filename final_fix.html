@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reproductor Clappr LVP</title>
+    <title>Reproductor Clappr</title>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
     <style>
-        /* Estilos para que el reproductor sea pantalla completa y sin bordes */
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
             background-color: #000;
-            overflow: hidden;
+            overflow: hidden; /* Evita barras de desplazamiento */
         }
         #player {
             width: 100vw;
@@ -27,29 +26,18 @@
 
     <script>
         var player = new Clappr.Player({
-            // Tu nuevo link de Cloudflare
             source: "https://houses-shades-eng-leisure.trycloudflare.com/mystream/815000/index.m3u8",
             parentId: "#player",
             width: '100%',
             height: '100%',
             autoPlay: true,
-            preload: 'auto',
-            mimeType: "application/x-mpegURL", // Formato específico para M3U8
-            actualLiveTime: true,
+            mute: false,
             playback: {
                 playInline: true,
-                recycleVideo: true,
                 hlsjsConfig: {
-                    // Configuración para mejorar la carga de streams
-                    enableWorker: true,
-                    lowLatencyMode: true
+                    enableWorker: true
                 }
             }
-        });
-
-        // Intentar forzar el inicio si el navegador lo bloquea
-        player.on(Clappr.Events.PLAYER_READY, function() {
-            player.play();
         });
     </script>
 
