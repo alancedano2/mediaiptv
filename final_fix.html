@@ -2,39 +2,35 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>MINTSTREAM OS | FINAL FIX</title>
+    <title>MINTSTREAM OS | OFICIAL</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #050505; color: white; overflow: hidden; }
-        .stream-frame { border: 10px solid #18181b; border-radius: 40px; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+        body { background: #050505; color: white; margin: 0; height: 100vh; display: flex; flex-direction: column; }
+        .iframe-container { border: 8px solid #111; border-radius: 30px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
     </style>
 </head>
-<body class="h-screen flex flex-col">
+<body>
 
-    <nav class="p-4 border-b border-white/5 bg-black flex justify-between items-center">
+    <nav class="p-4 border-b border-white/5 bg-black/50 flex justify-between items-center">
         <div class="flex items-center gap-2">
-            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-            <span class="font-black tracking-tighter italic text-xl">MINTSTREAM OS</span>
+            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span class="font-black italic text-lg uppercase tracking-tighter">MintStream OS</span>
         </div>
-        <div class="flex gap-4 items-center">
-            <span class="text-[9px] text-zinc-500 font-bold uppercase tracking-widest">● PC 1: ONLINE</span>
-            <button onclick="location.reload()" class="bg-zinc-800 text-[10px] px-3 py-1 rounded-full font-bold">RECARGAR</button>
-        </div>
+        <button onclick="location.reload()" class="bg-zinc-800 hover:bg-zinc-700 text-[10px] px-4 py-1.5 rounded-full font-bold uppercase transition-all">
+            Reintentar Conexión
+        </button>
     </nav>
 
-    <main class="flex-1 flex flex-col items-center justify-center p-6">
-        <div class="w-full max-w-5xl aspect-video relative stream-frame overflow-hidden">
+    <main class="flex-1 flex flex-col items-center justify-center p-4">
+        <div class="w-full max-w-5xl aspect-video iframe-container bg-zinc-900">
             <iframe 
-                id="gaming-ui"
                 src="https://elect-wishlist-capacity-pins.trycloudflare.com" 
-                style="width:100%; height:100%; border:none;"
-                allow="autoplay; fullscreen; gamepad; clipboard-read; clipboard-write"
-                loading="eager">
+                style="width: 100%; height: 100%; border: none;"
+                allow="autoplay; fullscreen; gamepad; clipboard-read; clipboard-write">
             </iframe>
         </div>
-        
-        <p class="mt-4 text-[10px] text-zinc-600 font-bold uppercase tracking-[0.3em]">
-            Haz clic dentro para interactuar • Presiona F11 para pantalla completa
+        <p class="mt-6 text-[9px] text-zinc-600 font-bold uppercase tracking-[0.4em]">
+            Frael IdeaPad 3 • Streaming Activo
         </p>
     </main>
 
