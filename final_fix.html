@@ -1,44 +1,36 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>MINTSTREAM OS | TERMINAL</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-[#050505] text-white font-sans h-screen flex flex-col items-center justify-center p-6">
+<body class="bg-[#050505] text-white h-screen flex flex-col items-center justify-center p-10">
 
-    <div id="lobby" class="max-w-md w-full text-center space-y-8 animate-in fade-in zoom-in duration-500">
-        <div class="space-y-2">
-            <h1 class="text-5xl font-black italic tracking-tighter text-green-500 uppercase">MintStream</h1>
-            <p class="text-zinc-500 text-xs font-bold tracking-[0.3em]">FRAEL-IDEAPAD-3-15ITL05</p>
-        </div>
-
-        <div class="relative group cursor-pointer" onclick="startPlay()">
-            <div class="absolute -inset-1 bg-green-500 rounded-[2rem] blur opacity-25 group-hover:opacity-75 transition duration-1000"></div>
-            <div class="relative bg-zinc-900 border border-white/10 p-8 rounded-[2rem] space-y-4">
-                <div class="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mx-auto">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="text-green-500 h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-                <h3 class="font-black text-xl italic uppercase">Lanzar Sesión</h3>
-                <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Protocolo: Cloudflare Tunnel</p>
+    <div class="text-center space-y-8 animate-in fade-in duration-700">
+        <h1 class="text-6xl font-black italic tracking-tighter text-green-500 uppercase">MintStream</h1>
+        
+        <div onclick="lanzarJuego()" class="group relative cursor-pointer inline-block">
+            <div class="absolute -inset-1 bg-green-500 rounded-[2rem] blur opacity-20 group-hover:opacity-60 transition duration-500"></div>
+            <div class="relative bg-zinc-900 border border-white/10 px-12 py-10 rounded-[2.5rem]">
+                <div class="text-4xl mb-4">🎮</div>
+                <h2 class="text-2xl font-bold uppercase italic">Iniciar Stream</h2>
+                <p class="text-[10px] text-zinc-500 font-bold tracking-[0.3em] mt-2">FRAEL-IDEAPAD-3-15ITL05</p>
             </div>
         </div>
     </div>
 
     <script>
-        function startPlay() {
-            // URL QUE TE DIO CLOUDFLARE
-            const url = "https://elect-wishlist-capacity-pins.trycloudflare.com";
+        function lanzarJuego() {
+            // ESTA ES LA URL CLAVE CON EL PLAYER AL FINAL
+            const baseUrl = "https://elect-wishlist-capacity-pins.trycloudflare.com";
+            const playerUrl = baseUrl + "/player";
             
-            // TRUCO FINAL: En lugar de IFRAME, abrimos una ventana 
-            // que se comporta como una aplicación (PopUp sin bordes)
+            // Abrimos en una ventana limpia para evitar el error de frame-ancestors
             const width = window.screen.width;
             const height = window.screen.height;
             
-            window.open(url, 'MintStream', `width=${width},height=${height},menubar=no,toolbar=no,location=no,status=no`);
+            window.open(playerUrl, 'MintStream', `width=${width},height=${height},menubar=no,toolbar=no,location=no`);
         }
     </script>
 </body>
