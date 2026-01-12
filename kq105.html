@@ -2,62 +2,66 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>WKAQ-FM Reproductor En Vivo</title>
+    <title>WKAQ Monitor de Metadatos</title>
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     <style>
         body { 
-            background-color: #121212; 
+            background-color: #000; 
             color: white; 
-            font-family: 'Segoe UI', sans-serif; 
+            font-family: 'Courier New', Courier, monospace; /* Estilo monitor/consola */
             display: flex; 
-            flex-direction: column; 
-            align-items: center; 
             justify-content: center; 
+            align-items: center; 
             height: 100vh; 
             margin: 0; 
         }
         .container { 
-            background: #1e1e1e; 
+            background: #111; 
             padding: 30px; 
-            border-radius: 15px; 
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5); 
+            border-radius: 10px; 
+            box-shadow: 0 0 30px rgba(237, 28, 36, 0.3); 
             text-align: center; 
-            width: 350px; 
-            border-bottom: 5px solid #ed1c24; 
+            width: 500px; 
+            border: 1px solid #333;
         }
-        .meta-box { 
-            margin-bottom: 20px; 
-            min-height: 80px; 
+        .monitor-screen { 
+            background: #050505;
+            margin-bottom: 25px; 
+            padding: 25px;
+            border-radius: 5px;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #222;
         }
-        #song-title { 
-            display: block; 
-            font-size: 1.3em; 
+        #full-display { 
+            font-size: 1.1em; 
             font-weight: bold; 
+            color: #00ff00; /* Color verde tipo terminal para ver todo claro */
+            line-height: 1.5;
+            word-wrap: break-word;
+            text-transform: uppercase;
+        }
+        .label { 
             color: #ed1c24; 
-            margin-bottom: 5px; 
-        }
-        #artist-name { 
+            font-size: 0.9em; 
+            margin-bottom: 10px; 
             display: block; 
-            font-size: 1em; 
-            color: #aaaaaa; 
+            font-weight: bold;
         }
-        /* Ajuste del reproductor */
-        .video-js { 
-            margin: 0 auto; 
-            border-radius: 8px; 
-        }
-        .vjs-live-display { font-weight: bold; color: #ff0000; }
+        .video-js { margin: 0 auto; filter: grayscale(1); }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="meta-box">
-        <span id="song-title">Cargando...</span>
-        <span id="artist-name">Conectando con la señal</span>
+    <span class="label">📡 MONITOR DE STREAM EN VIVO</span>
+    <div class="monitor-screen">
+        <div id="full-display">ESPERANDO DATOS...</div>
     </div>
 
-    <audio id="my-radio" class="video-js vjs-default-skin" controls preload="auto" width="300" height="60">
+    <audio id="radio-player" class="video-js vjs-default-skin" controls preload="auto" width="400" height="60">
         <source src="https://televicentro.streamguys1.com/wkaqfm/playlist.m3u8?listeningSessionID=6557d57d3d1a82ad_67997224_G9Zte7qT_MjE2LjI0Ni42MC4yNg!!_00000072r1S&downloadSessionID=0&key=96bc32e12ecb6b1bafd065de263d64235ff13cc93b57ff806196d3ecd0891325&aw_0_1st.playerId=kq105&source=kq105.com&us_privacy=1YNY&clientType=web&callLetters=WKAQ-FM&devicename=web-desktop&stationid=1846&dist=kq105.com&subscription_type=free&aw_0_1st.version=1.0_html5&aw_0_1st.playerid=kq105_floating_player" type="application/x-mpegURL">
     </audio>
 </div>
@@ -65,53 +69,43 @@
 <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
 
 <script>
-    // Inicializamos el reproductor
-    var player = videojs('my-radio', {
-        liveui: true, // Habilita la interfaz de "En Vivo"
-        autoplay: true,
-        muted: false
+    var player = videojs('radio-player', {
+        liveui: true,
+        autoplay: true
     });
 
-    // Función para extraer la metadata directamente del playlist.m3u8
-    async function getLiveMetadata() {
-        const playlistUrl = player.src();
-        
+    async function fetchMetadata() {
         try {
-            const response = await fetch(playlistUrl);
-            const data = await response.text();
+            // Hacemos fetch a la URL del playlist para leer el texto crudo
+            const response = await fetch(player.src());
+            const text = await response.text();
             
-            // Buscamos el patrón |ARTISTA|TIEMPO|CANCION| que viste en el Network
-            // La expresión regular busca lo que hay entre los pipes |
-            const regex = /url="\|([^|]+)\|[^|]+\|([^|]+)\|"/;
-            const match = data.match(regex);
+            // Buscamos lo que hay dentro de url=" ... "
+            const match = text.match(/url="([^"]+)"/);
 
-            if (match) {
-                document.getElementById('artist-name').innerText = match[1]; // El primer bloque
-                document.getElementById('song-title').innerText = match[2];  // El segundo bloque relevante
+            if (match && match[1]) {
+                let rawData = match[1];
+                
+                // Quitamos el primer y último "|" si existen, y reemplazamos los del medio por " | "
+                // para que se vea igual que en tu Network pero limpio.
+                let formattedData = rawData.split('|')
+                                          .filter(item => item.trim() !== "")
+                                          .join(' | ');
+
+                document.getElementById('full-display').innerText = formattedData;
             }
-        } catch (error) {
-            console.error("Error obteniendo metadatos:", error);
+        } catch (e) {
+            console.log("Reintentando conexión...");
         }
     }
 
-    // Ejecutar la actualización de texto cada 8 segundos
-    setInterval(getLiveMetadata, 8000);
-    getLiveMetadata();
+    // Actualización rápida cada 3 segundos para captar jingles cortos (como los de 9 segundos)
+    setInterval(fetchMetadata, 3000);
+    fetchMetadata();
 
-    // Lógica para que no se quede atrás (Live Drift)
-    player.on('play', function() {
-        // Si al darle play estamos muy lejos del "vivo", saltamos al final
-        var liveTime = player.liveTracker.liveCurrentTime();
-        if (Math.abs(player.currentTime() - liveTime) > 10) {
-            player.currentTime(liveTime);
-        }
-    });
-
-    // Si hay un error de red (porque el token expiró), intentamos recargar
+    // Auto-fix si el stream se corta
     player.on('error', function() {
-        console.log("Error de conexión. Reintentando...");
-        player.load();
-        player.play();
+        setTimeout(() => { player.load(); player.play(); }, 500);
     });
 </script>
 
