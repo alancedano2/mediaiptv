@@ -2,70 +2,86 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Reproductor WKAQ-FM con Metadatos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WKAQ-FM Radio en Vivo</title>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
-        body { font-family: sans-serif; background: #121212; color: white; text-align: center; padding: 50px; }
-        #info-box { background: #222; padding: 20px; border-radius: 10px; border: 1px solid #444; margin-top: 20px; }
-        .playing-now { color: #00ff00; font-weight: bold; font-size: 1.2em; }
-        audio { width: 100%; max-width: 400px; margin-top: 20px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f0f0f; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .player-card { background: #1a1a1a; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; width: 90%; max-width: 400px; border: 1px solid #333; }
+        .status-dot { height: 10px; width: 10px; background-color: #ff0000; border-radius: 50%; display: inline-block; margin-right: 5px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        .metadata-container { margin-top: 20px; min-height: 80px; }
+        #track-info { font-size: 1.4em; font-weight: bold; color: #00d4ff; margin-bottom: 5px; }
+        #artist-info { font-size: 1.1em; color: #bbb; }
+        audio { width: 100%; margin-top: 20px; filter: invert(1); } /* Invertimos para que combine con el modo oscuro */
     </style>
 </head>
 <body>
 
-    <h2>Reproductor en Vivo</h2>
-    
-    <div id="info-box">
-        <p>Estado: <span id="status">Cargando...</span></p>
-        <p>Ahora suena:</p>
-        <div class="playing-now" id="metadata-display">Esperando datos del stream...</div>
-    </div>
+    <div class="player-card">
+        <div><span class="status-dot"></span> EN VIVO: WKAQ-FM</div>
+        
+        <div class="metadata-container">
+            <div id="track-info">Cargando señal...</div>
+            <div id="artist-info">Espere un momento</div>
+        </div>
 
-    <audio id="audio" controls></audio>
+        <audio id="audio" controls autoplay></audio>
+    </div>
 
     <script>
         const audio = document.getElementById('audio');
-        const display = document.getElementById('metadata-display');
-        const status = document.getElementById('status');
-        
-        // Reemplaza esto con tu URL (ten en cuenta que los tokens expiran)
+        const trackDisplay = document.getElementById('track-info');
+        const artistDisplay = document.getElementById('artist-info');
+
+        // Esta es la URL. NOTA: Si deja de funcionar, es porque el 'key' expiró y necesitas obtener uno nuevo del Network.
         const streamUrl = "https://televicentro.streamguys1.com/wkaqfm/playlist.m3u8?listeningSessionID=6557d57d3d1a82ad_67997224_G9Zte7qT_MjE2LjI0Ni42MC4yNg!!_00000072r1S&downloadSessionID=0&key=96bc32e12ecb6b1bafd065de263d64235ff13cc93b57ff806196d3ecd0891325&aw_0_1st.playerId=kq105&source=kq105.com&us_privacy=1YNY&clientType=web&callLetters=WKAQ-FM&devicename=web-desktop&stationid=1846&dist=kq105.com&subscription_type=free&aw_0_1st.version=1.0_html5&aw_0_1st.playerid=kq105_floating_player";
 
         if (Hls.isSupported()) {
-            const hls = new Hls();
-            hls.loadSource(streamUrl);
-            hls.attachMedia(audio);
-            
-            hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                status.innerText = "Listo para reproducir";
+            const hls = new Hls({
+                liveSyncDurationCount: 3, // Se mantiene cerca del tiempo real
+                forceKeyFrameOnDiscontinuity: true,
+                manifestLoadingMaxRetry: Infinity, // No deja de intentar si falla
+                liveMaxLatencyDurationCount: 10
             });
 
-            // Esta es la parte clave: detectar el cambio de fragmento
+            hls.loadSource(streamUrl);
+            hls.attachMedia(audio);
+
+            // Captura de metadatos del archivo M3U8
             hls.on(Hls.Events.FRAG_CHANGED, (event, data) => {
-                // El objeto 'data.frag' contiene la información del bloque actual
-                // La metadata que viste en el Network suele venir en el 'title' del fragmento
                 if (data.frag && data.frag.title) {
-                    processMetadata(data.frag.title);
+                    parseM3UMetadata(data.frag.title);
+                }
+            });
+
+            hls.on(Hls.Events.ERROR, (event, data) => {
+                if (data.fatal) {
+                    console.warn("Error fatal, reintentando...");
+                    hls.startLoad();
                 }
             });
 
         } else if (audio.canPlayType('application/vnd.apple.mpegurl')) {
-            // Soporte nativo para Safari (macOS/iOS)
+            // Safari nativo
             audio.src = streamUrl;
         }
 
-        function processMetadata(rawText) {
-            // El texto viene algo así: title="WKAQ-FM",url="|ARTISTA|DURACION|CANCION|"
-            // Limpiamos los pipes "|" para que se vea bien
-            let cleanText = rawText.replace(/\|/g, ' ').trim();
+        function parseM3UMetadata(rawTitle) {
+            // El formato que vimos es: |ARTISTA|DURACION|CANCION|
+            // Ejemplo: |YOYO FERRAN - OP|00:00:46|LA TENDENCIA|
             
-            // Intentamos extraer solo la parte relevante si tiene el formato del screenshot
-            if (cleanText.includes('url=')) {
-                cleanText = cleanText.split('url=')[1].replace(/"/g, '');
+            const parts = rawTitle.split('|').filter(p => p.trim() !== "");
+            
+            if (parts.length >= 3) {
+                // Según tu captura: partes[0] es Artista/Programa, partes[2] es Canción
+                artistDisplay.innerText = parts[0]; 
+                trackDisplay.innerText = parts[2];
+            } else {
+                trackDisplay.innerText = "WKAQ-FM 580 AM";
+                artistDisplay.innerText = "En vivo desde Puerto Rico";
             }
-
-            display.innerText = cleanText || "WKAQ-FM en vivo";
-            console.log("Nueva metadata detectada:", rawText);
+            console.log("Metadata detectada:", rawTitle);
         }
     </script>
 </body>
