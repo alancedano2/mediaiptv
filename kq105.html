@@ -2,87 +2,186 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WKAQ-FM Radio en Vivo</title>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <title>WKAQ-FM Pro Player</title>
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f0f0f; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-        .player-card { background: #1a1a1a; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; width: 90%; max-width: 400px; border: 1px solid #333; }
-        .status-dot { height: 10px; width: 10px; background-color: #ff0000; border-radius: 50%; display: inline-block; margin-right: 5px; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-        .metadata-container { margin-top: 20px; min-height: 80px; }
-        #track-info { font-size: 1.4em; font-weight: bold; color: #00d4ff; margin-bottom: 5px; }
-        #artist-info { font-size: 1.1em; color: #bbb; }
-        audio { width: 100%; margin-top: 20px; filter: invert(1); } /* Invertimos para que combine con el modo oscuro */
+        body { background: #000; color: white; font-family: Arial, sans-serif; display: flex; justify-content: center; padding-top: 50px; }
+        .container { width: 400px; text-align: center; background: #111; padding: 20px; border-radius: 15px; border: 2px solid #ed1c24; }
+        .metadata { margin: 20px 0; padding: 15px; background: #222; border-radius: 10px; min-height: 60px; }
+        #track { color: #ed1c24; font-size: 1.2em; font-weight: bold; display: block; }
+        #artist { color: #aaa; font-size: 0.9em; }
+        /* Estilo para que el reproductor se vea bien */
+        .video-js { margin: 0 auto; background-color: transparent; }
+        .vjs-control-bar { background: rgba(0,0,0,0.7); }
     </style>
 </head>
 <body>
 
-    <div class="player-card">
-        <div><span class="status-dot"></span> EN VIVO: WKAQ-FM</div>
-        
-        <div class="metadata-container">
-            <div id="track-info">Cargando señal...</div>
-            <div id="artist-info">Espere un momento</div>
-        </div>
-
-        <audio id="audio" controls autoplay></audio>
+<div class="container">
+    <img src="https://m.kq105.com/wp-content/uploads/2022/05/WKAQ580AM.png" width="100" alt="WKAQ">
+    
+    <div class="metadata">
+        <span id="track">Cargando señal...</span>
+        <span id="artist">Obteniendo información del stream</span>
     </div>
 
-    <script>
-        const audio = document.getElementById('audio');
-        const trackDisplay = document.getElementById('track-info');
-        const artistDisplay = document.getElementById('artist-info');
+    <audio id="radio-player" class="video-js vjs-default-skin" controls preload="auto" width="300" height="50">
+        <source src="TU_URL_AQUI" type="application/x-mpegURL">
+    </audio>
+    
+    <p style="font-size: 10px; color: #444; margin-top: 15px;">Nota: Si se detiene, la URL ha expirado y debes copiar una nueva del Network.</p>
+</div>
 
-        // Esta es la URL. NOTA: Si deja de funcionar, es porque el 'key' expiró y necesitas obtener uno nuevo del Network.
-        const streamUrl = "https://televicentro.streamguys1.com/wkaqfm/playlist.m3u8?listeningSessionID=6557d57d3d1a82ad_67997224_G9Zte7qT_MjE2LjI0Ni42MC4yNg!!_00000072r1S&downloadSessionID=0&key=96bc32e12ecb6b1bafd065de263d64235ff13cc93b57ff806196d3ecd0891325&aw_0_1st.playerId=kq105&source=kq105.com&us_privacy=1YNY&clientType=web&callLetters=WKAQ-FM&devicename=web-desktop&stationid=1846&dist=kq105.com&subscription_type=free&aw_0_1st.version=1.0_html5&aw_0_1st.playerid=kq105_floating_player";
+<script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
 
-        if (Hls.isSupported()) {
-            const hls = new Hls({
-                liveSyncDurationCount: 3, // Se mantiene cerca del tiempo real
-                forceKeyFrameOnDiscontinuity: true,
-                manifestLoadingMaxRetry: Infinity, // No deja de intentar si falla
-                liveMaxLatencyDurationCount: 10
-            });
+<script>
+    // 1. Pega aquí tu URL actualizada del Network (la que termina en .m3u8)
+    const currentUrl = "https://televicentro.streamguys1.com/wkaqfm/playlist.m3u8?listeningSessionID=6557d57d3d1a82ad_67997224_G9Zte7qT_MjE2LjI0Ni42MC4yNg!!_00000072r1S&downloadSessionID=0&key=96bc32e12ecb6b1bafd065de263d64235ff13cc93b57ff806196d3ecd0891325&aw_0_1st.playerId=kq105&source=kq105.com&us_privacy=1YNY&clientType=web&callLetters=WKAQ-FM&devicename=web-desktop&stationid=1846&dist=kq105.com&subscription_type=free&aw_0_1st.version=1.0_html5&aw_0_1st.playerid=kq105_floating_player";
 
-            hls.loadSource(streamUrl);
-            hls.attachMedia(audio);
+    const player = videojs('radio-player', {
+        liveui: true,
+        autoplay: true,
+        fluid: true
+    });
 
-            // Captura de metadatos del archivo M3U8
-            hls.on(Hls.Events.FRAG_CHANGED, (event, data) => {
-                if (data.frag && data.frag.title) {
-                    parseM3UMetadata(data.frag.title);
-                }
-            });
+    player.src({ src: currentUrl, type: 'application/x-mpegURL' });
 
-            hls.on(Hls.Events.ERROR, (event, data) => {
-                if (data.fatal) {
-                    console.warn("Error fatal, reintentando...");
-                    hls.startLoad();
-                }
-            });
-
-        } else if (audio.canPlayType('application/vnd.apple.mpegurl')) {
-            // Safari nativo
-            audio.src = streamUrl;
-        }
-
-        function parseM3UMetadata(rawTitle) {
-            // El formato que vimos es: |ARTISTA|DURACION|CANCION|
-            // Ejemplo: |YOYO FERRAN - OP|00:00:46|LA TENDENCIA|
+    // 2. Lógica para extraer el texto |YOYO FERRAN...| que viste en el Network
+    // Como Video.js a veces oculta el texto del M3U8, vamos a leer el archivo manualmente cada 10 segundos
+    async function updateMetadata() {
+        try {
+            const response = await fetch(currentUrl);
+            const text = await response.text();
             
-            const parts = rawTitle.split('|').filter(p => p.trim() !== "");
-            
-            if (parts.length >= 3) {
-                // Según tu captura: partes[0] es Artista/Programa, partes[2] es Canción
-                artistDisplay.innerText = parts[0]; 
-                trackDisplay.innerText = parts[2];
-            } else {
-                trackDisplay.innerText = "WKAQ-FM 580 AM";
-                artistDisplay.innerText = "En vivo desde Puerto Rico";
+            // Buscamos la línea que tiene el título y el formato que viste
+            // Ejemplo: url="|YOYO FERRAN - OP|00:00:46|LA TENDENCIA|"
+            const regex = /url="\|([^|]+)\|([^|]+)\|([^|]+)\|"/;
+            const match = text.match(regex);
+
+            if (match) {
+                document.getElementById('artist').innerText = match[1]; // YOYO FERRAN - OP
+                document.getElementById('track').innerText = match[3];  // LA TENDENCIA
             }
-            console.log("Metadata detectada:", rawTitle);
+        } catch (e) {
+            console.log("Error leyendo metadatos:", e);
         }
-    </script>
+    }
+
+    // Actualizar texto cada 10 segundos
+    setInterval(updateMetadata, 10000);
+    updateMetadata();
+
+    // 3. Lógica Anti-Corte: Si el reproductor se detiene, intenta reconectar
+    player.on('error', function() {
+        console.log("Señal perdida, reintentando...");
+        setTimeout(() => {
+            player.src({ src: currentUrl, type: 'application/x-mpegURL' });
+            player.load();
+            player.play();
+        }, 2000);
+    });
+
+    player.on('waiting', function() {
+        // Si se queda cargando mucho tiempo, forzamos el salto al "En Vivo"
+        const liveGap = player.liveTracker.liveCurrentTime() - player.currentTime();
+        if (liveGap > 15) {
+            player.currentTime(player.liveTracker.liveCurrentTime());
+        }
+    });
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>WKAQ-FM Pro Player</title>
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+    <style>
+        body { background: #000; color: white; font-family: Arial, sans-serif; display: flex; justify-content: center; padding-top: 50px; }
+        .container { width: 400px; text-align: center; background: #111; padding: 20px; border-radius: 15px; border: 2px solid #ed1c24; }
+        .metadata { margin: 20px 0; padding: 15px; background: #222; border-radius: 10px; min-height: 60px; }
+        #track { color: #ed1c24; font-size: 1.2em; font-weight: bold; display: block; }
+        #artist { color: #aaa; font-size: 0.9em; }
+        /* Estilo para que el reproductor se vea bien */
+        .video-js { margin: 0 auto; background-color: transparent; }
+        .vjs-control-bar { background: rgba(0,0,0,0.7); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <img src="https://m.kq105.com/wp-content/uploads/2022/05/WKAQ580AM.png" width="100" alt="WKAQ">
+    
+    <div class="metadata">
+        <span id="track">Cargando señal...</span>
+        <span id="artist">Obteniendo información del stream</span>
+    </div>
+
+    <audio id="radio-player" class="video-js vjs-default-skin" controls preload="auto" width="300" height="50">
+        <source src="TU_URL_AQUI" type="application/x-mpegURL">
+    </audio>
+    
+    <p style="font-size: 10px; color: #444; margin-top: 15px;">Nota: Si se detiene, la URL ha expirado y debes copiar una nueva del Network.</p>
+</div>
+
+<script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+
+<script>
+    // 1. Pega aquí tu URL actualizada del Network (la que termina en .m3u8)
+    const currentUrl = "https://televicentro.streamguys1.com/wkaqfm/playlist.m3u8?listeningSessionID=6557d57d3d1a82ad_67997224_G9Zte7qT_MjE2LjI0Ni42MC4yNg!!_00000072r1S&downloadSessionID=0&key=96bc32e12ecb6b1bafd065de263d64235ff13cc93b57ff806196d3ecd0891325&aw_0_1st.playerId=kq105&source=kq105.com&us_privacy=1YNY&clientType=web&callLetters=WKAQ-FM&devicename=web-desktop&stationid=1846&dist=kq105.com&subscription_type=free&aw_0_1st.version=1.0_html5&aw_0_1st.playerid=kq105_floating_player";
+
+    const player = videojs('radio-player', {
+        liveui: true,
+        autoplay: true,
+        fluid: true
+    });
+
+    player.src({ src: currentUrl, type: 'application/x-mpegURL' });
+
+    // 2. Lógica para extraer el texto |YOYO FERRAN...| que viste en el Network
+    // Como Video.js a veces oculta el texto del M3U8, vamos a leer el archivo manualmente cada 10 segundos
+    async function updateMetadata() {
+        try {
+            const response = await fetch(currentUrl);
+            const text = await response.text();
+            
+            // Buscamos la línea que tiene el título y el formato que viste
+            // Ejemplo: url="|YOYO FERRAN - OP|00:00:46|LA TENDENCIA|"
+            const regex = /url="\|([^|]+)\|([^|]+)\|([^|]+)\|"/;
+            const match = text.match(regex);
+
+            if (match) {
+                document.getElementById('artist').innerText = match[1]; // YOYO FERRAN - OP
+                document.getElementById('track').innerText = match[3];  // LA TENDENCIA
+            }
+        } catch (e) {
+            console.log("Error leyendo metadatos:", e);
+        }
+    }
+
+    // Actualizar texto cada 10 segundos
+    setInterval(updateMetadata, 10000);
+    updateMetadata();
+
+    // 3. Lógica Anti-Corte: Si el reproductor se detiene, intenta reconectar
+    player.on('error', function() {
+        console.log("Señal perdida, reintentando...");
+        setTimeout(() => {
+            player.src({ src: currentUrl, type: 'application/x-mpegURL' });
+            player.load();
+            player.play();
+        }, 2000);
+    });
+
+    player.on('waiting', function() {
+        // Si se queda cargando mucho tiempo, forzamos el salto al "En Vivo"
+        const liveGap = player.liveTracker.liveCurrentTime() - player.currentTime();
+        if (liveGap > 15) {
+            player.currentTime(player.liveTracker.liveCurrentTime());
+        }
+    });
+</script>
+
 </body>
 </html>
