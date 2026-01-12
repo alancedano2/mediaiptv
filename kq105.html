@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reproductor WKAQ-FM con Metadatos</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        body { font-family: sans-serif; background: #121212; color: white; text-align: center; padding: 50px; }
+        #info-box { background: #222; padding: 20px; border-radius: 10px; border: 1px solid #444; margin-top: 20px; }
+        .playing-now { color: #00ff00; font-weight: bold; font-size: 1.2em; }
+        audio { width: 100%; max-width: 400px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <h2>Reproductor en Vivo</h2>
+    
+    <div id="info-box">
+        <p>Estado: <span id="status">Cargando...</span></p>
+        <p>Ahora suena:</p>
+        <div class="playing-now" id="metadata-display">Esperando datos del stream...</div>
+    </div>
+
+    <audio id="audio" controls></audio>
+
+    <script>
+        const audio = document.getElementById('audio');
+        const display = document.getElementById('metadata-display');
+        const status = document.getElementById('status');
+        
+        // Reemplaza esto con tu URL (ten en cuenta que los tokens expiran)
+        const streamUrl = "https://televicentro.streamguys1.com/wkaqfm/playlist.m3u8?listeningSessionID=6557d57d3d1a82ad_67997224_G9Zte7qT_MjE2LjI0Ni42MC4yNg!!_00000072r1S&downloadSessionID=0&key=96bc32e12ecb6b1bafd065de263d64235ff13cc93b57ff806196d3ecd0891325&aw_0_1st.playerId=kq105&source=kq105.com&us_privacy=1YNY&clientType=web&callLetters=WKAQ-FM&devicename=web-desktop&stationid=1846&dist=kq105.com&subscription_type=free&aw_0_1st.version=1.0_html5&aw_0_1st.playerid=kq105_floating_player";
+
+        if (Hls.isSupported()) {
+            const hls = new Hls();
+            hls.loadSource(streamUrl);
+            hls.attachMedia(audio);
+            
+            hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                status.innerText = "Listo para reproducir";
+            });
+
+            // Esta es la parte clave: detectar el cambio de fragmento
+            hls.on(Hls.Events.FRAG_CHANGED, (event, data) => {
+                // El objeto 'data.frag' contiene la información del bloque actual
+                // La metadata que viste en el Network suele venir en el 'title' del fragmento
+                if (data.frag && data.frag.title) {
+                    processMetadata(data.frag.title);
+                }
+            });
+
+        } else if (audio.canPlayType('application/vnd.apple.mpegurl')) {
+            // Soporte nativo para Safari (macOS/iOS)
+            audio.src = streamUrl;
+        }
+
+        function processMetadata(rawText) {
+            // El texto viene algo así: title="WKAQ-FM",url="|ARTISTA|DURACION|CANCION|"
+            // Limpiamos los pipes "|" para que se vea bien
+            let cleanText = rawText.replace(/\|/g, ' ').trim();
+            
+            // Intentamos extraer solo la parte relevante si tiene el formato del screenshot
+            if (cleanText.includes('url=')) {
+                cleanText = cleanText.split('url=')[1].replace(/"/g, '');
+            }
+
+            display.innerText = cleanText || "WKAQ-FM en vivo";
+            console.log("Nueva metadata detectada:", rawText);
+        }
+    </script>
+</body>
+</html>
