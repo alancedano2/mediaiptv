@@ -3,74 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 Live Hub | 2026 Season</title>
-    <link rel="stylesheet" href="style.css">
+    <title>F1 LIVE - Transmisión Profesional 2026</title>
+    
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --f1-red: #e10600;
+            --dark-bg: #0b0b0f;
+            --card-bg: #1f1f27;
+            --text-white: #ffffff;
+            --accent-gray: #38383f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Titillium Web', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-white);
+            line-height: 1.6;
+        }
+
+        /* --- HEADER --- */
+        header {
+            background-color: #000;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid var(--f1-red);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+        }
+
+        .logo span { color: var(--f1-red); }
+
+        .live-tag {
+            background: var(--f1-red);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* --- STREAMING SECTION --- */
+        .main-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .video-wrapper {
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            position: relative;
+            border: 1px solid var(--accent-gray);
+        }
+
+        #player {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+        }
+
+        /* Selector de Canales */
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .btn-channel {
+            background: var(--card-bg);
+            border: 1px solid var(--accent-gray);
+            color: white;
+            padding: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            border-radius: 4px;
+        }
+
+        .btn-channel:hover {
+            background: var(--f1-red);
+            border-color: var(--f1-red);
+        }
+
+        .btn-channel.active {
+            background: var(--f1-red);
+            box-shadow: 0 0 15px rgba(225, 6, 0, 0.4);
+        }
+
+        /* --- NEWS GRID --- */
+        .news-header {
+            margin: 40px 0 20px;
+            border-left: 5px solid var(--f1-red);
+            padding-left: 15px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .card:hover { transform: translateY(-5px); }
+
+        .card-img {
+            width: 100%;
+            height: 180px;
+            background: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #555;
+            background-image: linear-gradient(45deg, #1f1f27, #38383f);
+        }
+
+        .card-content { padding: 20px; }
+        .card-category {
+            color: var(--f1-red);
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* Animación Pulse */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .controls { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
 </head>
 <body>
 
-    <header class="navbar">
-        <div class="logo">F1<span>HUB</span></div>
-        <nav>
-            <ul>
-                <li><a href="#">Noticias</a></li>
-                <li><a href="#">Calendario</a></li>
-                <li><a href="#">Resultados</a></li>
-                <li class="live-indicator">LIVE</li>
-            </ul>
-        </nav>
+    <header>
+        <div class="logo">Formula<span>1</span> Live</div>
+        <div class="live-tag">● EN VIVO</div>
     </header>
 
-    <main>
-        <section class="video-container">
+    <div class="main-container">
+        <div class="video-wrapper">
             <div id="player"></div>
-            <div class="channel-selector">
-                <button onclick="changeChannel('https://analog-ser-moment-available.trycloudflare.com/streams/dazn_f1/index.m3u8')">DAZN F1</button>
-                <button onclick="changeChannel('https://analog-ser-moment-available.trycloudflare.com/streams/espn_usa/index.m3u8')">ESPN USA</button>
-                <button onclick="changeChannel('https://analog-ser-moment-available.trycloudflare.com/streams/espn2_usa/index.m3u8')">ESPN 2 USA</button>
-                <button onclick="changeChannel('https://analog-ser-moment-available.trycloudflare.com/streams/espn_deportes/index.m3u8')">ESPN Deportes</button>
-            </div>
-        </section>
+        </div>
 
-        <section class="news-section">
-            <h2>Noticias Recientes</h2>
-            <div class="news-grid">
-                <article class="news-card">
-                    <div class="badge">Nuevo Reglamento</div>
-                    <h3>Motores 2026: La nueva era híbrida</h3>
-                    <p>Audi y Ford se preparan para su debut oficial en la parrilla...</p>
-                </article>
-                <article class="news-card">
-                    <div class="badge">Mercado</div>
-                    <h3>¿Hamilton al retiro?</h3>
-                    <p>Los rumores sobre el futuro del 7 veces campeón tras su paso por Ferrari.</p>
-                </article>
-                <article class="news-card">
-                    <div class="badge">Circuitos</div>
-                    <h3>Madrid GP: El nuevo trazado</h3>
-                    <p>Análisis técnico del circuito urbano que revoluciona el calendario.</p>
-                </article>
-            </div>
-        </section>
-    </main>
+        <div class="controls">
+            <button class="btn-channel active" onclick="changeChannel(this, 'https://analog-ser-moment-available.trycloudflare.com/streams/dazn_f1/index.m3u8')">DAZN F1</button>
+            <button class="btn-channel" onclick="changeChannel(this, 'https://analog-ser-moment-available.trycloudflare.com/streams/espn_usa/index.m3u8')">ESPN USA</button>
+            <button class="btn-channel" onclick="changeChannel(this, 'https://analog-ser-moment-available.trycloudflare.com/streams/espn2_usa/index.m3u8')">ESPN 2 USA</button>
+            <button class="btn-channel" onclick="changeChannel(this, 'https://analog-ser-moment-available.trycloudflare.com/streams/espn_deportes/index.m3u8')">ESPN Deportes</button>
+        </div>
+
+        <div class="news-header">
+            <h2>NOTICIAS DE LA TEMPORADA 2026</h2>
+        </div>
+
+        <div class="grid">
+            <article class="card">
+                <div class="card-img">MERCADO DE PASES</div>
+                <div class="card-content">
+                    <span class="card-category">Exclusivo</span>
+                    <h3>El debut de Audi en el GP de Australia</h3>
+                    <p>Todo listo para que la marca alemana revolucione la parrilla con su nueva unidad de potencia.</p>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-img">TÉCNICA</div>
+                <div class="card-content">
+                    <span class="card-category">Reglamento</span>
+                    <h3>Aerodinámica Activa: El desafío</h3>
+                    <p>Cómo los pilotos están lidiando con los nuevos alerones móviles en las curvas de alta velocidad.</p>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-img">CALENDARIO</div>
+                <div class="card-content">
+                    <span class="card-category">Circuitos</span>
+                    <h3>Madrid toma el relevo</h3>
+                    <p>Primeras imágenes del paddock en el nuevo circuito semiurbano de la capital española.</p>
+                </div>
+            </article>
+        </div>
+    </div>
 
     <script>
-        // Configuración inicial de Clappr
+        // Inicializar el reproductor Clappr con el primer link
         var player = new Clappr.Player({
             source: "https://analog-ser-moment-available.trycloudflare.com/streams/dazn_f1/index.m3u8",
             parentId: "#player",
             width: '100%',
             height: '100%',
             autoPlay: false,
+            mute: false,
             mimeType: "application/vnd.apple.mpegurl",
-            watermark: "https://logodownload.org/wp-content/uploads/2016/11/formula-1-logo-7.png", 
+            watermark: "https://logodownload.org/wp-content/uploads/2016/11/formula-1-logo-7.png",
             position: 'top-right',
+            poster: 'https://images.unsplash.com/photo-1504450758481-7338eba7524a?auto=format&fit=crop&q=80&w=1000',
         });
 
-        function changeChannel(url) {
+        // Función para cambiar canales
+        function changeChannel(element, url) {
+            // Cambiar fuente de video
             player.load(url);
             player.play();
+
+            // Gestionar estado visual de los botones
+            document.querySelectorAll('.btn-channel').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            element.classList.add('active');
         }
     </script>
+
 </body>
 </html>
