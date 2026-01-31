@@ -1,233 +1,76 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>F1 - Repeticiones</title>
-  <style>
-    body {
-      margin: 0; font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, #0d1b2a, #1b263b, #415a77);
-      color: white;
-    }
-
-    nav {
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 15px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    nav img {
-      height: 40px;
-    }
-
-    nav .nav-links a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1rem;
-      margin-left: 20px;
-      transition: color 0.3s;
-      cursor: pointer;
-    }
-
-    nav .nav-links a:hover {
-      color: #00aaff;
-    }
-
-    .container {
-      display: flex;
-      flex-direction: row;
-      max-width: 1200px;
-      margin: 40px auto;
-      gap: 20px;
-      padding: 0 15px;
-    }
-
-    .video-player {
-      flex: 3;
-      background-color: rgba(0,0,0,0.4);
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(0,170,255,0.3);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      text-align: center;
-      min-height: 500px; /* Increased minimum height */
-    }
-
-    .video-player iframe {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      border: none;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,170,255,0.7);
-    }
-
-    .playlist {
-      flex: 1;
-      background-color: rgba(0,0,0,0.4);
-      padding: 15px;
-      border-radius: 15px;
-      max-height: 70vh;
-      overflow-y: auto;
-    }
-
-    .playlist h3 {
-      margin-top: 0;
-      margin-bottom: 15px;
-      text-align: center;
-    }
-
-    .playlist-section {
-      margin-bottom: 15px;
-    }
-
-    .playlist-section h4 {
-      background-color: rgba(0, 170, 255, 0.2);
-      padding: 10px;
-      border-radius: 8px;
-      margin-top: 0;
-      margin-bottom: 5px;
-      text-align: left;
-      font-size: 1.1rem;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .playlist-section h4::after {
-      content: '+';
-      font-size: 1.5rem;
-    }
-
-    .playlist-section h4.active::after {
-      content: '-';
-    }
-
-    .playlist-content {
-      padding-left: 10px;
-      display: none;
-    }
-
-    .playlist-content.open {
-      display: block;
-    }
-
-    .playlist-item {
-      padding: 10px;
-      margin-bottom: 8px;
-      border-radius: 8px;
-      background-color: rgba(255,255,255,0.1);
-      cursor: pointer;
-      transition: background-color 0.3s;
-      font-size: 0.9rem;
-    }
-
-    .playlist-item:hover {
-      background-color: #00aaff;
-      color: black;
-    }
-
-    .playlist-item.active {
-      background-color: #0077cc;
-      color: white;
-      font-weight: bold;
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        flex-direction: column;
-      }
-      .playlist {
-        max-height: none;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Live Hub | 2026 Season</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
 </head>
 <body>
 
-<nav>
-  <a href="/"><img src="logo.png" alt="Logo"></a>
-  <div class="nav-links">
-    <a href="/">Inicio</a>
-    <a href="/peliculas.html">Zona de Películas</a>
-    <a href="/repeticiones.html">Repeticiones</a>
-    <a href="/f1.html">F1</a>
-    <a href="/noticias.html">Noticias</a>
-    <a href="/tv.html">TV</a>
-  </div>
-</nav>
+    <header class="navbar">
+        <div class="logo">F1<span>HUB</span></div>
+        <nav>
+            <ul>
+                <li><a href="#">Noticias</a></li>
+                <li><a href="#">Calendario</a></li>
+                <li><a href="#">Resultados</a></li>
+                <li class="live-indicator">LIVE</li>
+            </ul>
+        </nav>
+    </header>
 
-<div class="container">
-  <div class="video-player" id="videoContainer">
-    <iframe id="videoFrame" src="https://ok.ru/videoembed/10104402152022" allowfullscreen></iframe>
-  </div>
+    <main>
+        <section class="video-container">
+            <div id="player"></div>
+            <div class="channel-selector">
+                <button onclick="changeChannel('https://analog-ser-moment-available.trycloudflare.com/streams/dazn_f1/index.m3u8')">DAZN F1</button>
+                <button onclick="changeChannel('https://analog-ser-moment-available.trycloudflare.com/streams/espn_usa/index.m3u8')">ESPN USA</button>
+                <button onclick="changeChannel('https://analog-ser-moment-available.trycloudflare.com/streams/espn2_usa/index.m3u8')">ESPN 2 USA</button>
+                <button onclick="changeChannel('https://analog-ser-moment-available.trycloudflare.com/streams/espn_deportes/index.m3u8')">ESPN Deportes</button>
+            </div>
+        </section>
 
-  <div class="playlist">
-    <h3>Lista de Repeticiones</h3>
+        <section class="news-section">
+            <h2>Noticias Recientes</h2>
+            <div class="news-grid">
+                <article class="news-card">
+                    <div class="badge">Nuevo Reglamento</div>
+                    <h3>Motores 2026: La nueva era híbrida</h3>
+                    <p>Audi y Ford se preparan para su debut oficial en la parrilla...</p>
+                </article>
+                <article class="news-card">
+                    <div class="badge">Mercado</div>
+                    <h3>¿Hamilton al retiro?</h3>
+                    <p>Los rumores sobre el futuro del 7 veces campeón tras su paso por Ferrari.</p>
+                </article>
+                <article class="news-card">
+                    <div class="badge">Circuitos</div>
+                    <h3>Madrid GP: El nuevo trazado</h3>
+                    <p>Análisis técnico del circuito urbano que revoluciona el calendario.</p>
+                </article>
+            </div>
+        </section>
+    </main>
 
-    <div class="playlist-section">
-      <h4 onclick="toggleSection(this)" class="active">F1 2025</h4>
-      <div class="playlist-content open">
-        <div class="playlist-item active" onclick="loadVideo('https://ok.ru/videoembed/10104402152022', true, this)">
-          Canada Grand Prix
-        </div>
-      </div>
-    </div>
+    <script>
+        // Configuración inicial de Clappr
+        var player = new Clappr.Player({
+            source: "https://analog-ser-moment-available.trycloudflare.com/streams/dazn_f1/index.m3u8",
+            parentId: "#player",
+            width: '100%',
+            height: '100%',
+            autoPlay: false,
+            mimeType: "application/vnd.apple.mpegurl",
+            watermark: "https://logodownload.org/wp-content/uploads/2016/11/formula-1-logo-7.png", 
+            position: 'top-right',
+        });
 
-  </div>
-</div>
-
-<script>
-  function toggleSection(header) {
-    header.classList.toggle('active');
-    const content = header.nextElementSibling;
-    content.classList.toggle('open');
-  }
-
-  function loadVideo(url, available, element) {
-    const container = document.getElementById('videoContainer');
-    let newFrame = document.createElement('iframe');
-    newFrame.id = 'videoFrame';
-    newFrame.setAttribute('allowfullscreen', '');
-
-    if (available && url) {
-      newFrame.src = url;
-      container.innerHTML = '';
-      container.appendChild(newFrame);
-    } else {
-      container.innerHTML = "<p style='font-size: 1.2rem; padding: 20px;'>No está disponible por el momento.</p>";
-    }
-
-    document.querySelectorAll('.playlist-item').forEach(el => el.classList.remove('active'));
-    element.classList.add('active');
-
-    let sectionHeader = element.closest('.playlist-section').querySelector('h4');
-    if (sectionHeader && !sectionHeader.classList.contains('active')) {
-      sectionHeader.classList.add('active');
-      sectionHeader.nextElementSibling.classList.add('open');
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    const activeItem = document.querySelector('.playlist-item.active');
-    if (activeItem) {
-      const activeHeader = activeItem.closest('.playlist-section').querySelector('h4');
-      const activeContent = activeItem.closest('.playlist-content');
-      if (activeHeader) activeHeader.classList.add('active');
-      if (activeContent) activeContent.classList.add('open');
-    }
-  });
-</script>
-
+        function changeChannel(url) {
+            player.load(url);
+            player.play();
+        }
+    </script>
 </body>
 </html>
