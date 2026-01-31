@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 Hub | Transmisión Limpia</title>
+    <title>F1 Hybrid Stream | 2026 Engine Era</title>
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+
+    <script src="https://rss.app/static/widgets/imageboard.js" type="text/javascript" async></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;700;900&display=swap" rel="stylesheet">
 
@@ -18,21 +22,9 @@
             --accent-gray: #38383f;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Titillium Web', sans-serif; background-color: var(--dark-bg); color: var(--text-white); overflow-x: hidden; }
 
-        body {
-            font-family: 'Titillium Web', sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--text-white);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* --- HEADER --- */
         header {
             background-color: #000;
             padding: 15px 5%;
@@ -45,46 +37,29 @@
             z-index: 1000;
         }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 900;
-            letter-spacing: -1px;
-            text-transform: uppercase;
-        }
-
+        .logo { font-size: 1.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: -1px; }
         .logo span { color: var(--f1-red); }
 
-        .live-tag {
-            background: var(--f1-red);
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 0.8rem;
-            animation: pulse 1.5s infinite;
-        }
+        .main-container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
 
-        /* --- STREAMING SECTION --- */
-        .main-container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
-
+        /* Contenedor del reproductor dinámico */
         .video-wrapper {
             background: #000;
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 20px 50px rgba(0,0,0,0.9);
-            position: relative;
             border: 1px solid var(--accent-gray);
-        }
-
-        #player {
+            position: relative;
             width: 100%;
             aspect-ratio: 16 / 9;
         }
 
-        /* Selector de Canales */
+        #video-target { width: 100%; height: 100%; }
+        
+        /* Estilos específicos para Video.js para que encaje */
+        .video-js { width: 100% !important; height: 100% !important; }
+        .vjs-big-play-button { background-color: var(--f1-red) !important; border: none !important; }
+
         .controls {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -99,185 +74,122 @@
             padding: 14px;
             cursor: pointer;
             font-weight: bold;
-            transition: all 0.3s ease;
             text-transform: uppercase;
             border-radius: 6px;
-            font-size: 0.85rem;
+            transition: 0.3s;
         }
 
-        .btn-channel:hover {
-            background: #2a2a35;
-            border-color: var(--f1-red);
-        }
+        .btn-channel.active { background: var(--f1-red); border-color: var(--f1-red); }
 
-        .btn-channel.active {
-            background: var(--f1-red);
-            border-color: var(--f1-red);
-            box-shadow: 0 0 15px rgba(225, 6, 0, 0.3);
-        }
+        .news-section { margin-top: 50px; padding-bottom: 50px; }
+        .news-title { border-left: 5px solid var(--f1-red); padding-left: 15px; margin-bottom: 25px; }
 
-        /* --- SECCIÓN DE NOTICIAS --- */
-        .news-header {
-            margin: 50px 0 25px;
-            border-left: 5px solid var(--f1-red);
-            padding-left: 15px;
-        }
-
-        .news-header h2 {
-            font-size: 1.8rem;
-            letter-spacing: 1px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
-            margin-bottom: 60px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 10px;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid transparent;
-        }
-
-        .card:hover { 
-            transform: translateY(-10px);
-            border-color: var(--accent-gray);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-        }
-
-        .card-img-placeholder {
-            width: 100%;
-            height: 190px;
-            background: linear-gradient(135deg, #15151e 0%, #38383f 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: rgba(255,255,255,0.1);
-        }
-
-        .card-content { padding: 25px; }
-        
-        .card-category {
-            color: var(--f1-red);
-            font-size: 0.7rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 8px;
+        .engine-badge {
+            font-size: 10px;
             display: block;
-        }
-
-        .card h3 {
-            margin-bottom: 12px;
-            font-size: 1.2rem;
-            line-height: 1.3;
-        }
-
-        .card p {
-            color: #bdcbd4;
-            font-size: 0.95rem;
-        }
-
-        /* Animaciones */
-        @keyframes pulse {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(0.95); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        /* Mobile */
-        @media (max-width: 768px) {
-            .controls { grid-template-columns: 1fr 1fr; }
-            .news-header h2 { font-size: 1.4rem; }
+            margin-top: 4px;
+            opacity: 0.6;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">F1<span>Pro</span>Stream</div>
-        <div class="live-tag">● LIVE SESSION</div>
+        <div class="logo">F1<span>Hybrid</span>Stream</div>
+        <div style="font-weight: bold; color: var(--f1-red);">LIVE HUB 2026</div>
     </header>
 
     <div class="main-container">
-        <div class="video-wrapper">
-            <div id="player"></div>
+        <div class="video-wrapper" id="player-container">
+            <div id="video-target"></div>
         </div>
 
         <div class="controls">
-            <button class="btn-channel active" onclick="changeChannel(this, 'https://analog-ser-moment-available.trycloudflare.com/streams/dazn_f1/index.m3u8')">DAZN F1</button>
-            <button class="btn-channel" onclick="changeChannel(this, 'https://analog-ser-moment-available.trycloudflare.com/streams/espn_usa/index.m3u8')">ESPN USA</button>
-            <button class="btn-channel" onclick="changeChannel(this, 'https://analog-ser-moment-available.trycloudflare.com/streams/espn2_usa/index.m3u8')">ESPN 2 USA</button>
-            <button class="btn-channel" onclick="changeChannel(this, 'https://analog-ser-moment-available.trycloudflare.com/streams/espn_deportes/index.m3u8')">ESPN Deportes</button>
+            <button class="btn-channel active" onclick="loadStream('clappr', 'https://analog-ser-moment-available.trycloudflare.com/streams/dazn_f1/index.m3u8', this)">
+                DAZN F1 <span class="engine-badge">Engine: Clappr</span>
+            </button>
+            <button class="btn-channel" onclick="loadStream('videojs', 'https://analog-ser-moment-available.trycloudflare.com/streams/espn_usa/index.m3u8', this)">
+                ESPN USA <span class="engine-badge">Engine: Video.js</span>
+            </button>
+            <button class="btn-channel" onclick="loadStream('videojs', 'https://analog-ser-moment-available.trycloudflare.com/streams/espn2_usa/index.m3u8', this)">
+                ESPN 2 USA <span class="engine-badge">Engine: Video.js</span>
+            </button>
+            <button class="btn-channel" onclick="loadStream('clappr', 'https://analog-ser-moment-available.trycloudflare.com/streams/espn_deportes/index.m3u8', this)">
+                ESPN DEPORTES <span class="engine-badge">Engine: Clappr</span>
+            </button>
         </div>
 
-        <div class="news-header">
-            <h2>CENTRO DE NOTICIAS 2026</h2>
-        </div>
-
-        <div class="grid">
-            <article class="card">
-                <div class="card-img-placeholder">Tech Insight</div>
-                <div class="card-content">
-                    <span class="card-category">Reglamento 2026</span>
-                    <h3>Combustibles 100% Sostenibles</h3>
-                    <p>Análisis a fondo sobre cómo la nueva mezcla de combustible impactará la potencia de los motores Ferrari y Mercedes.</p>
-                </div>
-            </article>
-
-            <article class="card">
-                <div class="card-img-placeholder">Paddock News</div>
-                <div class="card-content">
-                    <span class="card-category">Mercado</span>
-                    <h3>¿Verstappen a Mercedes?</h3>
-                    <p>Los rumores vuelven a encenderse tras las pruebas privadas en Silverstone. Toto Wolff mantiene el misterio.</p>
-                </div>
-            </article>
-
-            <article class="card">
-                <div class="card-img-placeholder">Race Preview</div>
-                <div class="card-content">
-                    <span class="card-category">Calendario</span>
-                    <h3>GP de Madrid: El paddock toma forma</h3>
-                    <p>La construcción del túnel de IFEMA está terminada. Los pilotos simuladores ya prueban el trazado.</p>
-                </div>
-            </article>
-        </div>
+        <section class="news-section">
+            <div class="news-title">
+                <h2>NOTICIAS RECIENTES DE F1</h2>
+            </div>
+            <div style="background: var(--card-bg); border-radius: 12px; padding: 10px;">
+                <rssapp-imageboard id="tY8gL7fM0X1xIu2K"></rssapp-imageboard>
+            </div>
+        </section>
     </div>
 
     <script>
-        // Configuración de Clappr (Watermark eliminado para una pantalla limpia)
-        var player = new Clappr.Player({
-            source: "https://analog-ser-moment-available.trycloudflare.com/streams/dazn_f1/index.m3u8",
-            parentId: "#player",
-            width: '100%',
-            height: '100%',
-            autoPlay: false,
-            mimeType: "application/vnd.apple.mpegurl",
-            // Se ha eliminado el parámetro 'watermark'
-            actualLiveTime: true,
-            playback: {
-                hlsjsConfig: {
-                    enableWorker: true
-                }
+        let currentClappr = null;
+        let currentVideoJs = null;
+
+        function clearPlayers() {
+            // Limpiar Clappr
+            if (currentClappr) {
+                currentClappr.destroy();
+                currentClappr = null;
             }
-        });
-
-        // Función para cambiar de canal dinámicamente
-        function changeChannel(element, url) {
-            player.load(url);
-            player.play();
-
-            // Actualizar interfaz
-            document.querySelectorAll('.btn-channel').forEach(btn => btn.classList.remove('active'));
-            element.classList.add('active');
+            // Limpiar Video.js
+            if (currentVideoJs) {
+                currentVideoJs.dispose();
+                currentVideoJs = null;
+            }
+            // Resetear el contenedor
+            document.getElementById('video-target').innerHTML = '';
+            // Si Video.js borra el target, lo recreamos
+            if (!document.getElementById('video-target')) {
+                const newTarget = document.createElement('div');
+                newTarget.id = 'video-target';
+                document.getElementById('player-container').appendChild(newTarget);
+            }
         }
+
+        function loadStream(engine, url, btn) {
+            clearPlayers();
+
+            // UI Feedback
+            document.querySelectorAll('.btn-channel').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            if (engine === 'clappr') {
+                currentClappr = new Clappr.Player({
+                    source: url,
+                    parentId: "#video-target",
+                    width: '100%',
+                    height: '100%',
+                    autoPlay: true,
+                    mimeType: "application/vnd.apple.mpegurl"
+                });
+            } else {
+                // Crear elemento de video para Video.js
+                const videoEl = document.createElement('video-js');
+                videoEl.id = 'vjs-player';
+                videoEl.className = 'vjs-default-skin vjs-big-play-centered';
+                document.getElementById('video-target').appendChild(videoEl);
+
+                currentVideoJs = videojs('vjs-player', {
+                    autoplay: true,
+                    controls: true,
+                    sources: [{ src: url, type: 'application/x-mpegURL' }]
+                });
+            }
+        }
+
+        // Carga inicial
+        window.onload = () => {
+            const firstBtn = document.querySelector('.btn-channel');
+            loadStream('clappr', 'https://analog-ser-moment-available.trycloudflare.com/streams/dazn_f1/index.m3u8', firstBtn);
+        };
     </script>
 
 </body>
