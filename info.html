@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reproductor Clappr en Vivo</title>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+    <title>Video.js Live Stream</title>
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     <style>
         body {
             background-color: #000;
@@ -14,49 +14,55 @@
             align-items: center;
             height: 100vh;
         }
-        #player {
+        .video-container {
             width: 100%;
             max-width: 800px;
         }
-        /* Oculta el botón de Play/Pausa mediante CSS para mayor seguridad */
-        .player-controls[data-controls] .play-pause {
+        /* Ocultar el botón de Play/Pause y la barra de progreso */
+        .vjs-play-control, 
+        .vjs-progress-control {
             display: none !important;
+        }
+        /* Deshabilitar clics para evitar pausa manual */
+        .video-js {
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
 
-<div id="player"></div>
+<div class="video-container">
+    <video 
+        id="my-video" 
+        class="video-js vjs-default-skin vjs-big-play-centered" 
+        controls 
+        preload="auto" 
+        autoplay 
+        muted 
+        playsinline
+        crossorigin="anonymous"
+        width="800"
+        height="450">
+        <source src="https://analog-ser-moment-available.trycloudflare.com/stream.m3u8" type="application/x-mpegURL">
+    </video>
+</div>
+
+<script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
 
 <script>
-    var player = new Clappr.Player({
-        source: "https://analog-ser-moment-available.trycloudflare.com/stream.m3u8",
-        parentId: "#player",
-        autoPlay: true,      // Inicia automáticamente
-        mute: true,          // La mayoría de navegadores bloquean el autoplay con sonido
-        width: '100%',
-        height: '100%',
-        chromecast: true,
-        preload: 'auto',
-        playback: {
-            playInline: true,
-            recycleVideo: true,
-        },
-        // Configuraciones para ocultar elementos de la interfaz
-        mediacontrol: {
-            seekbar: "#ff0000",
-            buttons: "#eeeeee"
-        },
-        // Desactiva el clic en el video para pausar
-        events: {
-            onReady: function() {
-                this.core.mediaControl.$el.find(".play-pause").remove();
-                this.core.$el.find(".video-content").on("click", function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                });
-            }
+    var player = videojs('my-video', {
+        liveui: true,
+        autoplay: 'muted', // Obligatorio para la mayoría de navegadores
+        userActions: {
+            click: false // Desactiva la pausa al hacer clic en el video
         }
+    });
+
+    player.ready(function() {
+        // Asegurar que inicie incluso si hay retraso en la red
+        this.play().catch(function(error) {
+            console.log("El autoplay fue bloqueado o hubo un error: ", error);
+        });
     });
 </script>
 
