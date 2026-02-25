@@ -2,141 +2,139 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Alofoke Neón Glass</title>
+    <title>Alofoke Counter Neon</title>
     <style>
-        /* Estilos para que pruebes el efecto (puedes borrar el background del body luego) */
+        /* Quitamos el fondo para que sea transparente */
         body {
             margin: 0;
+            padding: 0;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Fondo de prueba para que veas el efecto blur */
-            background: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30') no-repeat center center/cover;
-            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: transparent; 
+            font-family: 'Segoe UI', Arial, sans-serif;
         }
 
-        /* Contenedor Principal con Blur y Neón */
-        .neon-glass-card {
+        .container-neon {
             display: flex;
             align-items: center;
-            background: rgba(255, 0, 0, 0.1); /* Fondo rojo muy transparente */
-            backdrop-filter: blur(15px); /* ESTO HACE EL BLUR */
+            /* Efecto cristal con blur */
+            background: rgba(20, 0, 0, 0.4); 
+            backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
-            padding: 30px 50px;
-            border-radius: 30px; /* Curvas modernas */
             
-            /* Bordes Neón */
+            /* Rectangular con curvas modernas */
+            padding: 35px 55px;
+            border-radius: 25px; 
+            
+            /* Borde Neón Rojo */
             border: 2px solid #ff0000;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5), 
-                        inset 0 0 10px rgba(255, 0, 0, 0.3);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6), 
+                        inset 0 0 15px rgba(255, 0, 0, 0.3);
             
             color: white;
-            gap: 40px;
-            min-width: 600px;
+            gap: 45px;
         }
 
-        /* Texto */
-        .info-event h1 {
+        .info-text h1 {
             margin: 0;
-            font-size: 2.2rem;
-            font-weight: 800;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            font-size: 30px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
         }
 
-        .info-event p {
+        .info-text p {
             margin: 5px 0 0;
-            font-size: 1.1rem;
-            opacity: 0.9;
+            font-size: 16px;
+            opacity: 0.8;
+            font-weight: 400;
         }
 
-        /* Divisor */
         .divider {
             width: 2px;
             height: 70px;
-            background: linear-gradient(to bottom, transparent, #ff0000, transparent);
+            background: rgba(255, 0, 0, 0.5);
             box-shadow: 0 0 10px #ff0000;
         }
 
-        /* Contador */
-        .timer-grid {
+        .timer-box {
             display: flex;
-            gap: 20px;
+            gap: 25px;
             text-align: center;
         }
 
-        .timer-block {
+        .unit {
             display: flex;
             flex-direction: column;
         }
 
-        .timer-block span {
-            font-size: 2.5rem;
+        .number {
+            font-size: 42px;
             font-weight: 900;
+            color: #ffffff;
             line-height: 1;
+            /* Brillo suave en el número */
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
         }
 
-        .timer-block label {
-            font-size: 0.7rem;
+        .label {
+            font-size: 11px;
             text-transform: uppercase;
-            letter-spacing: 1px;
             margin-top: 5px;
-            color: #ff8080; /* Rojo claro para que se lea bien */
+            letter-spacing: 1.5px;
+            color: #ff8080;
         }
     </style>
 </head>
 <body>
 
-    <div class="neon-glass-card">
-        <div class="info-event">
+    <div class="container-neon">
+        <div class="info-text">
             <h1>Alofoke en el Aggannis</h1>
-            <p>Sábado 28 de febrero • 8:00pm</p>
+            <p>Sábado 28 de febrero a las 8:00pm</p>
         </div>
 
         <div class="divider"></div>
 
-        <div class="timer-grid">
-            <div class="timer-block">
-                <span id="days">00</span>
-                <label>Días</label>
+        <div class="timer-box">
+            <div class="unit">
+                <span class="number" id="days">00</span>
+                <span class="label">Días</span>
             </div>
-            <div class="timer-block">
-                <span id="hours">00</span>
-                <label>Horas</label>
+            <div class="unit">
+                <span class="number" id="hours">00</span>
+                <span class="label">Horas</span>
             </div>
-            <div class="timer-block">
-                <span id="mins">00</span>
-                <label>Mins</label>
+            <div class="unit">
+                <span class="number" id="mins">00</span>
+                <span class="label">Mins</span>
             </div>
-            <div class="timer-block">
-                <span id="secs">00</span>
-                <label>Segs</label>
+            <div class="unit">
+                <span class="number" id="secs">00</span>
+                <span class="label">Segs</span>
             </div>
         </div>
     </div>
 
     <script>
-        // Fecha final: 28 Feb 2026, 8:00 PM (20:00)
-        const targetDate = new Date("Feb 28, 2026 20:00:00").getTime();
+        // Fecha del evento: 28 de Febrero de 2026, 8:00 PM
+        const eventDate = new Date("Feb 28, 2026 20:00:00").getTime();
 
-        function updateCountdown() {
+        function updateClock() {
             const now = new Date().getTime();
-            const gap = targetDate - now;
+            const timeLeft = eventDate - now;
 
-            if (gap <= 0) {
-                document.querySelector(".timer-grid").innerHTML = "<h3>¡EN VIVO!</h3>";
+            if (timeLeft < 0) {
+                document.querySelector(".timer-box").innerHTML = "<h1>¡YA EMPEZÓ!</h1>";
                 return;
             }
 
-            const second = 1000;
-            const minute = second * 60;
-            const hour = minute * 60;
-            const day = hour * 24;
-
-            const d = Math.floor(gap / day);
-            const h = Math.floor((gap % day) / hour);
-            const m = Math.floor((gap % hour) / minute);
-            const s = Math.floor((gap % minute) / second);
+            const d = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const h = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
             document.getElementById("days").innerText = d;
             document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
@@ -144,8 +142,8 @@
             document.getElementById("secs").innerText = s < 10 ? "0" + s : s;
         }
 
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
+        setInterval(updateClock, 1000);
+        updateClock();
     </script>
 </body>
 </html>
