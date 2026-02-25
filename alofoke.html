@@ -2,139 +2,140 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Alofoke Counter Neon</title>
+    <title>Alofoke Neon Dark Glass</title>
     <style>
-        /* Quitamos el fondo para que sea transparente */
+        /* Página transparente */
         body {
             margin: 0;
-            padding: 0;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             background-color: transparent; 
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
         }
 
-        .container-neon {
+        /* Cuadro principal oscurecido */
+        .glass-box {
             display: flex;
             align-items: center;
-            /* Efecto cristal con blur */
-            background: rgba(20, 0, 0, 0.4); 
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            /* Fondo negro translúcido para que se vea oscuro pero con blur */
+            background: rgba(0, 0, 0, 0.75); 
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             
-            /* Rectangular con curvas modernas */
-            padding: 35px 55px;
-            border-radius: 25px; 
+            padding: 35px 60px;
+            border-radius: 20px; /* Rectangular con curvas modernas */
             
-            /* Borde Neón Rojo */
+            /* Bordes Neón Rojo */
             border: 2px solid #ff0000;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6), 
-                        inset 0 0 15px rgba(255, 0, 0, 0.3);
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.5), 
+                        inset 0 0 10px rgba(255, 0, 0, 0.2);
             
             color: white;
-            gap: 45px;
+            gap: 50px;
         }
 
-        .info-text h1 {
+        /* Lado del Texto */
+        .info h1 {
             margin: 0;
-            font-size: 30px;
+            font-size: 32px;
             font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: -0.5px;
+            letter-spacing: -1px;
         }
 
-        .info-text p {
+        .info p {
             margin: 5px 0 0;
-            font-size: 16px;
-            opacity: 0.8;
-            font-weight: 400;
+            font-size: 17px;
+            color: #ccc;
         }
 
+        /* Línea Divisora Neón */
         .divider {
             width: 2px;
-            height: 70px;
-            background: rgba(255, 0, 0, 0.5);
-            box-shadow: 0 0 10px #ff0000;
+            height: 80px;
+            background: #ff0000;
+            box-shadow: 0 0 12px #ff0000;
+            opacity: 0.6;
         }
 
-        .timer-box {
+        /* Lado del Contador */
+        .timer {
             display: flex;
-            gap: 25px;
+            gap: 30px;
             text-align: center;
         }
 
-        .unit {
+        .time-group {
             display: flex;
             flex-direction: column;
         }
 
-        .number {
-            font-size: 42px;
+        .time-group b {
+            font-size: 48px;
             font-weight: 900;
-            color: #ffffff;
             line-height: 1;
-            /* Brillo suave en el número */
-            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
         }
 
-        .label {
+        .time-group span {
             font-size: 11px;
             text-transform: uppercase;
-            margin-top: 5px;
-            letter-spacing: 1.5px;
-            color: #ff8080;
+            margin-top: 8px;
+            letter-spacing: 2px;
+            color: #ff4d4d;
         }
     </style>
 </head>
 <body>
 
-    <div class="container-neon">
-        <div class="info-text">
+    <div class="glass-box">
+        <div class="info">
             <h1>Alofoke en el Aggannis</h1>
-            <p>Sábado 28 de febrero a las 8:00pm</p>
+            <p>Sábado 28 de febrero • 8:00pm</p>
         </div>
 
         <div class="divider"></div>
 
-        <div class="timer-box">
-            <div class="unit">
-                <span class="number" id="days">00</span>
-                <span class="label">Días</span>
+        <div class="timer">
+            <div class="time-group">
+                <b id="days">00</b>
+                <span>Días</span>
             </div>
-            <div class="unit">
-                <span class="number" id="hours">00</span>
-                <span class="label">Horas</span>
+            <div class="time-group">
+                <b id="hours">00</b>
+                <span>Hrs</span>
             </div>
-            <div class="unit">
-                <span class="number" id="mins">00</span>
-                <span class="label">Mins</span>
+            <div class="time-group">
+                <b id="mins">00</b>
+                <span>Min</span>
             </div>
-            <div class="unit">
-                <span class="number" id="secs">00</span>
-                <span class="label">Segs</span>
+            <div class="time-group">
+                <b id="secs">00</b>
+                <span>Seg</span>
             </div>
         </div>
     </div>
 
     <script>
-        // Fecha del evento: 28 de Febrero de 2026, 8:00 PM
-        const eventDate = new Date("Feb 28, 2026 20:00:00").getTime();
+        // Fecha: 28 Feb 2026, 8:00 PM
+        const targetDate = new Date("Feb 28, 2026 20:00:00").getTime();
 
-        function updateClock() {
+        function countdown() {
             const now = new Date().getTime();
-            const timeLeft = eventDate - now;
+            const gap = targetDate - now;
 
-            if (timeLeft < 0) {
-                document.querySelector(".timer-box").innerHTML = "<h1>¡YA EMPEZÓ!</h1>";
+            if (gap <= 0) {
+                document.querySelector(".timer").innerHTML = "<b>¡EN VIVO!</b>";
                 return;
             }
 
-            const d = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-            const h = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            const d = Math.floor(gap / (1000 * 60 * 60 * 24));
+            const h = Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((gap % (1000 * 60)) / 1000);
 
             document.getElementById("days").innerText = d;
             document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
@@ -142,8 +143,8 @@
             document.getElementById("secs").innerText = s < 10 ? "0" + s : s;
         }
 
-        setInterval(updateClock, 1000);
-        updateClock();
+        setInterval(countdown, 1000);
+        countdown();
     </script>
 </body>
 </html>
