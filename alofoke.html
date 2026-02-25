@@ -2,51 +2,42 @@
 <html>
 <head>
     <style>
-        body { background: none; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: 'Inter', sans-serif; }
-        
-        .card {
-            background: linear-gradient(135deg, #cc0000 0%, #800000 100%);
-            padding: 30px 50px;
-            border-radius: 20px;
+        body { background: transparent; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: 'Arial Black', sans-serif; }
+        .banner {
+            background: #ff0000;
+            padding: 20px 60px;
+            border-radius: 100px; /* Súper curvo */
             display: flex;
             align-items: center;
             color: white;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+            gap: 50px;
         }
-
-        .text-side { padding-right: 40px; border-right: 1px solid rgba(255,255,255,0.2); }
-        .text-side h1 { margin: 0; font-size: 32px; font-weight: 900; text-transform: uppercase; letter-spacing: -1px; }
-        .text-side p { margin: 5px 0 0; opacity: 0.8; font-size: 16px; }
-
-        .counter-side { display: flex; gap: 25px; padding-left: 40px; }
-        .unit { text-align: center; }
-        .num { display: block; font-size: 40px; font-weight: 900; line-height: 1; }
-        .label { font-size: 11px; text-transform: uppercase; opacity: 0.6; letter-spacing: 1px; }
+        .title { font-size: 24px; }
+        .date { font-family: Arial; font-size: 14px; display: block; font-weight: normal; opacity: 0.9; }
+        .time { display: flex; gap: 15px; background: rgba(0,0,0,0.2); padding: 10px 30px; border-radius: 50px; }
+        .val { font-size: 30px; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="text-side">
-            <h1>Alofoke en el Aggannis</h1>
-            <p>Sábado 28 de febrero • 8:00pm</p>
-        </div>
-        <div class="counter-side">
-            <div class="unit"><span class="num" id="d1">00</span><span class="label">Días</span></div>
-            <div class="unit"><span class="num" id="h1">00</span><span class="label">Horas</span></div>
-            <div class="unit"><span class="num" id="m1">00</span><span class="label">Mins</span></div>
-            <div class="unit"><span class="num" id="s1">00</span><span class="label">Segs</span></div>
+    <div class="banner">
+        <div class="title">ALOFOKE AGGANNIS <span class="date">Sábado 28 de Febrero, 8:00PM</span></div>
+        <div class="time">
+            <div id="d2">00</div><span>:</span>
+            <div id="h2">00</div><span>:</span>
+            <div id="m2">00</div><span>:</span>
+            <div id="s2">00</div>
         </div>
     </div>
     <script>
-        const target = new Date("Feb 28, 2026 20:00:00").getTime();
+        const target2 = new Date("Feb 28, 2026 20:00:00").getTime();
         setInterval(() => {
             const now = new Date().getTime();
-            const diff = target - now;
-            document.getElementById('d1').innerText = Math.floor(diff / (86400000));
-            document.getElementById('h1').innerText = Math.floor((diff % 86400000) / 3600000);
-            document.getElementById('m1').innerText = Math.floor((diff % 3600000) / 60000);
-            document.getElementById('s1').innerText = Math.floor((diff % 60000) / 1000);
+            const diff = target2 - now;
+            document.getElementById('d2').innerText = Math.floor(diff / 86400000);
+            document.getElementById('h2').innerText = String(Math.floor((diff % 86400000) / 3600000)).padStart(2,'0');
+            document.getElementById('m2').innerText = String(Math.floor((diff % 3600000) / 60000)).padStart(2,'0');
+            document.getElementById('s2').innerText = String(Math.floor((diff % 60000) / 1000)).padStart(2,'0');
         }, 1000);
     </script>
 </body>
