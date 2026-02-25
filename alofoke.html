@@ -1,46 +1,151 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <title>Alofoke Neón Glass</title>
     <style>
-        body { background: transparent; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: sans-serif; }
-        .box {
-            background: #e60000;
-            color: white;
-            display: grid;
-            grid-template-columns: 1.5fr 1px 1fr;
+        /* Estilos para que pruebes el efecto (puedes borrar el background del body luego) */
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
             align-items: center;
-            padding: 40px;
-            border-radius: 30px;
-            width: 800px;
+            /* Fondo de prueba para que veas el efecto blur */
+            background: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30') no-repeat center center/cover;
+            font-family: 'Segoe UI', Roboto, sans-serif;
         }
-        .info h2 { margin: 0; font-size: 35px; }
-        .sep { background: rgba(255,255,255,0.3); height: 80%; width: 1px; }
-        .clock { display: flex; justify-content: space-around; text-align: center; }
-        .clock b { font-size: 45px; display: block; }
+
+        /* Contenedor Principal con Blur y Neón */
+        .neon-glass-card {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 0, 0, 0.1); /* Fondo rojo muy transparente */
+            backdrop-filter: blur(15px); /* ESTO HACE EL BLUR */
+            -webkit-backdrop-filter: blur(15px);
+            padding: 30px 50px;
+            border-radius: 30px; /* Curvas modernas */
+            
+            /* Bordes Neón */
+            border: 2px solid #ff0000;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5), 
+                        inset 0 0 10px rgba(255, 0, 0, 0.3);
+            
+            color: white;
+            gap: 40px;
+            min-width: 600px;
+        }
+
+        /* Texto */
+        .info-event h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 800;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .info-event p {
+            margin: 5px 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Divisor */
+        .divider {
+            width: 2px;
+            height: 70px;
+            background: linear-gradient(to bottom, transparent, #ff0000, transparent);
+            box-shadow: 0 0 10px #ff0000;
+        }
+
+        /* Contador */
+        .timer-grid {
+            display: flex;
+            gap: 20px;
+            text-align: center;
+        }
+
+        .timer-block {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .timer-block span {
+            font-size: 2.5rem;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .timer-block label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+            color: #ff8080; /* Rojo claro para que se lea bien */
+        }
     </style>
 </head>
 <body>
-    <div class="box">
-        <div class="info">
-            <h2>Alofoke</h2>
-            <p>Aggannis Arena | 28 Feb 8:00PM</p>
+
+    <div class="neon-glass-card">
+        <div class="info-event">
+            <h1>Alofoke en el Aggannis</h1>
+            <p>Sábado 28 de febrero • 8:00pm</p>
         </div>
-        <div class="sep"></div>
-        <div class="clock">
-            <div><b id="d3">0</b>D</div>
-            <div><b id="h3">0</b>H</div>
-            <div><b id="m3">0</b>M</div>
+
+        <div class="divider"></div>
+
+        <div class="timer-grid">
+            <div class="timer-block">
+                <span id="days">00</span>
+                <label>Días</label>
+            </div>
+            <div class="timer-block">
+                <span id="hours">00</span>
+                <label>Horas</label>
+            </div>
+            <div class="timer-block">
+                <span id="mins">00</span>
+                <label>Mins</label>
+            </div>
+            <div class="timer-block">
+                <span id="secs">00</span>
+                <label>Segs</label>
+            </div>
         </div>
     </div>
+
     <script>
-        const t3 = new Date("Feb 28, 2026 20:00:00").getTime();
-        setInterval(() => {
-            const n = new Date().getTime();
-            const d = t3 - n;
-            document.getElementById('d3').innerText = Math.floor(d / 86400000);
-            document.getElementById('h3').innerText = Math.floor((d % 86400000) / 3600000);
-            document.getElementById('m3').innerText = Math.floor((d % 3600000) / 60000);
-        }, 1000);
+        // Fecha final: 28 Feb 2026, 8:00 PM (20:00)
+        const targetDate = new Date("Feb 28, 2026 20:00:00").getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const gap = targetDate - now;
+
+            if (gap <= 0) {
+                document.querySelector(".timer-grid").innerHTML = "<h3>¡EN VIVO!</h3>";
+                return;
+            }
+
+            const second = 1000;
+            const minute = second * 60;
+            const hour = minute * 60;
+            const day = hour * 24;
+
+            const d = Math.floor(gap / day);
+            const h = Math.floor((gap % day) / hour);
+            const m = Math.floor((gap % hour) / minute);
+            const s = Math.floor((gap % minute) / second);
+
+            document.getElementById("days").innerText = d;
+            document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
+            document.getElementById("mins").innerText = m < 10 ? "0" + m : m;
+            document.getElementById("secs").innerText = s < 10 ? "0" + s : s;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
     </script>
 </body>
 </html>
