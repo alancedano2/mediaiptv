@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: transparent; /* Sin fondo */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Contenedor Rectangular Rojo */
+        .banner {
+            background: linear-gradient(135deg, #d32f2f, #9a0007); /* Rojo moderno */
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 25px 45px;
+            border-radius: 25px; /* Curvas modernas */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            gap: 40px;
+        }
+
+        /* Texto Izquierda */
+        .info {
+            flex: 1;
+        }
+
+        .info h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .info p {
+            margin: 5px 0 0;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* Separador */
+        .line {
+            width: 1.5px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Contador Derecha */
+        .countdown {
+            display: flex;
+            gap: 20px;
+        }
+
+        .unit {
+            text-align: center;
+        }
+
+        .number {
+            display: block;
+            font-size: 35px;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .label {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: bold;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="banner">
+        <div class="info">
+            <h1>Alofoke en el Aggannis</h1>
+            <p>Sábado 28 de febrero a las 8:00pm</p>
+        </div>
+
+        <div class="line"></div>
+
+        <div class="countdown">
+            <div class="unit">
+                <span class="number" id="days">00</span>
+                <span class="label">Días</span>
+            </div>
+            <div class="unit">
+                <span class="number" id="hours">00</span>
+                <span class="label">Horas</span>
+            </div>
+            <div class="unit">
+                <span class="number" id="mins">00</span>
+                <span class="label">Mins</span>
+            </div>
+            <div class="unit">
+                <span class="number" id="secs">00</span>
+                <span class="label">Segs</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fecha: Sábado 28 Feb 2026, 8:00 PM
+        const target = new Date("Feb 28, 2026 20:00:00").getTime();
+
+        function update() {
+            const now = new Date().getTime();
+            const diff = target - now;
+
+            if (diff <= 0) {
+                document.querySelector('.countdown').innerHTML = "¡YA!";
+                return;
+            }
+
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = d;
+            document.getElementById('hours').innerText = h < 10 ? '0'+h : h;
+            document.getElementById('mins').innerText = m < 10 ? '0'+m : m;
+            document.getElementById('secs').innerText = s < 10 ? '0'+s : s;
+        }
+
+        setInterval(update, 1000);
+        update();
+    </script>
+</body>
+</html>
