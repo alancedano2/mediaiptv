@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Alofoke Neon Dark Glass</title>
+    <title>EWO x TeleOnce - Neon Glass</title>
     <style>
         /* Página transparente */
         body {
@@ -19,18 +19,17 @@
         .glass-box {
             display: flex;
             align-items: center;
-            /* Fondo negro translúcido para que se vea oscuro pero con blur */
-            background: rgba(0, 0, 0, 0.75); 
+            background: rgba(0, 0, 0, 0.8); 
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             
             padding: 35px 60px;
-            border-radius: 20px; /* Rectangular con curvas modernas */
+            border-radius: 20px; 
             
-            /* Bordes Neón Rojo */
-            border: 2px solid #ff0000;
-            box-shadow: 0 0 25px rgba(255, 0, 0, 0.5), 
-                        inset 0 0 10px rgba(255, 0, 0, 0.2);
+            /* Bordes Neón Amarillo */
+            border: 2px solid #ffea00;
+            box-shadow: 0 0 25px rgba(255, 234, 0, 0.5), 
+                        inset 0 0 10px rgba(255, 234, 0, 0.2);
             
             color: white;
             gap: 50px;
@@ -43,20 +42,21 @@
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: -1px;
+            color: #ffea00; /* Texto principal en amarillo */
         }
 
         .info p {
             margin: 5px 0 0;
             font-size: 17px;
-            color: #ccc;
+            color: #eee;
         }
 
-        /* Línea Divisora Neón */
+        /* Línea Divisora Neón Amarillo */
         .divider {
             width: 2px;
             height: 80px;
-            background: #ff0000;
-            box-shadow: 0 0 12px #ff0000;
+            background: #ffea00;
+            box-shadow: 0 0 12px #ffea00;
             opacity: 0.6;
         }
 
@@ -77,7 +77,7 @@
             font-weight: 900;
             line-height: 1;
             color: #ffffff;
-            text-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+            text-shadow: 0 0 15px rgba(255, 234, 0, 0.6);
         }
 
         .time-group span {
@@ -85,7 +85,7 @@
             text-transform: uppercase;
             margin-top: 8px;
             letter-spacing: 2px;
-            color: #ff4d4d;
+            color: #ffea00;
         }
     </style>
 </head>
@@ -93,8 +93,8 @@
 
     <div class="glass-box">
         <div class="info">
-            <h1>Alofoke en el Agganis</h1>
-            <p>Sábado 28 de febrero • 8:00pm</p>
+            <h1>EWO x TeleOnce</h1>
+            <p>Mañana • 10:00 AM</p>
         </div>
 
         <div class="divider"></div>
@@ -120,15 +120,19 @@
     </div>
 
     <script>
-        // Fecha: 28 Feb 2026, 8:00 PM
-        const targetDate = new Date("Feb 28, 2026 20:00:00").getTime();
+        // Configurar para mañana a las 10:00 AM
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow.setHours(10, 0, 0, 0);
+        
+        const targetDate = tomorrow.getTime();
 
         function countdown() {
             const now = new Date().getTime();
             const gap = targetDate - now;
 
             if (gap <= 0) {
-                document.querySelector(".timer").innerHTML = "<b>¡EN VIVO!</b>";
+                document.querySelector(".timer").innerHTML = "<b style='color:#ffea00; font-size:30px;'>¡AL AIRE!</b>";
                 return;
             }
 
