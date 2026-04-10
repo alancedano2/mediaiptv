@@ -93,8 +93,8 @@
 
     <div class="glass-box">
         <div class="info">
-            <h1>EWO x TeleOnce</h1>
-            <p>Mañana • 10:00 AM</p>
+            <h1>Planeta Alofoke</h1>
+            <p>12 de abril • 2:00 PM</p>
         </div>
 
         <div class="divider"></div>
@@ -120,12 +120,9 @@
     </div>
 
     <script>
-        // Configurar para mañana a las 10:00 AM
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        tomorrow.setHours(10, 0, 0, 0);
-        
-        const targetDate = tomorrow.getTime();
+        // Configuración para el 12 de Abril a las 2:00 PM (14:00 horas)
+        // Nota: Los meses en JS empiezan desde 0 (Enero = 0, Abril = 3)
+        const targetDate = new Date(2026, 3, 12, 14, 0, 0).getTime();
 
         function countdown() {
             const now = new Date().getTime();
@@ -141,7 +138,7 @@
             const m = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60));
             const s = Math.floor((gap % (1000 * 60)) / 1000);
 
-            document.getElementById("days").innerText = d;
+            document.getElementById("days").innerText = d < 10 ? "0" + d : d;
             document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
             document.getElementById("mins").innerText = m < 10 ? "0" + m : m;
             document.getElementById("secs").innerText = s < 10 ? "0" + s : s;
