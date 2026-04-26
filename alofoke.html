@@ -26,10 +26,10 @@
             padding: 35px 60px;
             border-radius: 20px; 
             
-            /* Bordes Neón Rojo */
-            border: 2px solid #ff0000;
-            box-shadow: 0 0 25px rgba(255, 0, 0, 0.6), 
-                        inset 0 0 10px rgba(255, 0, 0, 0.3);
+            /* Bordes Neón Amarillo */
+            border: 2px solid #ff0;
+            box-shadow: 0 0 25px rgba(255, 255, 0, 0.6), 
+                        inset 0 0 10px rgba(255, 255, 0, 0.3);
             
             color: white;
             gap: 50px;
@@ -42,8 +42,8 @@
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: -1px;
-            color: #ff0000; /* Texto principal en rojo */
-            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+            color: #ff0; /* Texto principal en amarillo */
+            text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
         }
 
         .info p {
@@ -52,12 +52,12 @@
             color: #eee;
         }
 
-        /* Línea Divisora Neón Roja */
+        /* Línea Divisora Neón Amarilla */
         .divider {
             width: 2px;
             height: 80px;
-            background: #ff0000;
-            box-shadow: 0 0 12px #ff0000;
+            background: #ff0;
+            box-shadow: 0 0 12px #ff0;
             opacity: 0.7;
         }
 
@@ -78,8 +78,8 @@
             font-weight: 900;
             line-height: 1;
             color: #ffffff;
-            /* Brillo blanco con aura roja */
-            text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+            /* Brillo blanco con aura amarilla */
+            text-shadow: 0 0 15px rgba(255, 255, 0, 0.7);
         }
 
         .time-group span {
@@ -87,7 +87,7 @@
             text-transform: uppercase;
             margin-top: 8px;
             letter-spacing: 2px;
-            color: #ff0000; /* Etiquetas en rojo */
+            color: #ff0; /* Etiquetas en amarillo */
             font-weight: 600;
         }
     </style>
@@ -138,7 +138,8 @@
             const gap = targetDate - now;
 
             if (gap <= 0) {
-                document.querySelector(".timer").innerHTML = "<b style='color:#ff0000; font-size:30px; text-shadow: 0 0 10px rgba(255,0,0,0.5);'>¡AL AIRE!</b>";
+                // Actualizado color del texto final a amarillo también
+                document.querySelector(".timer").innerHTML = "<b style='color:#ff0; font-size:30px; text-shadow: 0 0 10px rgba(255,255,0,0.5);'>¡AL AIRE!</b>";
                 return;
             }
 
