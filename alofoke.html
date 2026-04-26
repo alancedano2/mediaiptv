@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>EWO x TeleOnce - Neon Glass Rojo</title>
+    <title>EWO - HOMECOMING LA ANTESALA</title>
     <style>
         /* Página transparente */
         body {
@@ -19,7 +19,7 @@
         .glass-box {
             display: flex;
             align-items: center;
-            background: rgba(0, 0, 0, 0.85); /* Un poco más oscuro para que resalte el rojo */
+            background: rgba(0, 0, 0, 0.85); 
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             
@@ -96,8 +96,8 @@
 
     <div class="glass-box">
         <div class="info">
-            <h1>Planeta Alofoke</h1>
-            <p>12 de abril • 2:00 PM</p>
+            <h1>EWO: HOMECOMING</h1>
+            <p>LA ANTESALA • 30 de abril • 7:00 PM</p>
         </div>
 
         <div class="divider"></div>
@@ -123,15 +123,14 @@
     </div>
 
     <script>
-        // Configuración para el 12 de Abril a las 2:00 PM (14:00 horas)
-        // Nota: Los meses en JS empiezan desde 0 (Abril = 3)
-        // Se asume el año actual o el próximo 12 de abril disponible
+        // Configuración para el 30 de Abril a las 7:00 PM (19:00 horas)
+        // Nota: Meses en JS: Enero=0, Febrero=1, Marzo=2, Abril=3
         const currentYear = new Date().getFullYear();
-        let targetDate = new Date(currentYear, 3, 12, 14, 0, 0).getTime();
+        let targetDate = new Date(currentYear, 3, 30, 19, 0, 0).getTime();
         
-        // Si la fecha ya pasó este año, ponerla para el próximo
+        // Si la fecha ya pasó este año, se programa para el siguiente
         if (new Date().getTime() > targetDate) {
-            targetDate = new Date(currentYear + 1, 3, 12, 14, 0, 0).getTime();
+            targetDate = new Date(currentYear + 1, 3, 30, 19, 0, 0).getTime();
         }
 
         function countdown() {
