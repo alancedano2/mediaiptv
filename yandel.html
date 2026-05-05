@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>City Sessions: Yandel x Amazon Music</title>
+    <style>
+        /* Página transparente */
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent; 
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+        }
+
+        /* Cuadro principal con estética Amazon Music */
+        .glass-box {
+            display: flex;
+            align-items: center;
+            background: rgba(10, 10, 10, 0.9); 
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            
+            padding: 35px 60px;
+            border-radius: 20px; 
+            
+            /* Bordes Neón - Estilo Amazon Music (Cian/Azul) */
+            border: 2px solid #00a8e1;
+            box-shadow: 0 0 25px rgba(0, 168, 225, 0.5), 
+                        inset 0 0 10px rgba(0, 168, 225, 0.2);
+            
+            color: white;
+            gap: 50px;
+        }
+
+        /* Lado del Texto */
+        .info h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #fff; 
+        }
+
+        .info h1 span {
+            color: #00a8e1; /* Color azul Amazon */
+        }
+
+        .info p {
+            margin: 5px 0 0;
+            font-size: 18px;
+            color: #ff9900; /* Color naranja Amazon */
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* Línea Divisora */
+        .divider {
+            width: 2px;
+            height: 80px;
+            background: #444;
+            opacity: 0.7;
+        }
+
+        /* Lado del Contador */
+        .timer {
+            display: flex;
+            gap: 30px;
+            text-align: center;
+        }
+
+        .time-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .time-group b {
+            font-size: 48px;
+            font-weight: 900;
+            line-height: 1;
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(0, 168, 225, 0.6);
+        }
+
+        .time-group span {
+            font-size: 11px;
+            text-transform: uppercase;
+            margin-top: 8px;
+            letter-spacing: 2px;
+            color: #00a8e1; 
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glass-box">
+        <div class="info">
+            <h1>CITY SESSIONS: <span>YANDEL</span></h1>
+            <p>Amazon Music • HOY • 9:00 PM</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="timer">
+            <div class="time-group">
+                <b id="days">00</b>
+                <span>Días</span>
+            </div>
+            <div class="time-group">
+                <b id="hours">00</b>
+                <span>Hrs</span>
+            </div>
+            <div class="time-group">
+                <b id="mins">00</b>
+                <span>Min</span>
+            </div>
+            <div class="time-group">
+                <b id="secs">00</b>
+                <span>Seg</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuración para HOY a las 9:00 PM (21:00)
+        const now = new Date();
+        const targetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 21, 0, 0).getTime();
+
+        function countdown() {
+            const currentTime = new Date().getTime();
+            const gap = targetDate - currentTime;
+
+            if (gap <= 0) {
+                document.querySelector(".timer").innerHTML = "<b style='color:#ff9900; font-size:30px; text-shadow: 0 0 10px rgba(255,153,0,0.5);'>¡EN VIVO!</b>";
+                return;
+            }
+
+            const d = Math.floor(gap / (1000 * 60 * 60 * 24));
+            const h = Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((gap % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = d < 10 ? "0" + d : d;
+            document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
+            document.getElementById("mins").innerText = m < 10 ? "0" + m : m;
+            document.getElementById("secs").innerText = s < 10 ? "0" + s : s;
+        }
+
+        setInterval(countdown, 1000);
+        countdown();
+    </script>
+</body>
+</html>
