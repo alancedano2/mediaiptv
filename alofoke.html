@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>EWO El Update x TeleOnce</title>
+    <title>Jay Wheeler: Mundo Rueditas Live</title>
     <style>
         /* Página transparente */
         body {
@@ -15,21 +15,21 @@
             font-family: 'Inter', 'Segoe UI', sans-serif;
         }
 
-        /* Cuadro principal oscurecido */
+        /* Cuadro principal en Dorado/Bronce */
         .glass-box {
             display: flex;
             align-items: center;
-            background: rgba(0, 0, 0, 0.85); 
+            background: rgba(15, 12, 8, 0.9); /* Fondo casi negro con toque cálido */
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             
             padding: 35px 60px;
-            border-radius: 20px; 
+            border-radius: 15px; 
             
-            /* Bordes Neón Amarillo */
-            border: 2px solid #ff0;
-            box-shadow: 0 0 25px rgba(255, 255, 0, 0.6), 
-                        inset 0 0 10px rgba(255, 255, 0, 0.3);
+            /* Borde Dorado Metálico */
+            border: 2px solid #c5a059;
+            box-shadow: 0 0 30px rgba(197, 160, 89, 0.4), 
+                        inset 0 0 15px rgba(197, 160, 89, 0.2);
             
             color: white;
             gap: 50px;
@@ -41,24 +41,29 @@
             font-size: 32px;
             font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: -1px;
-            color: #ff0; 
-            text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+            letter-spacing: 1px;
+            /* Degradado dorado en el texto */
+            background: linear-gradient(to bottom, #f9e2af 0%, #c5a059 50%, #8a6e2f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
         }
 
         .info p {
             margin: 5px 0 0;
-            font-size: 17px;
-            color: #eee;
+            font-size: 16px;
+            font-weight: 400;
+            color: #d1b88a; 
+            text-transform: uppercase;
+            letter-spacing: 3px;
         }
 
-        /* Línea Divisora Neón Amarilla */
+        /* Línea Divisora Dorada */
         .divider {
             width: 2px;
             height: 80px;
-            background: #ff0;
-            box-shadow: 0 0 12px #ff0;
-            opacity: 0.7;
+            background: linear-gradient(to bottom, transparent, #c5a059, transparent);
+            opacity: 0.8;
         }
 
         /* Lado del Contador */
@@ -77,8 +82,8 @@
             font-size: 48px;
             font-weight: 900;
             line-height: 1;
-            color: #ffffff;
-            text-shadow: 0 0 15px rgba(255, 255, 0, 0.7);
+            color: #f9e2af;
+            text-shadow: 0 0 15px rgba(197, 160, 89, 0.5);
         }
 
         .time-group span {
@@ -86,8 +91,8 @@
             text-transform: uppercase;
             margin-top: 8px;
             letter-spacing: 2px;
-            color: #ff0; 
-            font-weight: 600;
+            color: #c5a059; 
+            font-weight: 700;
         }
     </style>
 </head>
@@ -95,8 +100,8 @@
 
     <div class="glass-box">
         <div class="info">
-            <h1>EWO: EL UPDATE</h1>
-            <p>TeleOnce • Mañana • 10:00 AM</p>
+            <h1>MUNDO RUEDITAS LIVE</h1>
+            <p>EL CHOLISEO • 29 DE MAYO</p>
         </div>
 
         <div class="divider"></div>
@@ -122,17 +127,16 @@
     </div>
 
     <script>
-        // Configuración para MAÑANA a las 10:00 AM
-        const now = new Date();
-        // Creamos la fecha de mañana
-        let targetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 10, 0, 0).getTime();
-
+        // Fecha objetivo: 29 de Mayo
+        const currentYear = new Date().getFullYear();
+        let eventDate = new Date(`May 29, ${currentYear} 00:00:00`).getTime();
+        
         function countdown() {
             const currentTime = new Date().getTime();
-            const gap = targetDate - currentTime;
+            const gap = eventDate - currentTime;
 
             if (gap <= 0) {
-                document.querySelector(".timer").innerHTML = "<b style='color:#ff0; font-size:30px; text-shadow: 0 0 10px rgba(255,255,0,0.5);'>¡AL AIRE!</b>";
+                document.querySelector(".timer").innerHTML = "<b style='color:#f9e2af; font-size:28px;'>¡ES HOY!</b>";
                 return;
             }
 
