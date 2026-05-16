@@ -96,7 +96,8 @@
     <div class="glass-box">
         <div class="info">
             <h1>EWO: EL UPDATE</h1>
-            <p>TeleOnce • Mañana • 10:00 AM</p>
+            <!-- CAMBIO: De 'Mañana' a 'Hoy' -->
+            <p>TeleOnce • Hoy • 10:00 AM</p>
         </div>
 
         <div class="divider"></div>
@@ -122,10 +123,10 @@
     </div>
 
     <script>
-        // Configuración para MAÑANA a las 10:00 AM
+        // Configuración para HOY a las 10:00 AM
         const now = new Date();
-        // Creamos la fecha de mañana
-        let targetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 10, 0, 0).getTime();
+        // CAMBIO: Se eliminó el "+ 1" en los días para que apunte a la fecha actual
+        let targetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0, 0).getTime();
 
         function countdown() {
             const currentTime = new Date().getTime();
