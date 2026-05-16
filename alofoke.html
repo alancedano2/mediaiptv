@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Jay Wheeler: Mundo Rueditas Live</title>
+    <title>EWO El Update x TeleOnce</title>
     <style>
         /* Página transparente */
         body {
@@ -100,8 +100,8 @@
 
     <div class="glass-box">
         <div class="info">
-            <h1>MUNDO RUEDITAS LIVE</h1>
-            <p>EL CHOLISEO • 29 DE MAYO</p>
+            <h1>EWO El Update x TeleOnce</h1>
+            <p>MAÑANA • 10:00 AM</p>
         </div>
 
         <div class="divider"></div>
@@ -127,16 +127,15 @@
     </div>
 
     <script>
-        // Fecha objetivo: 29 de Mayo
-        const currentYear = new Date().getFullYear();
-        let eventDate = new Date(`May 29, ${currentYear} 00:00:00`).getTime();
+        // Fecha objetivo: Mañana (16 de Mayo, 2026) a las 10:00 AM
+        const targetDate = new Date("May 16, 2026 10:00:00").getTime();
         
         function countdown() {
             const currentTime = new Date().getTime();
-            const gap = eventDate - currentTime;
+            const gap = targetDate - currentTime;
 
             if (gap <= 0) {
-                document.querySelector(".timer").innerHTML = "<b style='color:#f9e2af; font-size:28px;'>¡ES HOY!</b>";
+                document.querySelector(".timer").innerHTML = "<b style='color:#f9e2af; font-size:28px;'>¡AL AIRE!</b>";
                 return;
             }
 
