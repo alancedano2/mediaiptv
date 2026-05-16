@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Jay Wheeler: Mundo Rueditas Live</title>
+    <title>EWO El Update x TeleOnce</title>
     <style>
         /* Página transparente */
         body {
@@ -15,21 +15,21 @@
             font-family: 'Inter', 'Segoe UI', sans-serif;
         }
 
-        /* Cuadro principal con estética Mundo Rueditas */
+        /* Cuadro principal con estética Amarilla/Negra */
         .glass-box {
             display: flex;
             align-items: center;
-            background: rgba(10, 10, 20, 0.85); 
+            background: rgba(15, 15, 5, 0.88); 
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             
             padding: 35px 60px;
             border-radius: 30px; 
             
-            /* Bordes Neón Cyan/Azul */
-            border: 2px solid #00f2ff;
-            box-shadow: 0 0 25px rgba(0, 242, 255, 0.4), 
-                        inset 0 0 15px rgba(0, 242, 255, 0.2);
+            /* Bordes Neón Amarillo */
+            border: 2px solid #ffcc00;
+            box-shadow: 0 0 25px rgba(255, 204, 0, 0.4), 
+                        inset 0 0 15px rgba(255, 204, 0, 0.2);
             
             color: white;
             gap: 50px;
@@ -42,25 +42,26 @@
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #00f2ff; 
-            text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+            color: #ffcc00; 
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
         }
 
+        /* Subtítulo adaptado a la fecha dinámica mediante JS */
         .info p {
             margin: 5px 0 0;
-            font-size: 18px;
-            font-weight: 600;
-            color: #ff77ff; /* Toque rosado característico */
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff; /* Blanco para contrastar el amarillo */
             text-transform: uppercase;
             letter-spacing: 2px;
         }
 
-        /* Línea Divisora Neón */
+        /* Línea Divisora Neón Amarilla */
         .divider {
             width: 2px;
             height: 80px;
-            background: #00f2ff;
-            box-shadow: 0 0 12px #00f2ff;
+            background: #ffcc00;
+            box-shadow: 0 0 12px #ffcc00;
             opacity: 0.5;
         }
 
@@ -81,7 +82,7 @@
             font-weight: 900;
             line-height: 1;
             color: #ffffff;
-            text-shadow: 0 0 15px rgba(0, 242, 255, 0.7);
+            text-shadow: 0 0 15px rgba(255, 204, 0, 0.7);
         }
 
         .time-group span {
@@ -89,7 +90,7 @@
             text-transform: uppercase;
             margin-top: 8px;
             letter-spacing: 2px;
-            color: #00f2ff; 
+            color: #ffcc00; 
             font-weight: 600;
         }
     </style>
@@ -98,8 +99,8 @@
 
     <div class="glass-box">
         <div class="info">
-            <h1>MUNDO RUEDITAS LIVE</h1>
-            <p>JAY WHEELER • 29 DE MAYO</p>
+            <h1>EWO EL UPDATE</h1>
+            <p>X TELEONCE • HOY 10:00 AM</p>
         </div>
 
         <div class="divider"></div>
@@ -125,21 +126,16 @@
     </div>
 
     <script>
-        // Configuración para el 29 de mayo (Año actual o siguiente según la fecha)
-        const currentYear = new Date().getFullYear();
-        let eventDate = new Date(`May 29, ${currentYear} 00:00:00`).getTime();
-        
-        // Si la fecha ya pasó este año, apunta al próximo año
-        if (new Date().getTime() > eventDate) {
-            eventDate = new Date(`May 29, ${currentYear + 1} 00:00:00`).getTime();
-        }
+        // Configuración automática para HOY a las 10:00:00 AM
+        const now = new Date();
+        const eventDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0, 0).getTime();
 
         function countdown() {
             const currentTime = new Date().getTime();
             const gap = eventDate - currentTime;
 
             if (gap <= 0) {
-                document.querySelector(".timer").innerHTML = "<b style='color:#00f2ff; font-size:30px; text-shadow: 0 0 10px rgba(0,242,255,0.5);'>¡HOY ES EL DÍA!</b>";
+                document.querySelector(".timer").innerHTML = "<b style='color:#ffcc00; font-size:30px; text-shadow: 0 0 10px rgba(255,204,0,0.5);'>¡YA EMPEZÓ!</b>";
                 return;
             }
 
