@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuenta Regresiva</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body, html {
+            width: 1920px;
+            height: 1080px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Fondo con degradado animado */
+            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #2e1065, #3b0764);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            text-align: center;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 60px 80px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #f472b6, #c084fc, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .countdown {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .box {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 25px;
+            border-radius: 16px;
+            min-width: 140px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .number {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(192, 132, 252, 0.4);
+        }
+
+        .label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #94a3b8;
+            margin-top: 10px;
+        }
+
+        #expired-message {
+            font-size: 4rem;
+            font-weight: 800;
+            display: none;
+            color: #34d399;
+            text-shadow: 0 0 30px rgba(52, 211, 153, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="countdown-wrapper">
+            <h1 id="title">El evento comienza en:</h1>
+            <div class="countdown">
+                <div class="box">
+                    <div class="number" id="hours">00</div>
+                    <div class="label">Horas</div>
+                </div>
+                <div class="box">
+                    <div class="number" id="minutes">00</div>
+                    <div class="label">Minutos</div>
+                </div>
+                <div class="box">
+                    <div class="number" id="seconds">00</div>
+                    <div class="label">Segundos</div>
+                </div>
+            </div>
+        </div>
+        <div id="expired-message">¡HA COMENZADO!</div>
+    </div>
+
+    <script>
+        // Configurar la hora de destino: HOY a las 14:00 (2:00 PM)
+        const targetTarget = new Date();
+        targetTarget.setHours(14, 0, 0, 0); 
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetTarget.getTime() - now;
+
+            // Si ya pasó de las 2:00 PM de hoy
+            if (distance < 0) {
+                document.getElementById("countdown-wrapper").style.display = "none";
+                document.getElementById("expired-message").style.display = "block";
+                clearInterval(intervalId);
+                return;
+            }
+
+            // Cálculos de tiempo para horas, minutos y segundos
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Mostrar el resultado con ceros a la izquierda si es necesario
+            document.getElementById("hours").innerText = String(hours).padStart(2, '0');
+            document.getElementById("minutes").innerText = String(minutes).padStart(2, '0');
+            document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
+        }
+
+        // Ejecutar inmediatamente y luego cada segundo
+        updateCountdown();
+        const intervalId = setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
