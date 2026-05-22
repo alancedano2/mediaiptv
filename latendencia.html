@@ -36,7 +36,7 @@
 
         border-radius:22px;
         padding:28px 40px;
-        min-width:650px;
+        min-width:700px;
     }
 
     .cover{
@@ -61,6 +61,7 @@
         flex-direction:column;
         justify-content:center;
         min-width:0;
+        width:100%;
     }
 
     .live{
@@ -119,6 +120,7 @@
     <div class="divider"></div>
 
     <div class="song-info">
+
         <span class="live">NOW PLAYING</span>
 
         <div id="songTitle" class="title">
@@ -132,6 +134,7 @@
         <div class="station">
             KQ105 • Puerto Rico
         </div>
+
     </div>
 
 </div>
@@ -166,6 +169,7 @@ let currentArtist = "";
 const radioPlayer = document.createElement("audio");
 radioPlayer.autoplay = true;
 radioPlayer.style.display = "none";
+
 document.body.appendChild(radioPlayer);
 
 /* =========================
@@ -202,6 +206,24 @@ async function fetchAlbumCover(artist, title) {
 ========================= */
 
 async function updateSong(title, artist){
+
+    /* SI ES WKAQ-FM */
+    if (
+        title.includes("WKAQ-FM") ||
+        artist.includes("WKAQ-FM")
+    ) {
+
+        songTitle.textContent = "La Tendencia De Molusco";
+        songArtist.textContent = "KQ105 • EN VIVO";
+
+        /* QUITA EL COVER */
+        albumCover.style.display = "none";
+
+        return;
+    }
+
+    /* MUESTRA COVER */
+    albumCover.style.display = "block";
 
     songTitle.textContent = title;
     songArtist.textContent = artist;
