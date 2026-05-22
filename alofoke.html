@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>EWO El Update x TeleOnce</title>
+    <title>La Tendencia De Molusco</title>
     <style>
         /* Página transparente */
         body {
@@ -26,10 +26,10 @@
             padding: 35px 60px;
             border-radius: 20px; 
             
-            /* Bordes Neón Amarillo */
-            border: 2px solid #ff0;
-            box-shadow: 0 0 25px rgba(255, 255, 0, 0.6), 
-                        inset 0 0 10px rgba(255, 255, 0, 0.3);
+            /* Bordes Neón Rosita */
+            border: 2px solid #ff2a8d;
+            box-shadow: 0 0 25px rgba(255, 42, 141, 0.6), 
+                        inset 0 0 10px rgba(255, 42, 141, 0.3);
             
             color: white;
             gap: 50px;
@@ -42,8 +42,8 @@
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: -1px;
-            color: #ff0; 
-            text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+            color: #ff2a8d; 
+            text-shadow: 0 0 10px rgba(255, 42, 141, 0.5);
         }
 
         .info p {
@@ -52,12 +52,12 @@
             color: #eee;
         }
 
-        /* Línea Divisora Neón Amarilla */
+        /* Línea Divisora Neón Rosita */
         .divider {
             width: 2px;
             height: 80px;
-            background: #ff0;
-            box-shadow: 0 0 12px #ff0;
+            background: #ff2a8d;
+            box-shadow: 0 0 12px #ff2a8d;
             opacity: 0.7;
         }
 
@@ -78,7 +78,7 @@
             font-weight: 900;
             line-height: 1;
             color: #ffffff;
-            text-shadow: 0 0 15px rgba(255, 255, 0, 0.7);
+            text-shadow: 0 0 15px rgba(255, 42, 141, 0.7);
         }
 
         .time-group span {
@@ -86,7 +86,7 @@
             text-transform: uppercase;
             margin-top: 8px;
             letter-spacing: 2px;
-            color: #ff0; 
+            color: #ff2a8d; 
             font-weight: 600;
         }
     </style>
@@ -95,9 +95,8 @@
 
     <div class="glass-box">
         <div class="info">
-            <h1>EWO: EL UPDATE</h1>
-            <!-- CAMBIO: De 'Mañana' a 'Hoy' -->
-            <p>TeleOnce • Hoy • 10:00 AM</p>
+            <h1>LA TENDENCIA DE MOLUSCO</h1>
+            <p>TeleOnce • Hoy • 3:00 PM</p>
         </div>
 
         <div class="divider"></div>
@@ -123,17 +122,16 @@
     </div>
 
     <script>
-        // Configuración para HOY a las 10:00 AM
+        // Configuración para HOY a las 3:00 PM (15:00 horas)
         const now = new Date();
-        // CAMBIO: Se eliminó el "+ 1" en los días para que apunte a la fecha actual
-        let targetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0, 0).getTime();
+        let targetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 15, 0, 0).getTime();
 
         function countdown() {
             const currentTime = new Date().getTime();
             const gap = targetDate - currentTime;
 
             if (gap <= 0) {
-                document.querySelector(".timer").innerHTML = "<b style='color:#ff0; font-size:30px; text-shadow: 0 0 10px rgba(255,255,0,0.5);'>¡AL AIRE!</b>";
+                document.querySelector(".timer").innerHTML = "<b style='color:#ff2a8d; font-size:30px; text-shadow: 0 0 10px rgba(255,42,141,0.5);'>¡AL AIRE!</b>";
                 return;
             }
 
