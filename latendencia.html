@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Sonando Ahora • La Tendencia De Molusco</title>
+    <style>
+        /* Página transparente */
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent; 
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+        }
+
+        /* Cuadro principal oscurecido */
+        .glass-box {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.85); 
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            
+            padding: 25px 45px;
+            border-radius: 20px; 
+            
+            /* Bordes Neón Rosita */
+            border: 2px solid #ff2a8d;
+            box-shadow: 0 0 25px rgba(255, 42, 141, 0.6), 
+                        inset 0 0 10px rgba(255, 42, 141, 0.3);
+            
+            color: white;
+            gap: 35px;
+        }
+
+        /* Contenedor del Cover / Arte del álbum */
+        .cover-wrapper {
+            position: relative;
+            width: 90px;
+            height: 90px;
+        }
+
+        .cover-art {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 0 15px rgba(255, 42, 141, 0.4);
+            border: 1px solid rgba(255, 42, 141, 0.5);
+        }
+
+        /* Lado de la Información de la Canción */
+        .now-playing {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 250px;
+        }
+
+        .badge {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #ff2a8d;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+            text-shadow: 0 0 8px rgba(255, 42, 141, 0.6);
+        }
+
+        .track-title {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 900;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2;
+        }
+
+        .artist-name {
+            margin: 4px 0 0;
+            font-size: 16px;
+            color: #ccc;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Línea Divisora Neón Rosita */
+        .divider {
+            width: 2px;
+            height: 70px;
+            background: #ff2a8d;
+            box-shadow: 0 0 12px #ff2a8d;
+            opacity: 0.7;
+        }
+
+        /* Animación del Ecualizador (Efecto "Sonando") */
+        .equalizer {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            width: 40px;
+            height: 40px;
+        }
+
+        .bar {
+            width: 5px;
+            height: 100%;
+            background-color: #ff2a8d;
+            border-radius: 3px;
+            animation: bounce 1.2s ease-in-out infinite;
+            box-shadow: 0 0 8px rgba(255, 42, 141, 0.7);
+        }
+
+        /* Variación de tiempos para el efecto realista */
+        .bar:nth-child(1) { animation-delay: 0.2s; height: 30%; }
+        .bar:nth-child(2) { animation-delay: 0.4s; height: 60%; }
+        .bar:nth-child(3) { animation-delay: 0.6s; height: 90%; }
+        .bar:nth-child(4) { animation-delay: 0.1s; height: 50%; }
+
+        @keyframes bounce {
+            0%, 100% { height: 20%; }
+            50% { height: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glass-box">
+        <!-- Espacio para la carátula -->
+        <div class="cover-wrapper">
+            <!-- Reemplaza la URL en src por la foto que quieras usar -->
+            <img class="cover-art" src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=200&auto=format&fit=crop" alt="Cover Art">
+        </div>
+
+        <!-- Información de lo que suena -->
+        <div class="now-playing">
+            <span class="badge">Sonando Ahora</span>
+            <h1 class="track-title" id="songTitle">Nombre Canción</h1>
+            <p class="artist-name" id="artistName">Artista / KQ105</p>
+        </div>
+
+        <!-- Línea divisora -->
+        <div class="divider"></div>
+
+        <!-- Barras de ecualizador animadas -->
+        <div class="equalizer">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </div>
+
+    <script>
+        // Si necesitas actualizar el texto dinámicamente desde OBS o un script, puedes usar estas variables:
+        // document.getElementById("songTitle").innerText = "Tu Nueva Canción";
+        // document.getElementById("artistName").innerText = "Tu Artista";
+    </script>
+</body>
+</html>
