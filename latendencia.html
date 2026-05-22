@@ -1,166 +1,262 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Sonando Ahora • La Tendencia De Molusco</title>
-    <style>
-        /* Página transparente */
-        body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: transparent; 
-            font-family: 'Inter', 'Segoe UI', sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KQ105 Now Playing</title>
 
-        /* Cuadro principal oscurecido */
-        .glass-box {
-            display: flex;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.85); 
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            
-            padding: 25px 45px;
-            border-radius: 20px; 
-            
-            /* Bordes Neón Rosita */
-            border: 2px solid #ff2a8d;
-            box-shadow: 0 0 25px rgba(255, 42, 141, 0.6), 
-                        inset 0 0 10px rgba(255, 42, 141, 0.3);
-            
-            color: white;
-            gap: 35px;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
 
-        /* Contenedor del Cover / Arte del álbum */
-        .cover-wrapper {
-            position: relative;
-            width: 90px;
-            height: 90px;
-        }
+<style>
+    body{
+        margin:0;
+        height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        background:transparent;
+        font-family:'Inter',sans-serif;
+    }
 
-        .cover-art {
-            width: 100%;
-            height: 100%;
-            border-radius: 12px;
-            object-fit: cover;
-            box-shadow: 0 0 15px rgba(255, 42, 141, 0.4);
-            border: 1px solid rgba(255, 42, 141, 0.5);
-        }
+    .glass-box{
+        display:flex;
+        align-items:center;
+        gap:30px;
 
-        /* Lado de la Información de la Canción */
-        .now-playing {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            max-width: 250px;
-        }
+        background:rgba(0,0,0,.82);
+        backdrop-filter:blur(20px);
+        -webkit-backdrop-filter:blur(20px);
 
-        .badge {
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            color: #ff2a8d;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
-            text-shadow: 0 0 8px rgba(255, 42, 141, 0.6);
-        }
+        border:2px solid #ff2a8d;
+        box-shadow:
+            0 0 25px rgba(255,42,141,.5),
+            inset 0 0 12px rgba(255,42,141,.2);
 
-        .track-title {
-            margin: 0;
-            font-size: 24px;
-            font-weight: 900;
-            color: #ffffff;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            line-height: 1.2;
-        }
+        border-radius:22px;
+        padding:28px 40px;
+        min-width:650px;
+    }
 
-        .artist-name {
-            margin: 4px 0 0;
-            font-size: 16px;
-            color: #ccc;
-            font-weight: 500;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+    .cover{
+        width:120px;
+        height:120px;
+        border-radius:18px;
+        object-fit:cover;
+        box-shadow:0 0 18px rgba(255,42,141,.45);
+        flex-shrink:0;
+    }
 
-        /* Línea Divisora Neón Rosita */
-        .divider {
-            width: 2px;
-            height: 70px;
-            background: #ff2a8d;
-            box-shadow: 0 0 12px #ff2a8d;
-            opacity: 0.7;
-        }
+    .divider{
+        width:2px;
+        height:120px;
+        background:#ff2a8d;
+        box-shadow:0 0 12px #ff2a8d;
+        opacity:.7;
+    }
 
-        /* Animación del Ecualizador (Efecto "Sonando") */
-        .equalizer {
-            display: flex;
-            align-items: flex-end;
-            gap: 4px;
-            width: 40px;
-            height: 40px;
-        }
+    .song-info{
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        min-width:0;
+    }
 
-        .bar {
-            width: 5px;
-            height: 100%;
-            background-color: #ff2a8d;
-            border-radius: 3px;
-            animation: bounce 1.2s ease-in-out infinite;
-            box-shadow: 0 0 8px rgba(255, 42, 141, 0.7);
-        }
+    .live{
+        font-size:13px;
+        letter-spacing:3px;
+        text-transform:uppercase;
+        color:#ff2a8d;
+        font-weight:700;
+        margin-bottom:8px;
+    }
 
-        /* Variación de tiempos para el efecto realista */
-        .bar:nth-child(1) { animation-delay: 0.2s; height: 30%; }
-        .bar:nth-child(2) { animation-delay: 0.4s; height: 60%; }
-        .bar:nth-child(3) { animation-delay: 0.6s; height: 90%; }
-        .bar:nth-child(4) { animation-delay: 0.1s; height: 50%; }
+    .title{
+        font-size:38px;
+        font-weight:900;
+        line-height:1;
+        color:#fff;
 
-        @keyframes bounce {
-            0%, 100% { height: 20%; }
-            50% { height: 100%; }
-        }
-    </style>
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+
+        text-shadow:0 0 15px rgba(255,42,141,.35);
+    }
+
+    .artist{
+        margin-top:12px;
+        font-size:20px;
+        color:#dcdcdc;
+
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+
+    .station{
+        margin-top:18px;
+        font-size:14px;
+        color:#999;
+        letter-spacing:2px;
+        text-transform:uppercase;
+    }
+</style>
 </head>
+
 <body>
 
-    <div class="glass-box">
-        <!-- Espacio para la carátula -->
-        <div class="cover-wrapper">
-            <!-- Reemplaza la URL en src por la foto que quieras usar -->
-            <img class="cover-art" src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=200&auto=format&fit=crop" alt="Cover Art">
+<div class="glass-box">
+
+    <img
+        id="albumCover"
+        class="cover"
+        src="placeholder_cover.png"
+        alt="Cover"
+    >
+
+    <div class="divider"></div>
+
+    <div class="song-info">
+        <span class="live">NOW PLAYING</span>
+
+        <div id="songTitle" class="title">
+            Cargando...
         </div>
 
-        <!-- Información de lo que suena -->
-        <div class="now-playing">
-            <span class="badge">Sonando Ahora</span>
-            <h1 class="track-title" id="songTitle">Nombre Canción</h1>
-            <p class="artist-name" id="artistName">Artista / KQ105</p>
+        <div id="songArtist" class="artist">
+            Sintonizando KQ105
         </div>
 
-        <!-- Línea divisora -->
-        <div class="divider"></div>
-
-        <!-- Barras de ecualizador animadas -->
-        <div class="equalizer">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
+        <div class="station">
+            KQ105 • Puerto Rico
         </div>
     </div>
 
-    <script>
-        // Si necesitas actualizar el texto dinámicamente desde OBS o un script, puedes usar estas variables:
-        // document.getElementById("songTitle").innerText = "Tu Nueva Canción";
-        // document.getElementById("artistName").innerText = "Tu Artista";
-    </script>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<script>
+/* =========================
+   CONFIG
+========================= */
+
+const m3u8_url =
+"https://televicentro.streamguys1.com/wkaqfm/playlist.m3u8?key=96bc32e12ecb6b1bafd065de263d64235ff13cc93b57ff806196d3ecd0891325&aw_0_1st.playerId=kq105&source=kq105.com&us_privacy=1YNY&clientType=web&callLetters=WKAQ-FM&devicename=web-desktop&stationid=1846&dist=kq105.com&subscription_type=free&aw_0_1st.version=1.0_html5&aw_0_1st.playerid=kq105_floating_player";
+
+const PLACEHOLDER_COVER = "placeholder_cover.png";
+
+/* =========================
+   ELEMENTOS
+========================= */
+
+const albumCover = document.getElementById("albumCover");
+const songTitle = document.getElementById("songTitle");
+const songArtist = document.getElementById("songArtist");
+
+let currentTitle = "";
+let currentArtist = "";
+
+/* =========================
+   AUDIO INVISIBLE
+========================= */
+
+const radioPlayer = document.createElement("audio");
+radioPlayer.autoplay = true;
+radioPlayer.style.display = "none";
+document.body.appendChild(radioPlayer);
+
+/* =========================
+   COVER FETCH
+========================= */
+
+async function fetchAlbumCover(artist, title) {
+
+    const query = encodeURIComponent(`${title} ${artist}`);
+
+    try {
+
+        const response = await fetch(
+            `https://itunes.apple.com/search?term=${query}&entity=song&limit=1`
+        );
+
+        const data = await response.json();
+
+        if (data.results && data.results.length > 0) {
+
+            return data.results[0].artworkUrl100.replace(
+                "100x100bb",
+                "600x600bb"
+            );
+        }
+
+    } catch(e){}
+
+    return PLACEHOLDER_COVER;
+}
+
+/* =========================
+   UPDATE UI
+========================= */
+
+async function updateSong(title, artist){
+
+    songTitle.textContent = title;
+    songArtist.textContent = artist;
+
+    const cover = await fetchAlbumCover(artist, title);
+
+    albumCover.src = cover;
+}
+
+/* =========================
+   HLS
+========================= */
+
+if (Hls.isSupported()) {
+
+    const hls = new Hls();
+
+    hls.loadSource(m3u8_url);
+    hls.attachMedia(radioPlayer);
+
+    hls.on(Hls.Events.MEDIA_ATTACHED, () => {
+        radioPlayer.play();
+    });
+
+    hls.on(Hls.Events.FRAG_CHANGED, async (event, data) => {
+
+        if (!data.frag.title) return;
+
+        const titleMatch =
+            /title="([^"]*)"/.exec(data.frag.title);
+
+        const artistMatch =
+            /artist="([^"]*)"/.exec(data.frag.title);
+
+        const title = titleMatch
+            ? titleMatch[1]
+            : "Título no disponible";
+
+        const artist = artistMatch
+            ? artistMatch[1]
+            : "Artista no disponible";
+
+        if (
+            title === currentTitle &&
+            artist === currentArtist
+        ) return;
+
+        currentTitle = title;
+        currentArtist = artist;
+
+        updateSong(title, artist);
+    });
+
+}
+</script>
+
 </body>
 </html>
