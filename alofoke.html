@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>La Tendencia De Molusco</title>
+    <title>Jay Wheeler - Mundo Rueditas Live</title>
     <style>
         /* Página transparente */
         body {
@@ -26,10 +26,10 @@
             padding: 35px 60px;
             border-radius: 20px; 
             
-            /* Bordes Neón Rosita */
-            border: 2px solid #ff2a8d;
-            box-shadow: 0 0 25px rgba(255, 42, 141, 0.6), 
-                        inset 0 0 10px rgba(255, 42, 141, 0.3);
+            /* Bordes Neón Amarillo */
+            border: 2px solid #ffea00;
+            box-shadow: 0 0 25px rgba(255, 234, 0, 0.6), 
+                        inset 0 0 10px rgba(255, 234, 0, 0.3);
             
             color: white;
             gap: 50px;
@@ -42,8 +42,8 @@
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: -1px;
-            color: #ff2a8d; 
-            text-shadow: 0 0 10px rgba(255, 42, 141, 0.5);
+            color: #ffea00; 
+            text-shadow: 0 0 10px rgba(255, 234, 0, 0.5);
         }
 
         .info p {
@@ -52,12 +52,12 @@
             color: #eee;
         }
 
-        /* Línea Divisora Neón Rosita */
+        /* Línea Divisora Neón Amarillo */
         .divider {
             width: 2px;
             height: 80px;
-            background: #ff2a8d;
-            box-shadow: 0 0 12px #ff2a8d;
+            background: #ffea00;
+            box-shadow: 0 0 12px #ffea00;
             opacity: 0.7;
         }
 
@@ -78,7 +78,7 @@
             font-weight: 900;
             line-height: 1;
             color: #ffffff;
-            text-shadow: 0 0 15px rgba(255, 42, 141, 0.7);
+            text-shadow: 0 0 15px rgba(255, 234, 0, 0.7);
         }
 
         .time-group span {
@@ -86,7 +86,7 @@
             text-transform: uppercase;
             margin-top: 8px;
             letter-spacing: 2px;
-            color: #ff2a8d; 
+            color: #ffea00; 
             font-weight: 600;
         }
     </style>
@@ -95,8 +95,8 @@
 
     <div class="glass-box">
         <div class="info">
-            <h1>LA TENDENCIA DE MOLUSCO</h1>
-            <p>KQ105 • Hoy • 3:00 PM</p>
+            <h1>JAY WHEELER - MUNDO RUEDITAS LIVE</h1>
+            <p>Viernes, 29 de mayo • 8:00 PM</p>
         </div>
 
         <div class="divider"></div>
@@ -122,16 +122,17 @@
     </div>
 
     <script>
-        // Configuración para HOY a las 3:00 PM (15:00 horas)
-        const now = new Date();
-        let targetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 15, 0, 0).getTime();
+        // Configuración para el 29 de mayo a las 8:00 PM (20:00 horas)
+        const currentYear = new Date().getFullYear();
+        // Nota: Los meses en JavaScript empiezan desde 0 (4 = Mayo)
+        const targetDate = new Date(currentYear, 4, 29, 20, 0, 0).getTime();
 
         function countdown() {
             const currentTime = new Date().getTime();
             const gap = targetDate - currentTime;
 
             if (gap <= 0) {
-                document.querySelector(".timer").innerHTML = "<b style='color:#ff2a8d; font-size:30px; text-shadow: 0 0 10px rgba(255,42,141,0.5);'>¡AL AIRE!</b>";
+                document.querySelector(".timer").innerHTML = "<b style='color:#ffea00; font-size:30px; text-shadow: 0 0 10px rgba(255,234,0,0.5);'>¡AL AIRE!</b>";
                 return;
             }
 
