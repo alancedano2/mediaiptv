@@ -95,8 +95,8 @@
 
     <div class="glass-box">
         <div class="info">
-            <h1>JAY WHEELER - MUNDO RUEDITAS LIVE</h1>
-            <p>Viernes, 29 de mayo • 8:00 PM</p>
+            <h1>AAA: NOCHE DE LOS GRANDES</h1>
+            <p>Sábado, 30 de mayo • 10:00 PM</p>
         </div>
 
         <div class="divider"></div>
@@ -122,10 +122,14 @@
     </div>
 
     <script>
-        // Configuración para el 29 de mayo a las 8:00 PM (20:00 horas)
-        const currentYear = new Date().getFullYear();
-        // Nota: Los meses en JavaScript empiezan desde 0 (4 = Mayo)
-        const targetDate = new Date(currentYear, 4, 29, 20, 0, 0).getTime();
+        // Configuración dinámica para el día de HOY a las 10:00 PM (22:00 horas)
+        const today = new Date();
+        const targetDate = new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate(),
+            22, 0, 0 // 22:00:00 horas (10:00 PM)
+        ).getTime();
 
         function countdown() {
             const currentTime = new Date().getTime();
