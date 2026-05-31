@@ -2,9 +2,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Jay Wheeler - Mundo Rueditas Live</title>
+    <title>WWE: Clash In Italy - Live Countdown</title>
     <style>
-        /* Página transparente */
         body {
             margin: 0;
             height: 100vh;
@@ -15,7 +14,6 @@
             font-family: 'Inter', 'Segoe UI', sans-serif;
         }
 
-        /* Cuadro principal oscurecido */
         .glass-box {
             display: flex;
             align-items: center;
@@ -26,24 +24,23 @@
             padding: 35px 60px;
             border-radius: 20px; 
             
-            /* Bordes Neón Amarillo */
-            border: 2px solid #ffea00;
-            box-shadow: 0 0 25px rgba(255, 234, 0, 0.6), 
-                        inset 0 0 10px rgba(255, 234, 0, 0.3);
+            /* Cambiado a Verde Neón */
+            border: 2px solid #39ff14;
+            box-shadow: 0 0 25px rgba(57, 255, 20, 0.6), 
+                        inset 0 0 10px rgba(57, 255, 20, 0.3);
             
             color: white;
             gap: 50px;
         }
 
-        /* Lado del Texto */
         .info h1 {
             margin: 0;
             font-size: 32px;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: -1px;
-            color: #ffea00; 
-            text-shadow: 0 0 10px rgba(255, 234, 0, 0.5);
+            color: #39ff14; /* Verde */
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
         }
 
         .info p {
@@ -52,16 +49,14 @@
             color: #eee;
         }
 
-        /* Línea Divisora Neón Amarillo */
         .divider {
             width: 2px;
             height: 80px;
-            background: #ffea00;
-            box-shadow: 0 0 12px #ffea00;
+            background: #39ff14; /* Verde */
+            box-shadow: 0 0 12px #39ff14;
             opacity: 0.7;
         }
 
-        /* Lado del Contador */
         .timer {
             display: flex;
             gap: 30px;
@@ -78,7 +73,7 @@
             font-weight: 900;
             line-height: 1;
             color: #ffffff;
-            text-shadow: 0 0 15px rgba(255, 234, 0, 0.7);
+            text-shadow: 0 0 15px rgba(57, 255, 20, 0.7); /* Verde */
         }
 
         .time-group span {
@@ -86,7 +81,7 @@
             text-transform: uppercase;
             margin-top: 8px;
             letter-spacing: 2px;
-            color: #ffea00; 
+            color: #39ff14; /* Verde */
             font-weight: 600;
         }
     </style>
@@ -95,8 +90,8 @@
 
     <div class="glass-box">
         <div class="info">
-            <h1>AAA: NOCHE DE LOS GRANDES</h1>
-            <p>Sábado, 30 de mayo • 10:00 PM</p>
+            <h1>WWE: CLASH IN ITALY</h1>
+            <p>Domingo, 31 de mayo • 12:00 PM</p>
         </div>
 
         <div class="divider"></div>
@@ -122,21 +117,14 @@
     </div>
 
     <script>
-        // Configuración dinámica para el día de HOY a las 10:00 PM (22:00 horas)
-        const today = new Date();
-        const targetDate = new Date(
-            today.getFullYear(),
-            today.getMonth(),
-            today.getDate(),
-            22, 0, 0 // 22:00:00 horas (10:00 PM)
-        ).getTime();
+        const targetDate = new Date(2026, 4, 31, 12, 0, 0).getTime();
 
         function countdown() {
             const currentTime = new Date().getTime();
             const gap = targetDate - currentTime;
 
             if (gap <= 0) {
-                document.querySelector(".timer").innerHTML = "<b style='color:#ffea00; font-size:30px; text-shadow: 0 0 10px rgba(255,234,0,0.5);'>¡AL AIRE!</b>";
+                document.querySelector(".timer").innerHTML = "<b style='color:#39ff14; font-size:30px; text-shadow: 0 0 10px rgba(57,255,20,0.5);'>¡AL AIRE!</b>";
                 return;
             }
 
