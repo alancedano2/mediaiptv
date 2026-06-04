@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>WWE: Clash In Italy - Live Countdown</title>
+    <title>Premios Tu Música Urbano Mix - Cuenta Regresiva</title>
     <style>
         body {
             margin: 0;
@@ -24,10 +24,10 @@
             padding: 35px 60px;
             border-radius: 20px; 
             
-            /* Cambiado a Verde Neón */
-            border: 2px solid #39ff14;
-            box-shadow: 0 0 25px rgba(57, 255, 20, 0.6), 
-                        inset 0 0 10px rgba(57, 255, 20, 0.3);
+            /* Cambiado a Azul Eléctrico */
+            border: 2px solid #00d2ff;
+            box-shadow: 0 0 25px rgba(0, 210, 255, 0.6), 
+                        inset 0 0 10px rgba(0, 210, 255, 0.3);
             
             color: white;
             gap: 50px;
@@ -39,8 +39,8 @@
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: -1px;
-            color: #39ff14; /* Verde */
-            text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+            color: #00d2ff; /* Azul */
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
         }
 
         .info p {
@@ -52,8 +52,8 @@
         .divider {
             width: 2px;
             height: 80px;
-            background: #39ff14; /* Verde */
-            box-shadow: 0 0 12px #39ff14;
+            background: #00d2ff; /* Azul */
+            box-shadow: 0 0 12px #00d2ff;
             opacity: 0.7;
         }
 
@@ -73,7 +73,7 @@
             font-weight: 900;
             line-height: 1;
             color: #ffffff;
-            text-shadow: 0 0 15px rgba(57, 255, 20, 0.7); /* Verde */
+            text-shadow: 0 0 15px rgba(0, 210, 255, 0.7); /* Azul */
         }
 
         .time-group span {
@@ -81,7 +81,7 @@
             text-transform: uppercase;
             margin-top: 8px;
             letter-spacing: 2px;
-            color: #39ff14; /* Verde */
+            color: #00d2ff; /* Azul */
             font-weight: 600;
         }
     </style>
@@ -90,8 +90,10 @@
 
     <div class="glass-box">
         <div class="info">
-            <h1>WWE: CLASH IN ITALY</h1>
-            <p>Domingo, 31 de mayo • 12:00 PM</p>
+            <!-- Título Actualizado -->
+            <h1>PREMIOS TU MÚSICA URBANO MIX</h1>
+            <!-- Fecha en Texto Actualizada -->
+            <p>Jueves, 4 de junio • 7:00 PM</p>
         </div>
 
         <div class="divider"></div>
@@ -117,14 +119,16 @@
     </div>
 
     <script>
-        const targetDate = new Date(2026, 4, 31, 12, 0, 0).getTime();
+        // Configurado para el 4 de Junio de 2026 a las 19:00 (7:00 PM)
+        // Nota: En JavaScript los meses van de 0 a 11 (Enero es 0, Junio es 5)
+        const targetDate = new Date(2026, 5, 4, 19, 0, 0).getTime();
 
         function countdown() {
             const currentTime = new Date().getTime();
             const gap = targetDate - currentTime;
 
             if (gap <= 0) {
-                document.querySelector(".timer").innerHTML = "<b style='color:#39ff14; font-size:30px; text-shadow: 0 0 10px rgba(57,255,20,0.5);'>¡AL AIRE!</b>";
+                document.querySelector(".timer").innerHTML = "<b style='color:#00d2ff; font-size:30px; text-shadow: 0 0 10px rgba(0,210,255,0.5);'>¡AL AIRE!</b>";
                 return;
             }
 
