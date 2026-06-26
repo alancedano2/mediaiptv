@@ -50,7 +50,7 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             padding: 40px;
             width: 100%;
-            max-width: 750px; /* Ancho estirado para diseño horizontal */
+            max-width: 750px;
             display: flex;
             flex-direction: column;
             gap: 30px;
@@ -70,13 +70,47 @@
             filter: drop-shadow(0 4px 10px rgba(255, 51, 102, 0.2));
         }
 
-        /* CUADRO CENTRAL DE REPRODUCCIÓN (HORIZONTAL) */
+        /* NOTIFICACIONES DE HORARIO */
+        .schedule-notice {
+            display: none;
+            background: rgba(255, 51, 102, 0.1);
+            border: 1px solid rgba(255, 51, 102, 0.3);
+            border-radius: 20px;
+            padding: 40px 20px;
+            margin-top: 40px;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .schedule-notice h2 {
+            font-size: 1.8em;
+            color: #ffffff;
+            margin: 0 0 10px 0;
+            font-weight: 800;
+        }
+
+        .schedule-notice p {
+            font-size: 1.2em;
+            color: var(--secondary);
+            margin: 0;
+            font-weight: 600;
+        }
+
+        /* CONTENIDO DEL REPRODUCTOR */
+        .player-content {
+            display: none; /* Se activa dinámicamente por JS */
+            flex-direction: column;
+            gap: 30px;
+            width: 100%;
+        }
+
+        /* CUADRO CENTRAL HORIZONTAL */
         .now-playing-card {
             background: var(--bg-glass);
             border: 1px solid var(--border-glass);
             border-radius: 20px;
             padding: 25px;
-            margin-top: 40px; /* Margen para no chocar con el logo absoluto */
+            margin-top: 40px;
             display: flex;
             align-items: center;
             gap: 25px;
@@ -105,10 +139,9 @@
 
         .track-info {
             flex-grow: 1;
-            min-width: 0; /* Evita que el texto rompa el layout */
+            min-width: 0;
         }
 
-        /* ESTRUCTURA: ARTISTA ARRIBA, CANCIÓN ABAJO */
         #metadataBox .artist {
             font-weight: 600;
             font-size: 1.1em;
@@ -219,6 +252,11 @@
             transform: scale(1.3);
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         audio#radioPlayer { display: none; }
     </style>
 </head>
@@ -232,30 +270,37 @@
 
     <audio id="radioPlayer"></audio>
 
-    <div class="now-playing-card">
-        <div class="cover-wrapper">
-            <img id="albumCover" src="placeholder_cover.png" alt="Cover">
-        </div>
-        <div class="track-info">
-            <div id="metadataBox">
-                <span class="artist">Sintonizando...</span>
-                <span class="title">KQ105 FM</span>
-            </div>
-        </div>
+    <div id="scheduleNotice" class="schedule-notice">
+        <h2 id="noticeTitle">Transmisión Fuera de Horario</h2>
+        <p id="noticeMessage">Regresa pronto.</p>
     </div>
 
-    <div class="controls-row">
-        <button id="playPauseBtn" class="player-btn">
-            <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5.14v14l11-7-11-7z"/></svg>
-            <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-        </button>
+    <div id="playerContent" class="player-content">
+        <div class="now-playing-card">
+            <div class="cover-wrapper">
+                <img id="albumCover" src="placeholder_cover.png" alt="Cover">
+            </div>
+            <div class="track-info">
+                <div id="metadataBox">
+                    <span class="artist">Sintonizando...</span>
+                    <span class="title">KQ105 FM</span>
+                </div>
+            </div>
+        </div>
 
-        <div class="volume-container">
-            <button id="volumeBtn" class="player-btn">
-                <svg class="icon-volume" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
-                <svg class="icon-mute" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63z"/></svg>
+        <div class="controls-row">
+            <button id="playPauseBtn" class="player-btn">
+                <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5.14v14l11-7-11-7z"/></svg>
+                <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
             </button>
-            <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
+
+            <div class="volume-container">
+                <button id="volumeBtn" class="player-btn">
+                    <svg class="icon-volume" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+                    <svg class="icon-mute" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63z"/></svg>
+                </button>
+                <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
+            </div>
         </div>
     </div>
 
@@ -282,11 +327,68 @@ var volumeSlider = document.getElementById("volumeSlider");
 var albumCover = document.getElementById("albumCover");
 var metadataBox = document.getElementById("metadataBox");
 
+var playerContent = document.getElementById("playerContent");
+var scheduleNotice = document.getElementById("scheduleNotice");
+var noticeTitle = document.getElementById("noticeTitle");
+var noticeMessage = document.getElementById("noticeMessage");
+
 var currentTitle = "";
 var currentArtist = "";
+var isStreamInitialized = false;
+var hls = null;
 
 /* ================================
-   PLAYER
+   SISTEMA DE CONTROL DE HORARIOS (L-V 3:00PM - 7:30PM)
+================================= */
+function checkSchedule() {
+    const now = new Date();
+    const day = now.getDay(); // 0 = Domingo, 1 = Lunes, ..., 6 = Sábado
+    const currentTimeInMinutes = (now.getHours() * 60) + now.getMinutes();
+    
+    // Rango activo en minutos:
+    // 3:00 PM = (15 * 60) = 900 minutos
+    // 7:30 PM = (19 * 60) + 30 = 1170 minutos
+    const startTime = 900;
+    const endTime = 1170;
+
+    const isWeekend = (day === 0 || day === 6);
+    const isInsideShowHours = (currentTimeInMinutes >= startTime && currentTimeInMinutes < endTime);
+
+    // Evaluamos si el reproductor debe estar prendido o apagado
+    if (!isWeekend && isInsideShowHours) {
+        // EN HORARIO DE TRANSMISIÓN: Mostrar reproductor
+        playerContent.style.display = "flex";
+        scheduleNotice.style.display = "none";
+        
+        if (!isStreamInitialized) {
+            initStream();
+        }
+    } else {
+        // FUERA DE HORARIO: Ocultar reproductor y pausar audio
+        playerContent.style.display = "none";
+        scheduleNotice.style.display = "block";
+        
+        if (!radioPlayer.paused) {
+            radioPlayer.pause();
+        }
+
+        // Modificar los textos dinámicamente según la condición
+        if (isWeekend) {
+            noticeTitle.innerText = "Fin de Semana";
+            noticeMessage.innerText = "¡Disfruta tu fin de semana! Regresa en la semana a las 3:00 PM para La Tendencia De Molusco";
+        } else {
+            noticeTitle.innerText = "Transmisión en Pausa";
+            noticeMessage.innerText = "Regresa a las 3:00 PM para La Tendencia De Molusco";
+        }
+    }
+}
+
+// Monitorear el reloj constantemente
+setInterval(checkSchedule, 1000);
+checkSchedule();
+
+/* ================================
+   PLAYER CONTROLS
 ================================= */
 playPauseBtn.addEventListener("click", () => {
     radioPlayer.paused ? radioPlayer.play() : radioPlayer.pause();
@@ -352,47 +454,51 @@ async function fetchAlbumCover(artist, title) {
 }
 
 /* ================================
-   STREAM HLS
+   STREAM HLS INITIALIZATION
 ================================= */
-if (Hls.isSupported()) {
-    var hls = new Hls();
-    hls.loadSource(m3u8_url);
-    hls.attachMedia(radioPlayer);
+function initStream() {
+    isStreamInitialized = true;
 
-    hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-        radioPlayer.volume = volumeSlider.value;
-        radioPlayer.play();
-        updateMetadataDisplay("KQ105 FM", "Sintonizando...");
-    });
+    if (Hls.isSupported()) {
+        hls = new Hls();
+        hls.loadSource(m3u8_url);
+        hls.attachMedia(radioPlayer);
 
-    hls.on(Hls.Events.FRAG_CHANGED, async (event, data) => {
-        if (!data.frag.title) return;
+        hls.on(Hls.Events.MEDIA_ATTACHED, () => {
+            radioPlayer.volume = volumeSlider.value;
+            radioPlayer.play();
+            updateMetadataDisplay("KQ105 FM", "Sintonizando...");
+        });
 
-        const titleMatch = /title="([^"]*)"/.exec(data.frag.title);
-        const artistMatch = /artist="([^"]*)"/.exec(data.frag.title);
+        hls.on(Hls.Events.FRAG_CHANGED, async (event, data) => {
+            if (!data.frag.title) return;
 
-        const title = titleMatch ? titleMatch[1] : "Título no disponible";
-        const artist = artistMatch ? artistMatch[1] : "Artista no disponible";
+            const titleMatch = /title="([^"]*)"/.exec(data.frag.title);
+            const artistMatch = /artist="([^"]*)"/.exec(data.frag.title);
 
-        if (title === currentTitle && artist === currentArtist) return;
+            const title = titleMatch ? titleMatch[1] : "Título no disponible";
+            const artist = artistMatch ? artistMatch[1] : "Artista no disponible";
 
-        currentTitle = title;
-        currentArtist = artist;
+            if (title === currentTitle && artist === currentArtist) return;
 
-        let cover =
-            title.includes("WKAQ-FM") || artist.includes("WKAQ-FM")
-                ? WKAQ_COVER
-                : await fetchAlbumCover(artist, title);
+            currentTitle = title;
+            currentArtist = artist;
 
-        updateMetadataDisplay(title, artist, cover);
-    });
+            let cover =
+                title.includes("WKAQ-FM") || artist.includes("WKAQ-FM")
+                    ? WKAQ_COVER
+                    : await fetchAlbumCover(artist, title);
 
-} else if (radioPlayer.canPlayType("application/vnd.apple.mpegurl")) {
-    radioPlayer.src = m3u8_url;
-    radioPlayer.addEventListener("loadedmetadata", () => {
-        radioPlayer.play();
-        updateMetadataDisplay("Reproducción nativa.", "Metadata no disponible.");
-    });
+            updateMetadataDisplay(title, artist, cover);
+        });
+
+    } else if (radioPlayer.canPlayType("application/vnd.apple.mpegurl")) {
+        radioPlayer.src = m3u8_url;
+        radioPlayer.addEventListener("loadedmetadata", () => {
+            radioPlayer.play();
+            updateMetadataDisplay("Reproducción nativa.", "Metadata no disponible.");
+        });
+    }
 }
 </script>
 
