@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>NBA Finals - Spurs vs. Knicks Cuenta Regresiva</title>
+    <title>Zayas vs. Boots - Cuenta Regresiva</title>
     <style>
         body {
             margin: 0;
@@ -24,7 +24,7 @@
             padding: 35px 60px;
             border-radius: 20px; 
             
-            /* Color Dorado de las Finales de la NBA */
+            /* Elegante borde dorado */
             border: 2px solid #C5A059;
             box-shadow: 0 0 25px rgba(197, 160, 89, 0.5), 
                         inset 0 0 10px rgba(197, 160, 89, 0.2);
@@ -100,9 +100,9 @@
 
     <div class="glass-box">
         <div class="info">
-            <h1>NBA FINALS</h1>
-            <div class="teams">Spurs vs. Knicks</div>
-            <p>HOY • 8:30 PM</p>
+            <h1>GRAN COMBATE</h1>
+            <div class="teams">Zayas vs. Boots</div>
+            <p>27 JUNIO 2026 • 8:00 PM</p>
         </div>
 
         <div class="divider"></div>
@@ -128,19 +128,18 @@
     </div>
 
     <script>
-        // Configura automáticamente el target para HOY a las 20:30 (8:30 PM)
-        const targetDate = new Date();
-        targetDate.setHours(20, 30, 0, 0); 
-        
+        // Configura la fecha objetivo exacta: 27 de Junio de 2026 a las 20:00 (8:00 PM)
+        // Nota: En JavaScript los meses empiezan desde 0 (0 = Enero, 5 = Junio)
+        const targetDate = new Date(2026, 5, 27, 20, 0, 0, 0);
         const targetTime = targetDate.getTime();
 
         function countdown() {
             const currentTime = new Date().getTime();
             const gap = targetTime - currentTime;
 
-            // Cuando empiece el partido cambiará el texto
+            // Cuando empiece el evento cambiará el texto
             if (gap <= 0) {
-                document.querySelector(".timer").innerHTML = "<b style='color:#C5A059; font-size:30px; text-shadow: 0 0 10px rgba(197,160,89,0.5);'>¡PARTIDO EN VIVO!</b>";
+                document.querySelector(".timer").innerHTML = "<b style='color:#C5A059; font-size:30px; text-shadow: 0 0 10px rgba(197,160,89,0.5);'>¡EVENTO EN VIVO!</b>";
                 return;
             }
 
