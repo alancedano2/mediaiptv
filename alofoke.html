@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Zayas vs. Boots - Cuenta Regresiva</title>
+    <title>México vs. Inglaterra - Cuenta Regresiva</title>
     <style>
         body {
             margin: 0;
@@ -24,10 +24,10 @@
             padding: 35px 60px;
             border-radius: 20px; 
             
-            /* Elegante borde dorado */
-            border: 2px solid #C5A059;
-            box-shadow: 0 0 25px rgba(197, 160, 89, 0.5), 
-                        inset 0 0 10px rgba(197, 160, 89, 0.2);
+            /* Elegante borde verde estilo deportivo/premium */
+            border: 2px solid #00A859;
+            box-shadow: 0 0 25px rgba(0, 168, 89, 0.5), 
+                        inset 0 0 10px rgba(0, 168, 89, 0.2);
             
             color: white;
             gap: 50px;
@@ -44,7 +44,7 @@
         }
 
         .info .teams {
-            color: #C5A059; /* Dorado */
+            color: #00A859; /* Verde */
             font-size: 32px;
             font-weight: 900;
             margin: 2px 0;
@@ -62,8 +62,8 @@
         .divider {
             width: 2px;
             height: 90px;
-            background: #C5A059; /* Dorado */
-            box-shadow: 0 0 12px #C5A059;
+            background: #00A859; /* Verde */
+            box-shadow: 0 0 12px #00A859;
             opacity: 0.7;
         }
 
@@ -83,7 +83,7 @@
             font-weight: 900;
             line-height: 1;
             color: #ffffff;
-            text-shadow: 0 0 15px rgba(197, 160, 89, 0.6); 
+            text-shadow: 0 0 15px rgba(0, 168, 89, 0.6); 
         }
 
         .time-group span {
@@ -91,7 +91,7 @@
             text-transform: uppercase;
             margin-top: 8px;
             letter-spacing: 2px;
-            color: #C5A059; /* Dorado */
+            color: #00A859; /* Verde */
             font-weight: 600;
         }
     </style>
@@ -100,9 +100,9 @@
 
     <div class="glass-box">
         <div class="info">
-            <h1>GRAN COMBATE</h1>
-            <div class="teams">Zayas vs. Boots</div>
-            <p>27 JUNIO 2026 • 8:00 PM</p>
+            <h1>GRAN PARTIDO</h1>
+            <div class="teams">México vs. Inglaterra</div>
+            <p>5 JULIO 2026 • 8:00 PM</p>
         </div>
 
         <div class="divider"></div>
@@ -128,9 +128,9 @@
     </div>
 
     <script>
-        // Configura la fecha objetivo exacta: 27 de Junio de 2026 a las 20:00 (8:00 PM)
-        // Nota: En JavaScript los meses empiezan desde 0 (0 = Enero, 5 = Junio)
-        const targetDate = new Date(2026, 5, 27, 20, 0, 0, 0);
+        // Configura la fecha objetivo exacta: 5 de Julio de 2026 a las 20:00 (8:00 PM)
+        // Nota: Los meses en JavaScript empiezan desde 0 (0 = Enero, 6 = Julio)
+        const targetDate = new Date(2026, 6, 5, 20, 0, 0, 0);
         const targetTime = targetDate.getTime();
 
         function countdown() {
@@ -139,7 +139,7 @@
 
             // Cuando empiece el evento cambiará el texto
             if (gap <= 0) {
-                document.querySelector(".timer").innerHTML = "<b style='color:#C5A059; font-size:30px; text-shadow: 0 0 10px rgba(197,160,89,0.5);'>¡EVENTO EN VIVO!</b>";
+                document.querySelector(".timer").innerHTML = "<b style='color:#00A859; font-size:30px; text-shadow: 0 0 10px rgba(0,168,89,0.5);'>¡PARTIDO EN VIVO!</b>";
                 return;
             }
 
