@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>México vs. Inglaterra - Cuenta Regresiva</title>
+    <title>Argentina vs. Inglaterra - Cuenta Regresiva</title>
     <style>
         body {
             margin: 0;
@@ -24,10 +24,10 @@
             padding: 35px 60px;
             border-radius: 20px; 
             
-            /* Elegante borde naranja estilo deportivo/premium */
-            border: 2px solid #FF6A00;
-            box-shadow: 0 0 25px rgba(255, 106, 0, 0.5), 
-                        inset 0 0 10px rgba(255, 106, 0, 0.2);
+            /* Elegante borde azul estilo deportivo/premium */
+            border: 2px solid #0084FF;
+            box-shadow: 0 0 25px rgba(0, 132, 255, 0.5), 
+                        inset 0 0 10px rgba(0, 132, 255, 0.2);
             
             color: white;
             gap: 50px;
@@ -44,7 +44,7 @@
         }
 
         .info .teams {
-            color: #FF6A00; /* Naranja */
+            color: #0084FF; /* Azul */
             font-size: 32px;
             font-weight: 900;
             margin: 2px 0;
@@ -62,8 +62,8 @@
         .divider {
             width: 2px;
             height: 90px;
-            background: #FF6A00; /* Naranja */
-            box-shadow: 0 0 12px #FF6A00;
+            background: #0084FF; /* Azul */
+            box-shadow: 0 0 12px #0084FF;
             opacity: 0.7;
         }
 
@@ -83,7 +83,7 @@
             font-weight: 900;
             line-height: 1;
             color: #ffffff;
-            text-shadow: 0 0 15px rgba(255, 106, 0, 0.6); 
+            text-shadow: 0 0 15px rgba(0, 132, 255, 0.6); 
         }
 
         .time-group span {
@@ -91,7 +91,7 @@
             text-transform: uppercase;
             margin-top: 8px;
             letter-spacing: 2px;
-            color: #FF6A00; /* Naranja */
+            color: #0084FF; /* Azul */
             font-weight: 600;
         }
     </style>
@@ -100,9 +100,9 @@
 
     <div class="glass-box">
         <div class="info">
-            <h1>BSN Playoffs</h1>
-            <div class="teams">Gigantes vs. Vaqueros</div>
-            <p>13 JULIO 2026 • 8:00 PM</p>
+            <h1>GRAN PARTIDO</h1>
+            <div class="teams">Argentina vs. Inglaterra</div>
+            <p>15 JULIO 2026 • 3:00 PM</p>
         </div>
 
         <div class="divider"></div>
@@ -128,9 +128,9 @@
     </div>
 
     <script>
-        // Configura la fecha objetivo exacta: 5 de Julio de 2026 a las 20:00 (8:00 PM)
+        // Configura la fecha objetivo: 15 de Julio de 2026 a las 15:00 (3:00 PM)
         // Nota: Los meses en JavaScript empiezan desde 0 (0 = Enero, 6 = Julio)
-        const targetDate = new Date(2026, 6, 13, 20, 0, 0, 0);
+        const targetDate = new Date(2026, 6, 15, 15, 0, 0, 0);
         const targetTime = targetDate.getTime();
 
         function countdown() {
@@ -139,7 +139,7 @@
 
             // Cuando empiece el evento cambiará el texto
             if (gap <= 0) {
-                document.querySelector(".timer").innerHTML = "<b style='color:#FF6A00; font-size:30px; text-shadow: 0 0 10px rgba(255,106,0,0.5);'>¡PARTIDO EN VIVO!</b>";
+                document.querySelector(".timer").innerHTML = "<b style='color:#0084FF; font-size:30px; text-shadow: 0 0 10px rgba(0,132,255,0.5);'>¡PARTIDO EN VIVO!</b>";
                 return;
             }
 
