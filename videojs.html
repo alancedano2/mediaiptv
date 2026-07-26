@@ -18,10 +18,9 @@
       width: 100%;
       height: 100%;
       background-color: #000000;
-      overflow: hidden; /* Elimina scrollbars */
+      overflow: hidden;
     }
 
-    /* Contenedor adaptado al 100% del iframe/pantalla */
     .video-container {
       width: 100vw;
       height: 100vh;
@@ -32,15 +31,12 @@
       height: 100% !important;
     }
 
-    /* Centrar botón principal de Play */
     .video-js .vjs-big-play-button {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
     }
 
-    /* FORZAR VISIBILIDAD DE MENÚS EN EMBEDS/IFRAMES */
-    /* Evita que VideoJS oculte el botón de audio o la barra cuando la ventana se reduce */
     .vjs-control-bar .vjs-audio-button,
     .vjs-control-bar .vjs-subs-caps-button,
     .vjs-control-bar .vjs-descriptions-button {
@@ -79,7 +75,7 @@
       responsive: true,
       html5: {
         vhs: {
-          overrideNative: true // Fuerza el motor HLS de VideoJS sobre el nativo para leer las pistas correctamente
+          overrideNative: true
         },
         nativeAudioTracks: false,
         nativeVideoTracks: false
@@ -87,11 +83,22 @@
     });
 
     player.ready(function() {
-      console.log('Reproductor listo');
-      
-      var audioTracks = player.audioTracks();
-      audioTracks.on('change', function() {
-        console.log('Audio cambiado');
+      // Idioma o nombre de pista que quieres forzar al inicio
+      var IDIOMA_PREFERIDO = 'es'; // Puede ser 'es', 'spa', 'Spanish', etc.
+
+      player.on('loadedmetadata', function() {
+        var audioTracks = player.audioTracks();
+
+        for (var i = 0; i < audioTracks.length; i++) {
+          var track = audioTracks[i];
+          
+          // Busca si el idioma o la etiqueta de la pista coincide
+          if (track.language.includes(IDIOMA_PREFERIDO) || track.label.toLowerCase().includes('spanish') || track.label.toLowerCase().includes('español')) {
+            track.enabled = true; // Activa la pista elegida
+            console.log('Audio fijado automáticamente a:', track.label);
+            break;
+          }
+        }
       });
     });
   </script>
