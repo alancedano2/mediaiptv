@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reproductor VideoJS Fullscreen</title>
+  <title>Reproductor VideoJS Embed</title>
   
   <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
 
@@ -21,23 +21,34 @@
       overflow: hidden; /* Elimina scrollbars */
     }
 
-    /* El contenedor ocupa toda la pantalla */
+    /* Contenedor adaptado al 100% del iframe/pantalla */
     .video-container {
       width: 100vw;
       height: 100vh;
     }
 
-    /* Forzamos a VideoJS a llenar el contenedor al 100% */
     .video-js {
       width: 100% !important;
       height: 100% !important;
     }
 
-    /* Centrar el botón gigante de Play */
+    /* Centrar botón principal de Play */
     .video-js .vjs-big-play-button {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+    }
+
+    /* FORZAR VISIBILIDAD DE MENÚS EN EMBEDS/IFRAMES */
+    /* Evita que VideoJS oculte el botón de audio o la barra cuando la ventana se reduce */
+    .vjs-control-bar .vjs-audio-button,
+    .vjs-control-bar .vjs-subs-caps-button,
+    .vjs-control-bar .vjs-descriptions-button {
+      display: flex !important;
+    }
+
+    .video-js .vjs-control-bar {
+      display: flex !important;
     }
   </style>
 </head>
@@ -49,6 +60,7 @@
       class="video-js vjs-default-skin"
       controls
       preload="auto"
+      crossorigin="anonymous"
       poster=""
     >
       <source src="https://hiveatick.casadenoval.uk/main/secure/85c6e3c371028780d7345169acb594f51289d287d03513b04506ced6bc0c74ed/1785108953/boxing-1.m3u8" type="application/x-mpegURL" />
@@ -63,11 +75,11 @@
 
   <script>
     var player = videojs('mi-video', {
-      fill: true, // Asegura que el video se ajuste a todo el contenedor
+      fill: true,
       responsive: true,
       html5: {
         vhs: {
-          overrideNative: true
+          overrideNative: true // Fuerza el motor HLS de VideoJS sobre el nativo para leer las pistas correctamente
         },
         nativeAudioTracks: false,
         nativeVideoTracks: false
@@ -75,7 +87,12 @@
     });
 
     player.ready(function() {
-      console.log('Reproductor listo en pantalla completa');
+      console.log('Reproductor listo');
+      
+      var audioTracks = player.audioTracks();
+      audioTracks.on('change', function() {
+        console.log('Audio cambiado');
+      });
     });
   </script>
 
