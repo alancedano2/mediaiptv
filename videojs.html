@@ -3,26 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reproductor VideoJS</title>
+  <title>Reproductor VideoJS Fullscreen</title>
   
   <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
 
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #121212;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      font-family: Arial, sans-serif;
+    * {
+      box-sizing: border-box;
     }
 
-    .video-container {
+    html, body {
+      margin: 0;
+      padding: 0;
       width: 100%;
-      max-width: 1000px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      height: 100%;
+      background-color: #000000;
+      overflow: hidden; /* Elimina scrollbars */
+    }
+
+    /* El contenedor ocupa toda la pantalla */
+    .video-container {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* Forzamos a VideoJS a llenar el contenedor al 100% */
+    .video-js {
+      width: 100% !important;
+      height: 100% !important;
     }
 
     /* Centrar el botón gigante de Play */
@@ -38,7 +46,7 @@
   <div class="video-container">
     <video
       id="mi-video"
-      class="video-js vjs-default-skin vjs-fluid"
+      class="video-js vjs-default-skin"
       controls
       preload="auto"
       poster=""
@@ -54,11 +62,12 @@
   <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
 
   <script>
-    // Inicialización explícita mediante JS
     var player = videojs('mi-video', {
+      fill: true, // Asegura que el video se ajuste a todo el contenedor
+      responsive: true,
       html5: {
         vhs: {
-          overrideNative: true // Fuerza el motor de Video.js en Safari para mejor soporte de selectores de audio
+          overrideNative: true
         },
         nativeAudioTracks: false,
         nativeVideoTracks: false
@@ -66,15 +75,7 @@
     });
 
     player.ready(function() {
-      // Escuchar cuando el reproductor esté listo
-      console.log('Reproductor listo');
-      
-      // Evento para detectar las pistas de audio disponibles en el manifest .m3u8
-      var audioTracks = player.audioTracks();
-      
-      audioTracks.on('addtrack', function() {
-        console.log('Pista de audio encontrada:', audioTracks);
-      });
+      console.log('Reproductor listo en pantalla completa');
     });
   </script>
 
