@@ -20,14 +20,10 @@
         }
     </style>
 
-    <!-- Clappr Base -->
+    <!-- Clappr Base (Incluye HLS.js integrado) -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
-    
-    <!-- HLS.js Core y Playback Plugin -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clappr-hlsjs-playback@0.5.2/dist/clappr-hlsjs-playback.min.js"></script>
 
-    <!-- Plugin para seleccionar pistas de Audio/Idiomas en Clappr -->
+    <!-- Plugin de Audio Tracks para Clappr -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clappr-audio-tracks-plugin@latest/dist/clappr-audio-tracks-plugin.min.js"></script>
     
 </head>
@@ -38,20 +34,22 @@
     <script>
         const M3U8_URL = 'https://knife-cloudy-tuner-buildings.trycloudflare.com/Michael/master.m3u8';
 
-        // Identificar el playback HLS.js cargado globalmente desde el CDN
-        var HLSPlayback = window.HlsjsPlayback || HlsjsPlayback;
-        var AudioTracksPlugin = window.AudioTracksPlugin || AudioTracks;
+        // Detectar el plugin de audio de forma segura sin lanzar ReferenceError
+        var AudioTracksPlugin = window.AudioTracksPlugin || window.AudioTracks || null;
+
+        var pluginsArr = [];
+        if (AudioTracksPlugin) {
+            pluginsArr.push(AudioTracksPlugin);
+        }
 
         var player = new Clappr.Player({
             source: M3U8_URL,
             parentId: '#clappr-player-sundayslam1',
             mimeType: 'application/x-mpegurl',
             plugins: {
-                playback: [HLSPlayback],
-                core: [AudioTracksPlugin]
+                core: pluginsArr
             },
             hlsjsConfig: {
-                // Forzar soporte de audios alternativos y subtítulos
                 enableAudioTrackSwitching: true
             },
             autoPlay: true,
