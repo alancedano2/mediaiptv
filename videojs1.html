@@ -7,6 +7,7 @@
 <style>
 html,body{
     margin:0;
+    padding:0;
     width:100%;
     height:100%;
     background:#000;
@@ -18,17 +19,6 @@ html,body{
 }
 </style>
 
-
-<script src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
-
-<script type="module">
-
-import ClapprAudioTrackSelector from "https://cdn.jsdelivr.net/npm/@c3voc/clappr-audio-track-selector@0.2.4/dist/clappr-audio-track-selector.esm.js";
-
-window.ClapprAudioTrackSelector = ClapprAudioTrackSelector;
-
-</script>
-
 </head>
 
 <body>
@@ -36,36 +26,37 @@ window.ClapprAudioTrackSelector = ClapprAudioTrackSelector;
 <div id="player"></div>
 
 
-<script>
+<script type="module">
 
-setTimeout(()=>{
+import ClapprAudioSelectorPlugin from 'https://cdn.skypack.dev/clappr-audio-selector-plugin';
 
-console.log("Clappr:", Clappr);
-console.log("Plugin:", ClapprAudioTrackSelector);
+window.addEventListener("load", () => {
 
+    const player = new Clappr.Player({
 
-const player = new Clappr.Player({
+        source:
+        "https://knife-cloudy-tuner-buildings.trycloudflare.com/Michael/master.m3u8",
 
-    source:
-    "https://knife-cloudy-tuner-buildings.trycloudflare.com/Michael/master.m3u8",
+        parentId:"#player",
 
-    parentId:"#player",
+        width:"100%",
+        height:"100%",
 
-    width:"100%",
-    height:"100%",
+        autoPlay:false,
 
-    autoPlay:false,
+        plugins:[
+            ClapprAudioSelectorPlugin
+        ]
 
-    plugins:[
-        ClapprAudioTrackSelector
-    ]
+    });
 
 });
 
-
-},1000);
-
 </script>
+
+
+<!-- Clappr -->
+<script src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
 
 </body>
 </html>
