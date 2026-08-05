@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clappr</title>
+    <title>sundayslam1 - Clappr Multi-Audio</title>
     
     <style>
-        /* Estilos para pantalla completa */
         html, body { 
             margin: 0; 
             padding: 0; 
@@ -21,10 +20,15 @@
         }
     </style>
 
+    <!-- Clappr Base -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
     
+    <!-- HLS.js Core y Playback Plugin -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clappr-hlsjs-playback@0.4.0/dist/clappr-hlsjs-playback.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clappr-hlsjs-playback@0.5.2/dist/clappr-hlsjs-playback.min.js"></script>
+
+    <!-- Plugin para seleccionar pistas de Audio/Idiomas en Clappr -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clappr-audio-tracks-plugin@latest/dist/clappr-audio-tracks-plugin.min.js"></script>
     
 </head>
 <body>
@@ -34,11 +38,22 @@
     <script>
         const M3U8_URL = 'https://knife-cloudy-tuner-buildings.trycloudflare.com/Michael/master.m3u8';
 
+        // Identificar el playback HLS.js cargado globalmente desde el CDN
+        var HLSPlayback = window.HlsjsPlayback || HlsjsPlayback;
+        var AudioTracksPlugin = window.AudioTracksPlugin || AudioTracks;
+
         var player = new Clappr.Player({
             source: M3U8_URL,
             parentId: '#clappr-player-sundayslam1',
             mimeType: 'application/x-mpegurl',
-            // plugins: [HlsjsPlayback], ELIMINADO para evitar el error ReferenceError
+            plugins: {
+                playback: [HLSPlayback],
+                core: [AudioTracksPlugin]
+            },
+            hlsjsConfig: {
+                // Forzar soporte de audios alternativos y subtítulos
+                enableAudioTrackSwitching: true
+            },
             autoPlay: true,
             width: '100%',
             height: '100%'
