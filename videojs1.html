@@ -4,86 +4,84 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Shaka Player</title>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.10.5/shaka-player.compiled.js"></script>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.10.5/controls.css">
+<title>Clappr Multi Audio</title>
 
 <style>
-html,body{
+html, body {
     margin:0;
+    padding:0;
     width:100%;
     height:100%;
     background:#000;
+    overflow:hidden;
 }
 
-.video-container{
+#player {
     width:100%;
     height:100vh;
 }
-
-video{
-    width:100%;
-    height:100%;
-}
 </style>
+
+
+<!-- Clappr -->
+<script src="https://cdn.jsdelivr.net/npm/clappr@0.11.7/dist/clappr.min.js"></script>
+
+<!-- HLS.js -->
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<!-- Plugin selector audio -->
+<script src="https://cdn.jsdelivr.net/npm/clappr-audio-selector-plugin@0.1.3/dist/audio-selector.min.js"></script>
+
 
 </head>
 
 <body>
 
-<div class="video-container">
-    <video id="video" 
-    poster=""
-    controls></video>
-</div>
+<div id="player"></div>
 
 
 <script>
 
-async function init(){
+const player = new Clappr.Player({
 
-    shaka.polyfill.installAll();
+    source:
+    "https://knife-cloudy-tuner-buildings.trycloudflare.com/Michael/master.m3u8",
 
-    if(!shaka.Player.isBrowserSupported()){
-        alert("Navegador no compatible");
-        return;
+    parentId:"#player",
+
+    width:"100%",
+
+    height:"100%",
+
+    autoPlay:false,
+
+    mute:false,
+
+    mediacontrol:{
+        seekbar:true,
+        buttons:[
+            "play",
+            "mute",
+            "volume",
+            "audio",
+            "fullscreen"
+        ]
+    },
+
+
+    plugins:[
+        AudioTrackSelector
+    ],
+
+
+    playback:{
+        hlsjsConfig:{
+            enableWorker:true
+        }
     }
 
-    const video = document.getElementById("video");
+});
 
-    const player = new shaka.Player(video);
-
-    const ui = new shaka.ui.Overlay(
-        player,
-        document.querySelector(".video-container"),
-        video
-    );
-
-
-    player.addEventListener("error", e=>{
-        console.error(e.detail);
-    });
-
-
-    await player.load(
-        "https://knife-cloudy-tuner-buildings.trycloudflare.com/Michael/master.m3u8"
-    );
-
-
-    console.log("Cargado");
-
-    console.log(
-        player.getVariantTracks()
-    );
-
-}
-
-document.addEventListener(
-"DOMContentLoaded",
-init
-);
 
 </script>
 
