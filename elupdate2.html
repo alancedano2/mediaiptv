@@ -1,53 +1,228 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>elupdate2 - Video.js Fullscreen</title>
-    
-    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
-    
-    <style>
-        /* Estilos para pantalla completa */
-        html, body { 
-            margin: 0; 
-            padding: 0; 
-            width: 100%; 
-            height: 100%; 
-            overflow: hidden;
-            background-color: black;
-        }
-        /* La clase 'video-js' y el id deben tomar 100% */
-        #videojs-player-elupdate2 { 
-            width: 100% !important; 
-            height: 100% !important; 
-        }
-        .video-js {
-            margin: 0;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analizador de Streams - DAMITV</title>
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --accent: #38bdf8;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --live: #ef4444;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 { text-align: center; color: var(--accent); }
+
+    /* Reproductor Modal / Seccion */
+    #player-container {
+      max-width: 900px;
+      margin: 0 auto 30px auto;
+      display: none;
+      background: #000;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+
+    #player-container iframe {
+      width: 100%;
+      height: 480px;
+      border: none;
+    }
+
+    .player-header {
+      padding: 10px 15px;
+      background: #111;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Grid de tarjetas */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #334155;
+      transition: transform 0.2s;
+    }
+
+    .card:hover { transform: translateY(-4px); }
+
+    .poster {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      background-color: #000;
+    }
+
+    .card-body {
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      border-radius: 4px;
+      text-transform: uppercase;
+      width: fit-content;
+      margin-bottom: 8px;
+    }
+
+    .badge-live { background-color: var(--live); color: white; }
+    .badge-upcoming { background-color: #3b82f6; color: white; }
+
+    .title { font-size: 1.1rem; font-weight: bold; margin: 0 0 5px 0; }
+    .meta { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; }
+
+    .sources-list {
+      margin-top: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .btn-source {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .btn-source:hover { opacity: 0.8; }
+  </style>
 </head>
 <body>
 
-    <video 
-        id="videojs-player-elupdate2" 
-        class="video-js vjs-default-skin" 
-        controls 
-        autoplay 
-        preload="auto" 
-        data-setup="{}"
-    >
-        <source src="http://192.168.1.18:8099/hls/stream.m3u8" type="application/x-mpegURL" />
-    </video>
+  <h1>Canales y Transmisiones en Vivo</h1>
 
-    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
-    
-    <script>
-        var player = videojs('videojs-player-elupdate2');
-        player.ready(function() {
-            this.play();
+  <!-- Pantalla del Reproductor -->
+  <div id="player-container">
+    <div class="player-header">
+      <span id="player-title">Reproduciendo...</span>
+      <button onclick="cerrarReproductor()" style="background:var(--live); color:white; border:none; padding:5px 10px; cursor:pointer;">Cerrar ✖</button>
+    </div>
+    <iframe id="video-iframe" allowfullscreen></iframe>
+  </div>
+
+  <!-- Grid donde se insertan las tarjetas -->
+  <div class="grid" id="streams-grid"></div>
+
+  <script>
+    // PEGA AQUÍ LA RESPUESTA JSON DE LA API O CARGARLA VÍA FETCH
+    const apiBaseUrl = "https://damitv.st"; // Base para resolver URLs relativas
+
+    // Función para procesar y renderizar los datos
+    function renderizarStreams(data) {
+      const grid = document.getElementById("streams-grid");
+      grid.innerHTML = "";
+
+      if (!data || !data.streams) return;
+
+      data.streams.forEach(categoryGroup => {
+        categoryGroup.streams.forEach(stream => {
+          // Crear la tarjeta HTML
+          const card = document.createElement("div");
+          card.className = "card";
+
+          const isLive = stream.status === "live";
+          const posterUrl = stream.poster || "https://via.placeholder.com/300x150?text=No+Image";
+
+          // Generar botones para cada servidor/canal disponible
+          let sourcesButtonsHTML = "";
+          if (stream.sources && stream.sources.length > 0) {
+            stream.sources.forEach(source => {
+              // Si el embed es una ruta relativa (/embed/?id=...), le agregamos el dominio
+              const fullEmbedUrl = source.embed.startsWith("http") 
+                ? source.embed 
+                : `${apiBaseUrl}${source.embed}`;
+
+              sourcesButtonsHTML += `
+                <button class="btn-source" onclick="cargarStream('${fullEmbedUrl}', '${stream.name.replace(/'/g, "\\'")}')">
+                  ▶ ${source.name}
+                </button>
+              `;
+            });
+          }
+
+          card.innerHTML = `
+            <img src="${posterUrl}" class="poster" alt="${stream.name}" onerror="this.src='https://via.placeholder.com/300x150?text=Imagen+No+Disponible'">
+            <div class="card-body">
+              <span class="badge ${isLive ? 'badge-live' : 'badge-upcoming'}">
+                ${isLive ? '🔴 EN VIVO' : '⏰ PRÓXIMAMENTE'}
+              </span>
+              <div class="title">${stream.name}</div>
+              <div class="meta">
+                 Liga: ${stream.league || 'N/A'}<br>
+                 Espectadores: ${stream.viewers || 0}
+              </div>
+              <div class="sources-list">
+                ${sourcesButtonsHTML}
+              </div>
+            </div>
+          `;
+
+          grid.appendChild(card);
         });
-    </script>
+      });
+    }
 
+    // Cargar iframe en el reproductor superior
+    function cargarStream(embedUrl, nombre) {
+      const playerContainer = document.getElementById("player-container");
+      const iframe = document.getElementById("video-iframe");
+      const title = document.getElementById("player-title");
+
+      title.textContent = nombre;
+      iframe.src = embedUrl;
+      playerContainer.style.display = "block";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function cerrarReproductor() {
+      const playerContainer = document.getElementById("player-container");
+      const iframe = document.getElementById("video-iframe");
+      iframe.src = "";
+      playerContainer.style.display = "none";
+    }
+
+    // OPCIÓN A: Consumir directamente desde la API si no hay bloqueo CORS
+    fetch("https://ondemand.st/papi/api/streams")
+      .then(res => res.json())
+      .then(data => renderizarStreams(data))
+      .catch(err => {
+        console.warn("No se pudo consumir directamente la API (posible CORS). Inserta el JSON manualmente.", err);
+      });
+  </script>
 </body>
 </html>
