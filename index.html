@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KQ105 - Radio Stream</title>
 
+    <!-- Fallback inline favicon to prevent 404 errors -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📻</text></svg>">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
@@ -154,7 +157,6 @@
             box-shadow: 0 4px 15px rgba(243,156,18,0.3);
         }
     </style>
-
 </head>
 <body>
 
@@ -162,7 +164,8 @@
 
     <div class="header">
         <div class="logo-box">
-            <img src="logo.png" alt="Logo de KQ105" class="logo">
+            <!-- Added error handler for missing logo file -->
+            <img src="logo.png" alt="Logo de KQ105" class="logo" onerror="this.style.display='none'">
         </div>
         <h1 class="station-name">KQ105</h1>
     </div>
@@ -185,9 +188,9 @@
     </div>
 
     <div id="currentSongInfo">
-        <img id="albumCover" src="placeholder_cover.png" alt="Cover">
+        <img id="albumCover" src="placeholder_cover.png" alt="Cover" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2270%22 height=%2270%22><rect width=%22100%22 height=%22100%22 fill=%22%232c3e50%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23f39c12%22 font-size=%2224%22>🎵</text></svg>'">
         <div id="metadataBox">
-            <span class="artist">Sintonizando...</span>
+            <span class="artist">Presiona play para escuchar</span>
         </div>
     </div>
 
@@ -230,13 +233,25 @@ var songHistoryDiv = document.getElementById("songHistory");
 var currentTitle = "";
 var currentArtist = "";
 var songHistoryList = [];
+var isStreamInitialized = false;
 
 /* ================================
    PLAYER
 ================================= */
 
 playPauseBtn.addEventListener("click", () => {
-    radioPlayer.paused ? radioPlayer.play() : radioPlayer.pause();
+    if (!isStreamInitialized) {
+        initStream();
+        isStreamInitialized = true;
+    }
+    
+    if (radioPlayer.paused) {
+        radioPlayer.play().catch(error => {
+            console.error("Playback prevented:", error);
+        });
+    } else {
+        radioPlayer.pause();
+    }
 });
 
 volumeBtn.addEventListener("click", () => {
@@ -332,7 +347,7 @@ function updateHistoryDisplay() {
         const item = document.createElement("div");
         item.className = "history-item";
         item.innerHTML = `
-            <img src="${song.cover}" alt="cover">
+            <img src="${song.cover}" alt="cover" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22><rect width=%22100%22 height=%22100%22 fill=%22%232c3e50%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23f39c12%22 font-size=%2216%22>🎵</text></svg>'">
             <div>
                 <span class="history-item-title">${song.title}</span>
                 <span class="history-item-artist">${song.artist}</span>
@@ -363,58 +378,55 @@ async function fetchAlbumCover(artist, title) {
 }
 
 /* ================================
-   STREAM HLS
+   STREAM HLS INIT
 ================================= */
 
-if (Hls.isSupported()) {
-    var hls = new Hls();
-    hls.loadSource(m3u8_url);
-    hls.attachMedia(radioPlayer);
+function initStream() {
+    loadHistory();
+    radioPlayer.volume = volumeSlider.value;
+    updateMetadataDisplay("Sintonizando...", "");
 
-    hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-        loadHistory();
-        radioPlayer.volume = volumeSlider.value;
-        radioPlayer.play();
-        updateMetadataDisplay("Sintonizando...", "");
-    });
+    if (Hls.isSupported()) {
+        var hls = new Hls();
+        hls.loadSource(m3u8_url);
+        hls.attachMedia(radioPlayer);
 
-    hls.on(Hls.Events.FRAG_CHANGED, async (event, data) => {
-        if (!data.frag.title) return;
+        hls.on(Hls.Events.FRAG_CHANGED, async (event, data) => {
+            if (!data.frag.title) return;
 
-        const titleMatch = /title="([^"]*)"/.exec(data.frag.title);
-        const artistMatch = /artist="([^"]*)"/.exec(data.frag.title);
+            const titleMatch = /title="([^"]*)"/.exec(data.frag.title);
+            const artistMatch = /artist="([^"]*)"/.exec(data.frag.title);
 
-        const title = titleMatch ? titleMatch[1] : "Título no disponible";
-        const artist = artistMatch ? artistMatch[1] : "Artista no disponible";
+            const title = titleMatch ? titleMatch[1] : "Título no disponible";
+            const artist = artistMatch ? artistMatch[1] : "Artista no disponible";
 
-        if (title === currentTitle && artist === currentArtist) return;
+            if (title === currentTitle && artist === currentArtist) return;
 
-        currentTitle = title;
-        currentArtist = artist;
+            currentTitle = title;
+            currentArtist = artist;
 
-        let cover =
-            title.includes("WKAQ-FM") || artist.includes("WKAQ-FM")
-                ? WKAQ_COVER
-                : await fetchAlbumCover(artist, title);
+            let cover =
+                title.includes("WKAQ-FM") || artist.includes("WKAQ-FM")
+                    ? WKAQ_COVER
+                    : await fetchAlbumCover(artist, title);
 
-        updateMetadataDisplay(title, artist, cover);
+            updateMetadataDisplay(title, artist, cover);
 
-        songHistoryList = songHistoryList.filter(s => !(s.title === title && s.artist === artist));
-        songHistoryList.unshift({ title, artist, cover });
+            songHistoryList = songHistoryList.filter(s => !(s.title === title && s.artist === artist));
+            songHistoryList.unshift({ title, artist, cover });
 
-        updateHistoryDisplay();
-        saveHistory();
-    });
+            updateHistoryDisplay();
+            saveHistory();
+        });
 
-} else if (radioPlayer.canPlayType("application/vnd.apple.mpegurl")) {
-    radioPlayer.src = m3u8_url;
-    radioPlayer.addEventListener("loadedmetadata", () => {
-        radioPlayer.play();
-        updateMetadataDisplay("Reproducción nativa.", "Metadata no disponible.");
-    });
-    songHistoryDiv.innerHTML = `<h4>Historial Reciente</h4><p style="font-size:.9em;color:#bdc3c7;">El historial no está disponible en este modo.</p>`;
+    } else if (radioPlayer.canPlayType("application/vnd.apple.mpegurl")) {
+        radioPlayer.src = m3u8_url;
+        radioPlayer.addEventListener("loadedmetadata", () => {
+            updateMetadataDisplay("Reproducción nativa.", "Metadata no disponible.");
+        });
+        songHistoryDiv.innerHTML = `<h4>Historial Reciente</h4><p style="font-size:.9em;color:#bdc3c7;">El historial no está disponible en este modo.</p>`;
+    }
 }
-
 </script>
 
 </body>
