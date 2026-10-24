@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KQ105 - Radio Stream</title>
 
-    <!-- Fallback inline favicon to prevent 404 errors -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📻</text></svg>">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,6 +13,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Montserrat', sans-serif;
             display: flex;
@@ -23,13 +27,12 @@
             color: #ecf0f1;
             margin: 0;
             padding: 20px;
-            box-sizing: border-box;
         }
 
         .player-container {
             background: #34495e;
             border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             padding: 30px;
             width: 90%;
             max-width: 450px;
@@ -39,12 +42,37 @@
             gap: 20px;
         }
 
-        .header { display: flex; flex-direction: column; align-items: center; }
-        .logo-box { background-color: #e74c3c; border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
-        .logo { max-width: 100px; height: auto; display: block; margin: 0 auto; }
-        .station-name { font-size: 2.5em; font-weight: 700; color: #ffffff; margin: 0 0 20px 0; }
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-        audio#radioPlayer { display: none; }
+        .logo-box {
+            background-color: #e74c3c;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .logo {
+            max-width: 100px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .station-name {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 0 20px;
+        }
+
+        audio#radioPlayer {
+            display: none;
+        }
 
         .custom-audio-player {
             display: flex;
@@ -54,28 +82,83 @@
             padding: 10px 20px;
             box-shadow: inset 0 2px 8px rgba(0,0,0,0.2);
             width: 100%;
-            box-sizing: border-box;
         }
 
-        .player-btn { background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #ecf0f1; }
-        .player-btn svg { width: 24px; height: 24px; fill: #ecf0f1; transition: all 0.2s ease; }
-        .player-btn:hover svg { fill: #f39c12; }
+        .player-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ecf0f1;
+        }
 
-        #playPauseBtn { width: 40px; height: 40px; background-color: #f39c12; border-radius: 50%; margin-right: 15px; }
-        #playPauseBtn svg { width: 20px; height: 20px; fill: #2c3e50; }
-        #playPauseBtn:hover svg { fill: #ffffff; }
-        #playPauseBtn .icon-pause { display: none; }
-        #playPauseBtn.playing .icon-pause { display: block; }
-        #playPauseBtn.playing .icon-play { display: none; }
+        .player-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: #ecf0f1;
+            transition: all 0.2s ease;
+        }
 
-        .volume-container { display: flex; align-items: center; margin-left: auto; }
-        #volumeBtn svg { width: 28px; height: 28px; }
-        #volumeBtn .icon-mute { display: none; }
-        #volumeBtn.muted .icon-mute { display: block; }
-        #volumeBtn.muted .icon-volume { display: none; }
+        .player-btn:hover svg {
+            fill: #f39c12;
+        }
+
+        #playPauseBtn {
+            width: 40px;
+            height: 40px;
+            background-color: #f39c12;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        #playPauseBtn svg {
+            width: 20px;
+            height: 20px;
+            fill: #2c3e50;
+        }
+
+        #playPauseBtn:hover svg {
+            fill: #fff;
+        }
+
+        #playPauseBtn .icon-pause {
+            display: none;
+        }
+
+        #playPauseBtn.playing .icon-pause {
+            display: block;
+        }
+
+        #playPauseBtn.playing .icon-play {
+            display: none;
+        }
+
+        .volume-container {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        #volumeBtn svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        #volumeBtn .icon-mute {
+            display: none;
+        }
+
+        #volumeBtn.muted .icon-mute {
+            display: block;
+        }
+
+        #volumeBtn.muted .icon-volume {
+            display: none;
+        }
 
         #volumeSlider {
-            -webkit-appearance: none;
             appearance: none;
             width: 100px;
             height: 5px;
@@ -84,13 +167,10 @@
             outline: none;
             margin-left: 10px;
             cursor: pointer;
-            transition: all 0.2s ease;
         }
 
-        #volumeSlider:hover { background: #5e80a0; }
-
         #volumeSlider::-webkit-slider-thumb {
-            -webkit-appearance: none;
+            appearance: none;
             width: 15px;
             height: 15px;
             background: #f39c12;
@@ -104,7 +184,7 @@
             background: #2c3e50;
             border-radius: 10px;
             padding: 15px;
-            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.2);
             gap: 15px;
             min-height: 100px;
         }
@@ -114,13 +194,31 @@
             height: 70px;
             border-radius: 8px;
             object-fit: cover;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
             flex-shrink: 0;
         }
 
-        #metadataBox { flex-grow: 1; text-align: left; min-width: 0; }
-        #metadataBox .title { font-weight: 700; font-size: 1.3em; display: block; margin-bottom: 3px; color: #f39c12; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        #metadataBox .artist { font-style: italic; font-size: 1em; color: #bdc3c7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #metadataBox {
+            flex-grow: 1;
+            text-align: left;
+            min-width: 0;
+        }
+
+        #metadataBox .title {
+            font-weight: 700;
+            font-size: 1.1em;
+            display: block;
+            margin-bottom: 5px;
+            color: #f39c12;
+            overflow-wrap: anywhere;
+        }
+
+        #metadataBox .artist {
+            font-style: italic;
+            font-size: 0.9em;
+            color: #bdc3c7;
+            overflow-wrap: anywhere;
+        }
 
         #songHistory {
             background: #2c3e50;
@@ -128,16 +226,61 @@
             padding: 15px;
             box-shadow: inset 0 2px 8px rgba(0,0,0,0.2);
             text-align: left;
-            max-height: 250px;
+            max-height: 350px;
             overflow-y: auto;
         }
 
-        #songHistory h4 { margin: 0 0 10px 0; color: #f39c12; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; }
+        #songHistory h4 {
+            margin: 0 0 15px;
+            color: #f39c12;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+        }
 
-        .history-item { display: flex; align-items: center; margin-bottom: 10px; gap: 10px; }
-        .history-item img { width: 40px; height: 40px; border-radius: 5px; object-fit: cover; }
-        .history-item-title { font-weight: 600; font-size: 0.95em; color: #ecf0f1; }
-        .history-item-artist { font-size: 0.8em; color: #bdc3c7; }
+        .history-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-item img {
+            width: 45px;
+            height: 45px;
+            border-radius: 5px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .history-item-info {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .history-item-title {
+            font-weight: 600;
+            font-size: 0.9em;
+            color: #ecf0f1;
+            overflow-wrap: anywhere;
+        }
+
+        .history-item-artist {
+            font-size: 0.8em;
+            color: #bdc3c7;
+        }
+
+        .history-item-time {
+            font-size: 0.72em;
+            color: #f39c12;
+        }
 
         #downloadHistoryBtn {
             background-color: #f39c12;
@@ -156,277 +299,720 @@
             background-color: #f1c40f;
             box-shadow: 0 4px 15px rgba(243,156,18,0.3);
         }
+
+        .history-count {
+            font-size: 0.75em;
+            color: #bdc3c7;
+            margin-top: -8px;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 400px) {
+            .player-container {
+                padding: 20px;
+                width: 100%;
+            }
+
+            .station-name {
+                font-size: 2em;
+            }
+
+            #volumeSlider {
+                width: 65px;
+            }
+        }
     </style>
 </head>
+
 <body>
 
 <div class="player-container">
 
     <div class="header">
         <div class="logo-box">
-            <!-- Added error handler for missing logo file -->
-            <img src="logo.png" alt="Logo de KQ105" class="logo" onerror="this.style.display='none'">
+            <img
+                src="logo.png"
+                alt="Logo de KQ105"
+                class="logo"
+                onerror="this.style.display='none'"
+            >
         </div>
+
         <h1 class="station-name">KQ105</h1>
     </div>
 
     <audio id="radioPlayer"></audio>
 
     <div class="custom-audio-player">
-        <button id="playPauseBtn" class="player-btn">
-            <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5.14v14l11-7-11-7z"/></svg>
-            <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+
+        <button id="playPauseBtn" class="player-btn" aria-label="Reproducir">
+            <svg class="icon-play" viewBox="0 0 24 24">
+                <path d="M8 5.14v14l11-7-11-7z"/>
+            </svg>
+
+            <svg class="icon-pause" viewBox="0 0 24 24">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+            </svg>
         </button>
 
         <div class="volume-container">
-            <button id="volumeBtn" class="player-btn">
-                <svg class="icon-volume" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
-                <svg class="icon-mute" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63z"/></svg>
+
+            <button id="volumeBtn" class="player-btn" aria-label="Silenciar">
+                <svg class="icon-volume" viewBox="0 0 24 24">
+                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+                </svg>
+
+                <svg class="icon-mute" viewBox="0 0 24 24">
+                    <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63z"/>
+                </svg>
             </button>
-            <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
+
+            <input
+                type="range"
+                id="volumeSlider"
+                min="0"
+                max="1"
+                step="0.01"
+                value="1"
+            >
         </div>
     </div>
 
     <div id="currentSongInfo">
-        <img id="albumCover" src="placeholder_cover.png" alt="Cover" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2270%22 height=%2270%22><rect width=%22100%22 height=%22100%22 fill=%22%232c3e50%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23f39c12%22 font-size=%2224%22>🎵</text></svg>'">
+        <img
+            id="albumCover"
+            src="placeholder_cover.png"
+            alt="Portada del álbum"
+        >
+
         <div id="metadataBox">
             <span class="artist">Presiona play para escuchar</span>
         </div>
     </div>
 
     <div id="songHistory">
+
         <h4>Historial Reciente</h4>
-        <p style="font-size: 0.9em; color: #bdc3c7;">Cargando historial...</p>
+
+        <div class="history-count" id="historyCount">
+            0 reproducciones registradas
+        </div>
+
+        <p style="font-size:0.9em;color:#bdc3c7;">
+            Cargando historial...
+        </p>
+
     </div>
 
-    <button id="downloadHistoryBtn">Descargar Historial (.txt)</button>
+    <button id="downloadHistoryBtn">
+        Descargar Historial (.txt)
+    </button>
 
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
 <script>
-/* ================================
-   CONFIG
+
+/* =================================
+   CONFIGURACIÓN
 ================================= */
 
-var m3u8_url = "https://televicentro.streamguys1.com/wkaqfm/playlist.m3u8?key=96bc32e12ecb6b1bafd065de263d64235ff13cc93b57ff806196d3ecd0891325&aw_0_1st.playerId=kq105&source=kq105.com&us_privacy=1YNY&clientType=web&callLetters=WKAQ-FM&devicename=web-desktop&stationid=1846&dist=kq105.com&subscription_type=free&aw_0_1st.version=1.0_html5&aw_0_1st.playerid=kq105_floating_player";
+const m3u8_url = "https://televicentro.streamguys1.com/wkaqfm/playlist.m3u8?key=96bc32e12ecb6b1bafd065de263d64235ff13cc93b57ff806196d3ecd0891325&aw_0_1st.playerId=kq105&source=kq105.com&us_privacy=1YNY&clientType=web&callLetters=WKAQ-FM&devicename=web-desktop&stationid=1846&dist=kq105.com&subscription_type=free&aw_0_1st.version=1.0_html5&aw_0_1st.playerid=kq105_floating_player";
 
 const PLACEHOLDER_COVER = "placeholder_cover.png";
 const WKAQ_COVER = "cover_wkaq.png";
+
 const LOCAL_STORAGE_KEY = "radioHistory";
 
-/* ================================
+/* =================================
    ELEMENTOS
 ================================= */
 
-var radioPlayer = document.getElementById("radioPlayer");
-var playPauseBtn = document.getElementById("playPauseBtn");
-var volumeBtn = document.getElementById("volumeBtn");
-var volumeSlider = document.getElementById("volumeSlider");
-var downloadBtn = document.getElementById("downloadHistoryBtn");
+const radioPlayer = document.getElementById("radioPlayer");
+const playPauseBtn = document.getElementById("playPauseBtn");
+const volumeBtn = document.getElementById("volumeBtn");
+const volumeSlider = document.getElementById("volumeSlider");
+const downloadBtn = document.getElementById("downloadHistoryBtn");
 
-var albumCover = document.getElementById("albumCover");
-var metadataBox = document.getElementById("metadataBox");
-var songHistoryDiv = document.getElementById("songHistory");
+const albumCover = document.getElementById("albumCover");
+const metadataBox = document.getElementById("metadataBox");
+const songHistoryDiv = document.getElementById("songHistory");
+const historyCount = document.getElementById("historyCount");
 
-var currentTitle = "";
-var currentArtist = "";
-var songHistoryList = [];
-var isStreamInitialized = false;
+let currentTitle = "";
+let currentArtist = "";
 
-/* ================================
-   PLAYER
-================================= */
+let songHistoryList = [];
+let isStreamInitialized = false;
+let hlsInstance = null;
 
-playPauseBtn.addEventListener("click", () => {
-    if (!isStreamInitialized) {
-        initStream();
-        isStreamInitialized = true;
-    }
-    
-    if (radioPlayer.paused) {
-        radioPlayer.play().catch(error => {
-            console.error("Playback prevented:", error);
-        });
-    } else {
-        radioPlayer.pause();
-    }
-});
-
-volumeBtn.addEventListener("click", () => {
-    radioPlayer.muted = !radioPlayer.muted;
-});
-
-volumeSlider.addEventListener("input", () => {
-    radioPlayer.volume = volumeSlider.value;
-    radioPlayer.muted = volumeSlider.value == 0;
-});
-
-radioPlayer.addEventListener("play", () => {
-    playPauseBtn.classList.add("playing");
-});
-
-radioPlayer.addEventListener("pause", () => {
-    playPauseBtn.classList.remove("playing");
-});
-
-radioPlayer.addEventListener("volumechange", () => {
-    if (radioPlayer.muted || radioPlayer.volume === 0) {
-        volumeSlider.value = 0;
-        volumeBtn.classList.add("muted");
-    } else {
-        volumeSlider.value = radioPlayer.volume;
-        volumeBtn.classList.remove("muted");
-    }
-});
-
-/* ================================
-   HISTORIAL
+/* =================================
+   CARGAR HISTORIAL
 ================================= */
 
 function loadHistory() {
+
     try {
+
         const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+
         songHistoryList = saved ? JSON.parse(saved) : [];
-    } catch {
+
+        if (!Array.isArray(songHistoryList)) {
+            songHistoryList = [];
+        }
+
+    } catch (error) {
+
+        console.error("Error cargando historial:", error);
         songHistoryList = [];
+
     }
+
     updateHistoryDisplay();
 }
 
-function saveHistory() {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(songHistoryList));
-}
+/* =================================
+   GUARDAR HISTORIAL
+================================= */
 
-function downloadHistoryAsTxt() {
-    if (songHistoryList.length === 0) {
-        alert("No hay historial para descargar.");
-        return;
+function saveHistory() {
+
+    try {
+
+        localStorage.setItem(
+            LOCAL_STORAGE_KEY,
+            JSON.stringify(songHistoryList)
+        );
+
+    } catch (error) {
+
+        console.error("Error guardando historial:", error);
+
     }
 
-    let text = `Historial de Canciones - KQ105\nGenerado: ${new Date().toLocaleString()}\n\n`;
-    songHistoryList.forEach(s => text += `${s.artist} - ${s.title}\n`);
-
-    const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "historial_kq105.txt";
-    document.body.appendChild(a);
-    a.click();
-
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
 }
 
-downloadBtn.addEventListener("click", downloadHistoryAsTxt);
+/* =================================
+   REGISTRAR CADA REPRODUCCIÓN
+================================= */
 
-/* ================================
-   METADATA UI
+function registerSong(title, artist, cover) {
+
+    const playedAt = new Date().toISOString();
+
+    /*
+       IMPORTANTE:
+
+       No eliminamos canciones anteriores.
+       Cada reproducción es un registro independiente.
+       Aunque sea la misma canción, se guarda nuevamente.
+    */
+
+    const songRecord = {
+        id: Date.now() + "-" + Math.random().toString(36).slice(2),
+        title: title,
+        artist: artist,
+        cover: cover,
+        playedAt: playedAt
+    };
+
+    // Añadir la reproducción al principio del historial.
+    songHistoryList.unshift(songRecord);
+
+    // Actualizar pantalla.
+    updateHistoryDisplay();
+
+    // Guardar en el navegador.
+    saveHistory();
+
+    console.log("Nueva reproducción registrada:", songRecord);
+
+}
+
+/* =================================
+   FORMATO DE FECHA Y HORA
+================================= */
+
+function formatDateTime(dateString) {
+
+    if (!dateString) {
+        return "Fecha no disponible";
+    }
+
+    const date = new Date(dateString);
+
+    if (isNaN(date.getTime())) {
+        return "Fecha no disponible";
+    }
+
+    return date.toLocaleString("es-PR", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true
+    });
+
+}
+
+/* =================================
+   ACTUALIZAR INFORMACIÓN ACTUAL
 ================================= */
 
 function updateMetadataDisplay(title, artist, cover = PLACEHOLDER_COVER) {
-    metadataBox.innerHTML = `
-        <span class="title">${title}</span>
-        <span class="artist">${artist}</span>
-    `;
+
+    metadataBox.replaceChildren();
+
+    const titleElement = document.createElement("span");
+    titleElement.className = "title";
+    titleElement.textContent = title;
+
+    const artistElement = document.createElement("span");
+    artistElement.className = "artist";
+    artistElement.textContent = artist;
+
+    metadataBox.appendChild(titleElement);
+    metadataBox.appendChild(artistElement);
+
     albumCover.src = cover;
+
 }
 
+/* =================================
+   MOSTRAR HISTORIAL
+================================= */
+
 function updateHistoryDisplay() {
-    songHistoryDiv.innerHTML = "<h4>Historial Reciente</h4>";
+
+    songHistoryDiv.replaceChildren();
+
+    const heading = document.createElement("h4");
+    heading.textContent = "Historial Reciente";
+
+    songHistoryDiv.appendChild(heading);
+
+    historyCount.textContent =
+        songHistoryList.length +
+        (songHistoryList.length === 1
+            ? " reproducción registrada"
+            : " reproducciones registradas");
 
     if (songHistoryList.length === 0) {
-        songHistoryDiv.innerHTML += `<p style="font-size:0.9em;color:#bdc3c7;">No hay canciones todavía.</p>`;
+
+        const emptyMessage = document.createElement("p");
+
+        emptyMessage.style.fontSize = "0.9em";
+        emptyMessage.style.color = "#bdc3c7";
+        emptyMessage.textContent = "No hay canciones todavía.";
+
+        songHistoryDiv.appendChild(emptyMessage);
+
         return;
     }
 
     songHistoryList.forEach(song => {
+
         const item = document.createElement("div");
         item.className = "history-item";
-        item.innerHTML = `
-            <img src="${song.cover}" alt="cover" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22><rect width=%22100%22 height=%22100%22 fill=%22%232c3e50%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23f39c12%22 font-size=%2216%22>🎵</text></svg>'">
-            <div>
-                <span class="history-item-title">${song.title}</span>
-                <span class="history-item-artist">${song.artist}</span>
-            </div>
-        `;
+
+        const cover = document.createElement("img");
+
+        cover.src = song.cover || PLACEHOLDER_COVER;
+        cover.alt = "Portada";
+
+        cover.onerror = function() {
+            this.onerror = null;
+            this.src = PLACEHOLDER_COVER;
+        };
+
+        const info = document.createElement("div");
+        info.className = "history-item-info";
+
+        const title = document.createElement("span");
+        title.className = "history-item-title";
+        title.textContent = song.title || "Título no disponible";
+
+        const artist = document.createElement("span");
+        artist.className = "history-item-artist";
+        artist.textContent = song.artist || "Artista no disponible";
+
+        const time = document.createElement("span");
+        time.className = "history-item-time";
+        time.textContent = formatDateTime(song.playedAt);
+
+        info.appendChild(title);
+        info.appendChild(artist);
+        info.appendChild(time);
+
+        item.appendChild(cover);
+        item.appendChild(info);
+
         songHistoryDiv.appendChild(item);
+
     });
+
 }
 
-/* ================================
-   COVER FETCH
+/* =================================
+   DESCARGAR HISTORIAL
+================================= */
+
+function downloadHistoryAsTxt() {
+
+    if (songHistoryList.length === 0) {
+
+        alert("No hay historial para descargar.");
+
+        return;
+    }
+
+    let textContent =
+        "HISTORIAL DE CANCIONES - KQ105\n" +
+        "Generado: " + new Date().toLocaleString("es-PR") +
+        "\n\n";
+
+    textContent +=
+        "TOTAL DE REPRODUCCIONES: " +
+        songHistoryList.length +
+        "\n\n";
+
+    textContent += "====================================\n\n";
+
+    songHistoryList.forEach((song, index) => {
+
+        textContent +=
+            (index + 1) + ". " +
+            song.artist + " - " +
+            song.title + "\n";
+
+        textContent +=
+            "Fecha y hora: " +
+            formatDateTime(song.playedAt) +
+            "\n\n";
+
+    });
+
+    const blob = new Blob(
+        [textContent],
+        { type: "text/plain;charset=utf-8" }
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "historial_kq105.txt";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+
+}
+
+downloadBtn.addEventListener("click", downloadHistoryAsTxt);
+
+/* =================================
+   BUSCAR PORTADA
 ================================= */
 
 async function fetchAlbumCover(artist, title) {
-    const query = encodeURIComponent(`${title} ${artist}`);
-    const url = `https://itunes.apple.com/search?term=${query}&entity=song&limit=1`;
+
+    const query = encodeURIComponent(title + " " + artist);
+
+    const url =
+        "https://itunes.apple.com/search?term=" +
+        query +
+        "&entity=song&limit=1";
 
     try {
-        const res = await fetch(url);
-        const data = await res.json();
 
-        if (data.results?.length > 0) {
-            return data.results[0].artworkUrl100.replace("100x100bb", "600x600bb");
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.results && data.results.length > 0) {
+
+            return data.results[0].artworkUrl100
+                .replace("100x100bb", "600x600bb");
+
         }
-    } catch {}
+
+    } catch (error) {
+
+        console.error("Error buscando portada:", error);
+
+    }
 
     return PLACEHOLDER_COVER;
+
 }
 
-/* ================================
-   STREAM HLS INIT
+/* =================================
+   DETECTAR NUEVAS CANCIONES
+================================= */
+
+async function processSongMetadata(title, artist) {
+
+    if (!title || !artist) {
+        return;
+    }
+
+    title = title.trim();
+    artist = artist.trim();
+
+    // Evitar registrar repetidamente la misma canción
+    // mientras continúa siendo la canción actual.
+
+    if (
+        title === currentTitle &&
+        artist === currentArtist
+    ) {
+        return;
+    }
+
+    // Actualizar canción actual.
+    currentTitle = title;
+    currentArtist = artist;
+
+    // Guardar el momento en que se detectó la reproducción.
+    const playedAt = new Date().toISOString();
+
+    // Detectar identificación de la emisora.
+    const isStationID =
+        title.includes("WKAQ-FM") ||
+        artist.includes("WKAQ-FM");
+
+    // Buscar portada.
+    let cover = isStationID
+        ? WKAQ_COVER
+        : await fetchAlbumCover(artist, title);
+
+    // Actualizar canción actual en pantalla.
+    updateMetadataDisplay(title, artist, cover);
+
+    /*
+       REGISTRO INDEPENDIENTE:
+
+       No usamos filter().
+       No eliminamos registros anteriores.
+
+       Si una canción vuelve a sonar después de otra,
+       aparecerá nuevamente con su propia hora.
+    */
+
+    songHistoryList.unshift({
+
+        id: Date.now() + "-" + Math.random().toString(36).slice(2),
+
+        title: title,
+
+        artist: artist,
+
+        cover: cover,
+
+        playedAt: playedAt
+
+    });
+
+    updateHistoryDisplay();
+
+    saveHistory();
+
+}
+
+/* =================================
+   INICIALIZAR STREAM HLS
 ================================= */
 
 function initStream() {
+
     loadHistory();
-    radioPlayer.volume = volumeSlider.value;
-    updateMetadataDisplay("Sintonizando...", "");
+
+    radioPlayer.volume = Number(volumeSlider.value);
+
+    updateMetadataDisplay(
+        "Sintonizando...",
+        "Conectando con KQ105"
+    );
 
     if (Hls.isSupported()) {
-        var hls = new Hls();
-        hls.loadSource(m3u8_url);
-        hls.attachMedia(radioPlayer);
 
-        hls.on(Hls.Events.FRAG_CHANGED, async (event, data) => {
-            if (!data.frag.title) return;
+        hlsInstance = new Hls();
 
-            const titleMatch = /title="([^"]*)"/.exec(data.frag.title);
-            const artistMatch = /artist="([^"]*)"/.exec(data.frag.title);
+        hlsInstance.loadSource(m3u8_url);
 
-            const title = titleMatch ? titleMatch[1] : "Título no disponible";
-            const artist = artistMatch ? artistMatch[1] : "Artista no disponible";
+        hlsInstance.attachMedia(radioPlayer);
 
-            if (title === currentTitle && artist === currentArtist) return;
+        hlsInstance.on(
+            Hls.Events.FRAG_CHANGED,
+            async (event, data) => {
 
-            currentTitle = title;
-            currentArtist = artist;
+                if (!data.frag || !data.frag.title) {
+                    return;
+                }
 
-            let cover =
-                title.includes("WKAQ-FM") || artist.includes("WKAQ-FM")
-                    ? WKAQ_COVER
-                    : await fetchAlbumCover(artist, title);
+                const metadata = data.frag.title;
 
-            updateMetadataDisplay(title, artist, cover);
+                const titleMatch =
+                    /title="([^"]*)"/.exec(metadata);
 
-            songHistoryList = songHistoryList.filter(s => !(s.title === title && s.artist === artist));
-            songHistoryList.unshift({ title, artist, cover });
+                const artistMatch =
+                    /artist="([^"]*)"/.exec(metadata);
 
-            updateHistoryDisplay();
-            saveHistory();
+                const title = titleMatch
+                    ? titleMatch[1]
+                    : "Título no disponible";
+
+                const artist = artistMatch
+                    ? artistMatch[1]
+                    : "Artista no disponible";
+
+                await processSongMetadata(title, artist);
+
+            }
+        );
+
+        hlsInstance.on(Hls.Events.ERROR, (event, data) => {
+
+            if (data.fatal) {
+
+                console.error("Error fatal de HLS:", data);
+
+            }
+
         });
 
-    } else if (radioPlayer.canPlayType("application/vnd.apple.mpegurl")) {
+    } else if (
+        radioPlayer.canPlayType(
+            "application/vnd.apple.mpegurl"
+        )
+    ) {
+
         radioPlayer.src = m3u8_url;
-        radioPlayer.addEventListener("loadedmetadata", () => {
-            updateMetadataDisplay("Reproducción nativa.", "Metadata no disponible.");
-        });
-        songHistoryDiv.innerHTML = `<h4>Historial Reciente</h4><p style="font-size:.9em;color:#bdc3c7;">El historial no está disponible en este modo.</p>`;
+
+        /*
+           En reproducción HLS nativa, el navegador
+           puede no exponer los metadatos de las canciones.
+
+           El historial automático requiere que los metadatos
+           estén disponibles para JavaScript.
+        */
+
+        updateMetadataDisplay(
+            "KQ105",
+            "Reproducción nativa"
+        );
+
+        songHistoryDiv.innerHTML =
+            "<h4>Historial Reciente</h4>" +
+            "<p style='font-size:.9em;color:#bdc3c7;'>" +
+            "El navegador no está proporcionando los metadatos " +
+            "necesarios para identificar las canciones." +
+            "</p>";
+
+    } else {
+
+        updateMetadataDisplay(
+            "Error",
+            "Tu navegador no soporta este reproductor."
+        );
+
     }
+
 }
+
+/* =================================
+   CONTROLES DEL REPRODUCTOR
+================================= */
+
+playPauseBtn.addEventListener("click", async () => {
+
+    if (!isStreamInitialized) {
+
+        initStream();
+
+        isStreamInitialized = true;
+
+    }
+
+    if (radioPlayer.paused) {
+
+        try {
+
+            await radioPlayer.play();
+
+        } catch (error) {
+
+            console.error("Error de reproducción:", error);
+
+        }
+
+    } else {
+
+        radioPlayer.pause();
+
+    }
+
+});
+
+volumeBtn.addEventListener("click", () => {
+
+    radioPlayer.muted = !radioPlayer.muted;
+
+});
+
+volumeSlider.addEventListener("input", () => {
+
+    radioPlayer.volume = Number(volumeSlider.value);
+
+    radioPlayer.muted = Number(volumeSlider.value) === 0;
+
+});
+
+radioPlayer.addEventListener("play", () => {
+
+    playPauseBtn.classList.add("playing");
+
+});
+
+radioPlayer.addEventListener("pause", () => {
+
+    playPauseBtn.classList.remove("playing");
+
+});
+
+radioPlayer.addEventListener("volumechange", () => {
+
+    if (radioPlayer.muted || radioPlayer.volume === 0) {
+
+        volumeSlider.value = 0;
+
+        volumeBtn.classList.add("muted");
+
+    } else {
+
+        volumeSlider.value = radioPlayer.volume;
+
+        volumeBtn.classList.remove("muted");
+
+    }
+
+});
+
+/* =================================
+   CARGAR HISTORIAL AL ABRIR
+================================= */
+
+loadHistory();
+
 </script>
 
 </body>
