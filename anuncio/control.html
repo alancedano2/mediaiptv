@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Control - Advertencia</title>
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
 
@@ -11,7 +12,7 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Inter', Arial, sans-serif;
     }
 
     body {
@@ -28,7 +29,7 @@
       background: #181b22;
       border: 1px solid #2a2f3d;
       border-radius: 14px;
-      padding: 28px;
+      padding: 26px;
       width: 100%;
       max-width: 500px;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
@@ -38,7 +39,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 22px;
+      margin-bottom: 18px;
       padding-bottom: 14px;
       border-bottom: 1px solid #2a2f3d;
     }
@@ -48,13 +49,25 @@
       font-weight: 800;
     }
 
+    .badges {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
     .status {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       padding: 5px 10px;
       border-radius: 20px;
       background: #272c38;
       color: #94a3b8;
+    }
+
+    .status.connected {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.4);
     }
 
     .status.on {
@@ -76,14 +89,14 @@
 
     label {
       display: block;
-      font-size: 12px;
-      font-weight: 600;
+      font-size: 11px;
+      font-weight: 700;
       color: #94a3b8;
       margin-bottom: 6px;
       text-transform: uppercase;
     }
 
-    input, textarea, select {
+    input, textarea {
       width: 100%;
       background: #0f1115;
       border: 1px solid #2e3444;
@@ -94,7 +107,7 @@
       outline: none;
     }
 
-    input:focus, textarea:focus, select:focus {
+    input:focus, textarea:focus {
       border-color: #e63946;
     }
 
@@ -136,7 +149,7 @@
       padding: 14px;
       border: none;
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 800;
       cursor: pointer;
       transition: transform 0.1s, opacity 0.2s;
@@ -160,7 +173,7 @@
       grid-column: span 2;
       background: #1d4ed8;
       color: white;
-      margin-top: 4px;
+      margin-top: 2px;
     }
   </style>
 </head>
@@ -169,7 +182,10 @@
   <div class="panel">
     <div class="header">
       <h1>Control de Advertencia</h1>
-      <span id="statusBadge" class="status">OCULTO</span>
+      <div class="badges">
+        <span id="connBadge" class="status">CONECTANDO...</span>
+        <span id="statusBadge" class="status">OCULTO</span>
+      </div>
     </div>
 
     <div class="presets">
@@ -212,8 +228,54 @@
   </div>
 
   <script>
-    const channel = new BroadcastChannel('overlay_advertencia');
+    // Debe ser exactamente el mismo ID que en main.html
+    const CANAL_ID = 'mi_evento_advertencia_2026_x9k2';
+    const TOPIC_CMD = `overlay/${CANAL_ID}/cmd`;
+    const TOPIC_STATE = `overlay/${CANAL_ID}/state`;
+
     const statusBadge = document.getElementById('statusBadge');
+    const connBadge = document.getElementById('connBadge');
+    const bc = new BroadcastChannel(CANAL_ID);
+
+    const client = mqtt.connect('wss://broker.emqx.io:8084/mqtt', {
+      clientId: 'ctrl_panel_' + Math.random().toString(16).slice(2, 10),
+      clean: true,
+      reconnectPeriod: 2000
+    });
+
+    client.on('connect', () => {
+      connBadge.textContent = 'EN LÍNEA';
+      connBadge.classList.add('connected');
+      client.subscribe(TOPIC_STATE);
+    });
+
+    client.on('offline', () => {
+      connBadge.textContent = 'SIN CONEXIÓN';
+      connBadge.classList.remove('connected');
+    });
+
+    client.on('message', (topic, payload) => {
+      if (topic === TOPIC_STATE) {
+        try {
+          const data = JSON.parse(payload.toString());
+          setStatus(!!data.visible);
+        } catch (_) {}
+      }
+    });
+
+    function sendCommand(payload) {
+      payload.ts = Date.now();
+      const jsonStr = JSON.stringify(payload);
+
+      // Envío por red (funciona desde cualquier dispositivo/navegador hacia OBS)
+      if (client && client.connected) {
+        client.publish(TOPIC_CMD, jsonStr, { retain: true });
+      }
+
+      // Respaldo local
+      bc.postMessage(payload);
+      try { localStorage.setItem(CANAL_ID, jsonStr); } catch (_) {}
+    }
 
     function getPayload(duration = 0) {
       return {
@@ -237,7 +299,7 @@
     }
 
     function triggerShow(duration = 0) {
-      channel.postMessage(getPayload(duration));
+      sendCommand(getPayload(duration));
       setStatus(true);
     }
 
@@ -247,7 +309,7 @@
     }
 
     function triggerHide() {
-      channel.postMessage({ action: 'hide' });
+      sendCommand({ action: 'hide' });
       setStatus(false);
     }
 
@@ -256,10 +318,9 @@
       document.getElementById('badgeSub').value = sub;
       document.getElementById('titleInput').value = title;
       document.getElementById('textInput').value = text;
-      
-      // Si ya está en pantalla, actualiza el texto en vivo
+
       if (statusBadge.classList.contains('on')) {
-        channel.postMessage({
+        sendCommand({
           action: 'update',
           badgeMain: main,
           badgeSub: sub,
@@ -268,12 +329,6 @@
         });
       }
     }
-
-    channel.onmessage = (event) => {
-      if (event.data.action === 'status') {
-        setStatus(event.data.visible);
-      }
-    };
   </script>
 </body>
 </html>
