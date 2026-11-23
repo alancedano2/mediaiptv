@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Overlay - Advertencia de Contenido</title>
+  <title>Overlay - Advertencia</title>
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&display=swap');
 
@@ -13,35 +14,35 @@
       box-sizing: border-box;
     }
 
-    body {
-      background: transparent;
+    html, body {
+      background: transparent !important;
       overflow: hidden;
       width: 100vw;
       height: 100vh;
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Montserrat', Arial, sans-serif;
     }
 
-    /* Contenedor separado de las esquinas */
+    /* Separado de la esquina inferior izquierda */
     .warning-box {
       position: fixed;
-      bottom: 45px;
-      left: 45px;
+      bottom: 48px;
+      left: 48px;
       display: flex;
       align-items: stretch;
-      background: rgba(12, 14, 18, 0.94);
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(12, 14, 18, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.16);
       border-left: 6px solid #e63946;
       border-radius: 10px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(8px);
+      box-shadow: 0 16px 38px rgba(0, 0, 0, 0.8);
       overflow: hidden;
-      max-width: 540px;
+      max-width: 560px;
 
       /* Estado oculto inicial */
       opacity: 0;
-      transform: translateX(-40px) scale(0.96);
+      transform: translateX(-45px) scale(0.96);
       pointer-events: none;
-      transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .warning-box.visible {
@@ -49,7 +50,6 @@
       transform: translateX(0) scale(1);
     }
 
-    /* Cuadro de clasificación (+18 / TV-MA) */
     .rating-badge {
       background: linear-gradient(135deg, #e63946, #b51724);
       color: #ffffff;
@@ -58,7 +58,7 @@
       justify-content: center;
       align-items: center;
       padding: 16px 20px;
-      min-width: 95px;
+      min-width: 96px;
       text-align: center;
       border-right: 1px solid rgba(255, 255, 255, 0.15);
     }
@@ -76,12 +76,11 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       margin-top: 4px;
-      opacity: 0.9;
+      opacity: 0.92;
     }
 
-    /* Texto de advertencia */
     .warning-content {
-      padding: 14px 20px;
+      padding: 15px 22px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -94,16 +93,13 @@
       text-transform: uppercase;
       letter-spacing: 1.2px;
       margin-bottom: 5px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
 
     .warning-text {
       color: #f1f5f9;
       font-size: 13.5px;
       font-weight: 600;
-      line-height: 1.4;
+      line-height: 1.42;
     }
   </style>
 </head>
@@ -123,7 +119,11 @@
   </div>
 
   <script>
-    const channel = new BroadcastChannel('overlay_advertencia');
+    // Cambia este ID único por el nombre de tu canal/evento para que nadie más lo controle
+    const CANAL_ID = 'mi_evento_advertencia_2026_x9k2';
+    const TOPIC_CMD = `overlay/${CANAL_ID}/cmd`;
+    const TOPIC_STATE = `overlay/${CANAL_ID}/state`;
+
     const warningBox = document.getElementById('warningBox');
     const badgeMain = document.getElementById('badgeMain');
     const badgeSub = document.getElementById('badgeSub');
@@ -146,7 +146,7 @@
       if (durationSeconds > 0) {
         autoHideTimer = setTimeout(() => {
           hideWarning();
-          channel.postMessage({ action: 'status', visible: false });
+          publishState(false);
         }, durationSeconds * 1000);
       }
     }
@@ -156,18 +156,56 @@
       warningBox.classList.remove('visible');
     }
 
-    // Escuchar comandos desde control.html
-    channel.onmessage = (event) => {
-      const msg = event.data;
+    function handleCommand(msg) {
+      if (!msg || !msg.action) return;
       if (msg.action === 'show') {
         updateContent(msg);
         showWarning(msg.duration || 0);
+        publishState(true);
       } else if (msg.action === 'hide') {
         hideWarning();
+        publishState(false);
       } else if (msg.action === 'update') {
         updateContent(msg);
       }
-    };
+    }
+
+    // Respaldo local (BroadcastChannel + localStorage)
+    const bc = new BroadcastChannel(CANAL_ID);
+    bc.onmessage = (e) => handleCommand(e.data);
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === CANAL_ID && e.newValue) {
+        try { handleCommand(JSON.parse(e.newValue)); } catch (_) {}
+      }
+    });
+
+    // Sincronización remota en tiempo real (funciona entre navegador y OBS)
+    const client = mqtt.connect('wss://broker.emqx.io:8084/mqtt', {
+      clientId: 'obs_main_' + Math.random().toString(16).slice(2, 10),
+      clean: true,
+      reconnectPeriod: 2000
+    });
+
+    function publishState(visible) {
+      if (client && client.connected) {
+        client.publish(TOPIC_STATE, JSON.stringify({ visible }), { retain: true });
+      }
+    }
+
+    client.on('connect', () => {
+      client.subscribe(TOPIC_CMD);
+    });
+
+    client.on('message', (topic, payload) => {
+      if (topic === TOPIC_CMD) {
+        try {
+          handleCommand(JSON.parse(payload.toString()));
+        } catch (err) {
+          console.error('Error leyendo comando:', err);
+        }
+      }
+    });
   </script>
 </body>
 </html>
