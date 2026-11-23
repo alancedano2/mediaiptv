@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control - Advertencia</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #0f1115;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .panel {
+      background: #181b22;
+      border: 1px solid #2a2f3d;
+      border-radius: 14px;
+      padding: 28px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #2a2f3d;
+    }
+
+    .header h1 {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .status {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 20px;
+      background: #272c38;
+      color: #94a3b8;
+    }
+
+    .status.on {
+      background: rgba(230, 57, 70, 0.2);
+      color: #ff5c69;
+      border: 1px solid #e63946;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #94a3b8;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      background: #0f1115;
+      border: 1px solid #2e3444;
+      color: #ffffff;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: #e63946;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 85px;
+    }
+
+    .presets {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .preset-btn {
+      background: #242936;
+      border: 1px solid #343b4e;
+      color: #cbd5e1;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .preset-btn:hover {
+      background: #2f3647;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    button.main-btn {
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.1s, opacity 0.2s;
+    }
+
+    button.main-btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-show {
+      background: #e63946;
+      color: white;
+    }
+
+    .btn-hide {
+      background: #2d3342;
+      color: #e2e8f0;
+    }
+
+    .btn-timed {
+      grid-column: span 2;
+      background: #1d4ed8;
+      color: white;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="panel">
+    <div class="header">
+      <h1>Control de Advertencia</h1>
+      <span id="statusBadge" class="status">OCULTO</span>
+    </div>
+
+    <div class="presets">
+      <button class="preset-btn" onclick="setPreset('+18', 'ADULTOS', '⚠️ ADVERTENCIA DE CONTENIDO', 'Este evento contiene lenguaje fuerte y escenas intensas. Se recomienda discreción; no apto para menores de edad.')">Fuerte (+18)</button>
+      <button class="preset-btn" onclick="setPreset('TV-MA', 'DISCRECIÓN', '⚠️ SE RECOMIENDA DISCRECIÓN', 'El siguiente segmento contiene palabras obscenas y situaciones no aptas para niños.')">Lenguaje Obsceno</button>
+      <button class="preset-btn" onclick="setPreset('PG-13', 'MENORES', '⚠️ AVISO A PADRES', 'Contenido intenso. Se recomienda la supervisión de un adulto para menores de edad.')">Supervisión Adulta</button>
+    </div>
+
+    <div class="row">
+      <div>
+        <label>Clasificación</label>
+        <input type="text" id="badgeMain" value="+18">
+      </div>
+      <div>
+        <label>Subtexto</label>
+        <input type="text" id="badgeSub" value="ADULTOS">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Título de Advertencia</label>
+      <input type="text" id="titleInput" value="⚠️ ADVERTENCIA DE CONTENIDO">
+    </div>
+
+    <div class="field">
+      <label>Mensaje</label>
+      <textarea id="textInput">Este evento contiene lenguaje fuerte y escenas intensas. Se recomienda discreción; no apto para menores de edad.</textarea>
+    </div>
+
+    <div class="field">
+      <label>Duración automática (segundos)</label>
+      <input type="number" id="durationInput" value="10" min="3" max="120">
+    </div>
+
+    <div class="actions">
+      <button class="main-btn btn-show" onclick="triggerShow(0)">MOSTRAR FIJO</button>
+      <button class="main-btn btn-hide" onclick="triggerHide()">OCULTAR</button>
+      <button class="main-btn btn-timed" onclick="triggerTimed()">MOSTRAR CON TEMPORIZADOR</button>
+    </div>
+  </div>
+
+  <script>
+    const channel = new BroadcastChannel('overlay_advertencia');
+    const statusBadge = document.getElementById('statusBadge');
+
+    function getPayload(duration = 0) {
+      return {
+        action: 'show',
+        badgeMain: document.getElementById('badgeMain').value,
+        badgeSub: document.getElementById('badgeSub').value,
+        title: document.getElementById('titleInput').value,
+        text: document.getElementById('textInput').value,
+        duration: duration
+      };
+    }
+
+    function setStatus(isOn) {
+      if (isOn) {
+        statusBadge.textContent = 'EN PANTALLA';
+        statusBadge.classList.add('on');
+      } else {
+        statusBadge.textContent = 'OCULTO';
+        statusBadge.classList.remove('on');
+      }
+    }
+
+    function triggerShow(duration = 0) {
+      channel.postMessage(getPayload(duration));
+      setStatus(true);
+    }
+
+    function triggerTimed() {
+      const secs = parseInt(document.getElementById('durationInput').value) || 10;
+      triggerShow(secs);
+    }
+
+    function triggerHide() {
+      channel.postMessage({ action: 'hide' });
+      setStatus(false);
+    }
+
+    function setPreset(main, sub, title, text) {
+      document.getElementById('badgeMain').value = main;
+      document.getElementById('badgeSub').value = sub;
+      document.getElementById('titleInput').value = title;
+      document.getElementById('textInput').value = text;
+      
+      // Si ya está en pantalla, actualiza el texto en vivo
+      if (statusBadge.classList.contains('on')) {
+        channel.postMessage({
+          action: 'update',
+          badgeMain: main,
+          badgeSub: sub,
+          title: title,
+          text: text
+        });
+      }
+    }
+
+    channel.onmessage = (event) => {
+      if (event.data.action === 'status') {
+        setStatus(event.data.visible);
+      }
+    };
+  </script>
+</body>
+</html>
